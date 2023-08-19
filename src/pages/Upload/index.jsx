@@ -28,8 +28,8 @@ const Upload = () => {
   return (
     <div className="flex">
       <NavBar />
-      <div className="bg-yellow-300 w-screen flex">
-        <div className="m-auto flex w-1/2 bg-blue-400 justify-between">
+      <div className="bg-yellow-300 w-screen h-screen flex">
+        <div className="flex bg-teal-950 w-6/12 h-2/4 m-auto py-0 justify-center">
           <ImageUploader onUpload={uploadImageToServer} />
         </div>
       </div>
