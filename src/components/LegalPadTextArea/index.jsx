@@ -1,6 +1,8 @@
 import { useState, useRef } from "react";
 import Button from "../Button";
 
+import { CONFIG } from "../../constants/config";
+
 const LegalpadTextarea = () => {
   const [textValue, setTextValue] = useState("");
   const textareaRef = useRef(null);
@@ -40,6 +42,27 @@ const LegalpadTextarea = () => {
     }, "image/png");
   };
 
+  const createTextToServer = async () => {
+    try {
+      const response = await fetch(
+        `${CONFIG.BACKEND_SERVER_URL}/users/${localStorage.getItem(
+          "userEmail",
+        )}/create`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ content: textValue }),
+        },
+      );
+
+      const data = await response.json();
+    } catch (error) {
+      console.log("Image upload error", error.message);
+    }
+  };
+
   return (
     <div className="flex flex-col justify-evenly w-3/4">
       <div className="relative">
@@ -63,7 +86,10 @@ const LegalpadTextarea = () => {
         >
           다운로드
         </Button>
-        <Button style="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+        <Button
+          style="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg"
+          onClick={createTextToServer}
+        >
           저장
         </Button>
       </div>
