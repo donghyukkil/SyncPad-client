@@ -41,20 +41,32 @@ const LegalpadTextarea = () => {
   };
 
   return (
-    <div className="flex justify-around">
-      <textarea
-        className="p-3 bg-yellow-200 border border-gray-400 rounded-lg w-full h-48 resize-none"
-        ref={textareaRef}
-        value={textValue}
-        onChange={e => setTextValue(e.target.value)}
-        placeholder="Start typing here..."
-      />
-      <Button
-        style={"bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg"}
-        onClick={handleDownloadClick}
-      >
-        Save as PNG
-      </Button>
+    <div className="flex flex-col justify-evenly w-3/4">
+      <div className="relative">
+        <textarea
+          className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-48 resize-none"
+          ref={textareaRef}
+          value={textValue}
+          onChange={event => setTextValue(event.target.value)}
+          style={{
+            lineHeight: "36px",
+            fontFamily: "Courier New",
+            color: "#000",
+            width: "100%",
+          }}
+        />
+      </div>
+      <div className="flex flex-col justify-between">
+        <Button
+          style="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg p-0"
+          onClick={handleDownloadClick}
+        >
+          다운로드
+        </Button>
+        <Button style="bg-blue-500 hover:bg-blue-600 text-white px-4 py-2 rounded-lg">
+          저장
+        </Button>
+      </div>
     </div>
   );
 };
