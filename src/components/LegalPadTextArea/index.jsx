@@ -1,31 +1,31 @@
 import { useState, useRef } from "react";
-
 import Button from "../Button";
+
 const LegalpadTextarea = () => {
   const [textValue, setTextValue] = useState("");
   const textareaRef = useRef(null);
 
   const handleDownloadClick = () => {
+    const lineHeight = 36;
+    const padding = 15;
+    const lines = textValue.split("\n");
+    const lineCount = lines.length;
+    const canvasHeight = lineCount * lineHeight + 2 * padding;
+
     const canvas = document.createElement("canvas");
     canvas.width = textareaRef.current.offsetWidth;
-    canvas.height = textareaRef.current.offsetHeight;
-    const ctx = canvas.getContext("2d");
+    canvas.height = canvasHeight;
 
+    const ctx = canvas.getContext("2d");
     ctx.fillStyle = "#f7e79e";
     ctx.fillRect(0, 0, canvas.width, canvas.height);
     ctx.fillStyle = "#000";
-
-    for (let i = 0; i < canvas.height; i += 24) {
-      ctx.fillRect(0, i + 21, canvas.width, 1);
-    }
-
-    ctx.fillStyle = "#333";
     ctx.font = "18px Courier New";
 
-    const lines = textValue.split("\n");
-
     for (let i = 0; i < lines.length; i++) {
-      ctx.fillText(lines[i], 15, 30 + i * 24);
+      const y = padding + i * lineHeight;
+      ctx.fillText(lines[i], padding, y + lineHeight);
+      ctx.fillRect(padding, y + lineHeight - 1, canvas.width - 2 * padding, 1);
     }
 
     canvas.toBlob(blob => {
