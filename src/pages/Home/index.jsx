@@ -1,5 +1,8 @@
 import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
+
+import Button from "../../components/Button";
 import NavBar from "../../components/NavBar";
+
 import { CONFIG } from "../../constants/config";
 
 const Home = () => {
@@ -10,6 +13,9 @@ const Home = () => {
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
+
+      localStorage.setItem("userEmail", user.email);
+      localStorage.setItem("userphtoURL", user.photoURL);
 
       const authenticateUser = async () => {
         try {
@@ -41,14 +47,16 @@ const Home = () => {
   return (
     <div className="flex">
       <NavBar />
-      <div className="bg-amber-400 w-screen h-screen flex">
-        <div className="bg-sky-950 w-6/12 h-2/4 m-auto py-0">
-          <button
-            className="text-white text-5xl h-2/4 py-0"
+      <div className="bg-yellow-300 w-screen h-screen flex">
+        <div className="flex bg-teal-950 w-6/12 h-2/4 m-auto py-0 justify-center">
+          <Button
+            style={
+              "text-white text-lg h-2/4 py-0 m-auto border-solid border-4 border-yellow-400 w-1/4 font-bold"
+            }
             onClick={signInWithGoogle}
           >
             구글 로그인
-          </button>
+          </Button>
         </div>
       </div>
     </div>
