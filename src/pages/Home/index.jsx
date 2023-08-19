@@ -51,7 +51,7 @@ const Home = () => {
         <div className="flex bg-teal-950 w-6/12 h-2/4 m-auto py-0 justify-center">
           <Button
             style={
-              "text-white text-lg h-2/4 py-0 m-auto border-solid border-4 border-yellow-400 w-1/4 font-bold"
+              "text-white text-lg h-2/4 py-0 m-auto border-solid border-4 border-yellow-400 w-1/4 font-bold bg-cyan-500"
             }
             onClick={signInWithGoogle}
           >
