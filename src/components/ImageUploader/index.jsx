@@ -4,6 +4,7 @@ const ImageUploader = ({ onUpload }) => {
 
     if (file) {
       const base64String = await convertToBase64(file);
+      URL.createObjectURL(file);
       onUpload(base64String);
     }
   };
@@ -18,7 +19,11 @@ const ImageUploader = ({ onUpload }) => {
     });
   };
 
-  return <input type="file" onChange={handleImageChange} />;
+  return (
+    <>
+      <input type="file" onChange={handleImageChange} />
+    </>
+  );
 };
 
 export default ImageUploader;
