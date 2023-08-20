@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 
 import Button from "../Button";
 
 const ImageUploader = ({ onUpload }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [uploadedImage, setUploadedImage] = useState(null);
+  const fileInputRef = useRef(null);
 
   const handleImageChange = async event => {
     const file = event.target.files[0];
@@ -35,19 +36,36 @@ const ImageUploader = ({ onUpload }) => {
   return (
     <>
       {selectedImage ? (
-        <div className="flex justify-around">
-          <img
-            src={`data:image/jpeg;base64,${selectedImage}`}
-            alt="Uploaded"
-            className="w-full"
-          />
-
-          <Button onClick={handleSaveImage} style={"bg-purple-800 text-white"}>
-            저장
-          </Button>
+        <div className="border-4">
+          <div className="w-72 h-52 p-3">
+            <img
+              src={`data:image/jpeg;base64,${selectedImage}`}
+              alt="Uploaded"
+            />
+            <Button
+              onClick={handleSaveImage}
+              style={"bg-sky-400 text-black h-20 w-full my-2"}
+            >
+              저장
+            </Button>
+          </div>
         </div>
       ) : (
-        <input type="file" onChange={handleImageChange} />
+        <div className="flex flex-col justify-center">
+          <input
+            type="file"
+            onChange={handleImageChange}
+            style={{ display: "none" }}
+            ref={fileInputRef}
+            id="fileInput"
+          />
+          <label
+            htmlFor="fileInput"
+            className="bg-sky-400 flex justify-center items-center cursor-pointer w-full h-1/3 text-black rounded-md"
+          >
+            원하는 이미지를 업로드하세요
+          </label>
+        </div>
       )}
       {uploadedImage && (
         <div>
