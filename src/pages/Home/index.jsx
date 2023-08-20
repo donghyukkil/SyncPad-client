@@ -48,15 +48,20 @@ const Home = () => {
     <div className="flex">
       <NavBar />
       <div className="bg-yellow-300 w-screen h-screen flex">
-        <div className="flex bg-teal-950 w-6/12 h-2/4 m-auto py-0 justify-center">
-          <Button
-            style={
-              "text-white text-lg h-2/4 py-0 m-auto border-solid border-4 border-yellow-400 w-1/4 font-bold bg-cyan-500"
-            }
-            onClick={signInWithGoogle}
-          >
-            구글 로그인
-          </Button>
+        <div className="flex bg-teal-950 w-6/12 h-2/4 m-auto py-0 justify-center rounded-md">
+          <div className="flex flex-col justify-evenly w-3/4">
+            <div className="p-3 border bg-white border-gray-400 rounded-lg h-48 resize-none text-center text-2xl">
+              Hello, legalPad! 환영합니다.
+            </div>
+            <Button
+              style={
+                "bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg p-0"
+              }
+              onClick={signInWithGoogle}
+            >
+              구글 로그인
+            </Button>
+          </div>
         </div>
       </div>
     </div>
