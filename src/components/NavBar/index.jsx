@@ -33,7 +33,7 @@ const NavBar = () => {
           }
           onClick={navigateToHome}
         >
-          HOME
+          홈
         </Button>
         <Button
           style={
@@ -41,7 +41,7 @@ const NavBar = () => {
           }
           onClick={navigateToCreate}
         >
-          CREATE
+          생성
         </Button>
         <Button
           style={
@@ -49,14 +49,14 @@ const NavBar = () => {
           }
           onClick={navigateToUpload}
         >
-          UPLOAD
+          업로드
         </Button>
         <Button
           style={
             "bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
           }
         >
-          MYPAGE
+          마이페이지
         </Button>
 
         <div className="mt-2 ml-3">
