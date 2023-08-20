@@ -24,6 +24,10 @@ const NavBar = () => {
     navigate("/create");
   };
 
+  const navigateToMyPage = () => {
+    navigate("/mypage");
+  };
+
   return (
     <nav className="bg-blue-950 h-screen flex justify-center w-1/6">
       <div className="flex flex-col space-y-20 justify-evenly">
@@ -55,6 +59,7 @@ const NavBar = () => {
           style={
             "bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
           }
+          onClick={navigateToMyPage}
         >
           마이페이지
         </Button>
