@@ -3,7 +3,7 @@ import Button from "../Button";
 
 import { CONFIG } from "../../constants/config";
 
-const LegalpadTextarea = () => {
+const LegalpadTextarea = ({ text }) => {
   const [textValue, setTextValue] = useState("");
   const textareaRef = useRef(null);
 
@@ -69,7 +69,7 @@ const LegalpadTextarea = () => {
         <textarea
           className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-48 resize-none"
           ref={textareaRef}
-          value={textValue}
+          value={text}
           onChange={event => setTextValue(event.target.value)}
           style={{
             lineHeight: "36px",
