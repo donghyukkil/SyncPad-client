@@ -4,7 +4,7 @@ const TextCard = ({ text }) => {
   return (
     <div>
       <div>image</div>
-      <div className="border p-4 flex flex-col h-full">
+      <div className="text-white h-4/5 w-full overflow-hidden">
         <LegalPadTextArea text={text.content} />
       </div>
       ;
