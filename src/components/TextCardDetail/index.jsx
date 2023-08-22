@@ -1,10 +1,11 @@
 import { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 
 import useStore from "../../usStore";
 import Button from "../Button";
 
 const TextCardDetail = () => {
+  const { text_id } = useParams();
   const { texts } = useStore();
   const [textValue, setTextValue] = useState(texts);
 
@@ -51,6 +52,8 @@ const TextCardDetail = () => {
     navigate("/mypage");
   };
 
+  const result = texts.data.filter((text, index) => text._id === text_id);
+
   return (
     <>
       <div className="flex flex-col">
@@ -68,6 +71,7 @@ const TextCardDetail = () => {
                   color: "#000",
                   width: "100%",
                 }}
+                defaultValue={result[0].content}
               />
               <Button
                 style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg p-0"
