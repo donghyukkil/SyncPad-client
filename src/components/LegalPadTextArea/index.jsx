@@ -67,6 +67,7 @@ const LegalpadTextarea = ({ text }) => {
     <>
       <div className="flex flex-col justify-evenly w-3/4">
         <div className="relative">
+          <div className="bg-amber-700 w-full h-1/6 rounded-md"></div>
           <textarea
             className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-48 resize-none"
             ref={textareaRef}
