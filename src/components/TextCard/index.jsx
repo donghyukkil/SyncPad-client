@@ -20,7 +20,9 @@ const TextCard = ({ text }) => {
           >
             {text.content}
           </div>
-          <div className="text-sm">{createdAt}</div>
+          <div className="text-sm">
+            <span className="text-gray-600s">작성일: </span> {createdAt}
+          </div>
         </div>
       </div>
     </div>
