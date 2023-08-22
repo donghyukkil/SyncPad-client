@@ -41,6 +41,7 @@ const ImageUploader = ({ onUpload }) => {
             <img
               src={`data:image/jpeg;base64,${selectedImage}`}
               alt="Uploaded"
+              className="h-80"
             />
             <Button
               onClick={handleSaveImage}
