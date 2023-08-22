@@ -20,6 +20,7 @@ const TextCard = ({ text }) => {
           >
             {text.content}
           </div>
+          <div className="text-sm">{createdAt}</div>
         </div>
       </div>
     </div>
