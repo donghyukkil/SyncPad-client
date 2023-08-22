@@ -13,10 +13,10 @@ const TextCard = ({ text }) => {
     <div className="flex flex-col" onClick={navigateToDetailPage}>
       <div className="bg-amber-700 w-full h-full"></div>
       <div className="bg-yellow-300 w-full h-screen flex">
-        <div className="flex flex-col justify-around">
+        <div className="flex flex-col justify-around m-auto border border-indigo-950">
           <div
             className="bg-white m-auto rounded-md overflow-hidden text-sm"
-            style={{ width: "80px", height: "80px" }}
+            style={{ width: "140px", height: "100px" }}
           >
             {text.content}
           </div>
