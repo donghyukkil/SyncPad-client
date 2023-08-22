@@ -19,6 +19,10 @@ const useStore = create(set => ({
       console.log(error);
     }
   },
+  selectedTextId: null,
+  setSelectedTextId: selectedTextId => {
+    set({ selectedTextId });
+  },
 }));
 
 export default useStore;
