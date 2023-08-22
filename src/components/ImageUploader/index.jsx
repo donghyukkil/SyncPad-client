@@ -36,41 +36,59 @@ const ImageUploader = ({ onUpload }) => {
   return (
     <>
       {selectedImage ? (
-        <div className="border-4">
-          <div className="w-72 h-52 p-3">
-            <img
-              src={`data:image/jpeg;base64,${selectedImage}`}
-              alt="Uploaded"
-              className="h-80"
-            />
-            <Button
-              onClick={handleSaveImage}
-              style={"bg-sky-400 text-black h-20 w-full my-2"}
-            >
-              저장
-            </Button>
+        <div className="w-3/4 h-full">
+          <div className="flex flex-col justify-evenly h-full">
+            <div className="p-3 border bg-white border-gray-400 rounded-lg h-48 resize-none text-center text-2xl flex justify-center">
+              <img
+                src={`data:image/jpeg;base64,${selectedImage}`}
+                alt="Uploaded"
+                className="w-1/2 h-full m-auto"
+              />
+            </div>
+
+            {uploadedImage ? (
+              <Button
+                style={
+                  "bg-pink-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg p-0"
+                }
+              >
+                이미지가 업로드되었습니다.
+              </Button>
+            ) : (
+              <Button
+                onClick={handleSaveImage}
+                style={
+                  "bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg p-0"
+                }
+              >
+                저장
+              </Button>
+            )}
           </div>
         </div>
       ) : (
-        <div className="flex flex-col justify-center">
-          <input
-            type="file"
-            onChange={handleImageChange}
-            style={{ display: "none" }}
-            ref={fileInputRef}
-            id="fileInput"
-          />
-          <label
-            htmlFor="fileInput"
-            className="bg-sky-400 flex justify-center items-center cursor-pointer w-full h-1/3 text-black rounded-md"
-          >
-            원하는 이미지를 업로드하세요
-          </label>
-        </div>
-      )}
-      {uploadedImage && (
-        <div>
-          <p className="text-white">이미지가 업로드되었습니다.</p>
+        <div className="w-3/4 h-full">
+          <div className="flex flex-col justify-evenly h-full">
+            <div className="p-3 border bg-white border-gray-400 rounded-lg h-48 resize-none text-center text-2xl flex justify-center">
+              <img
+                src={"../src/assets/img.png"}
+                className="w-1/3 h-1/2 m-auto"
+              />
+            </div>
+            <input
+              type="file"
+              onChange={handleImageChange}
+              style={{ display: "none" }}
+              ref={fileInputRef}
+              id="fileInput"
+            />
+            <label
+              htmlFor="fileInput"
+              className="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-md text-center"
+            >
+              원하는 이미지를 업로드하세요
+            </label>
+          </div>
         </div>
       )}
     </>
