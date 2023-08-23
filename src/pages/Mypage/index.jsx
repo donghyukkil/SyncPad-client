@@ -15,7 +15,7 @@ const Mypage = () => {
     if (texts.totalPages) {
       setTotalPages(texts.totalPages);
     }
-  }, [currentPage, texts]);
+  }, [currentPage]);
 
   const onPrevButtonClick = () => {
     setCurrentPage(currentPage - 1);
