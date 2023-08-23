@@ -7,21 +7,16 @@ const TextCard = ({ text }) => {
     navigate(`/mypage/${text._id}`);
   };
 
-  const createdAt = new Date(text.createdAt).toLocaleString();
-
   return (
     <div className="flex flex-col" onClick={navigateToDetailPage}>
-      <div className="bg-amber-700 w-full h-full"></div>
-      <div className="bg-yellow-300 w-full h-screen flex">
+      <div className="bg-amber-700 w-full h-1/2"></div>
+      <div className="bg-yellow-300 flex round-md">
         <div className="flex flex-col justify-around m-auto border border-indigo-950">
           <div
-            className="bg-white m-auto rounded-md overflow-hidden text-sm"
-            style={{ width: "140px", height: "100px" }}
+            className="bg-white m-auto rounded-md overflow-hidden text-sm text-center"
+            style={{ width: "140px", height: "130px" }}
           >
-            {text.content}
-          </div>
-          <div className="text-sm">
-            <span className="text-gray-600s">작성일: </span> {createdAt}
+            {text.content.substring(0, 50)}
           </div>
         </div>
       </div>
