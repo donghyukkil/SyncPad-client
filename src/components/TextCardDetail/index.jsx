@@ -3,10 +3,12 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import useStore from "../../usStore";
 import Button from "../Button";
+import { CONFIG } from "../../constants/config";
 
 const TextCardDetail = () => {
   const { text_id } = useParams();
   const { texts } = useStore();
+
   const [textValue, setTextValue] = useState(texts);
 
   const navigate = useNavigate();
@@ -52,6 +54,25 @@ const TextCardDetail = () => {
     navigate("/mypage");
   };
 
+  const updateText = async () => {
+    try {
+      const response = await fetch(
+        `${CONFIG.BACKEND_SERVER_URL}/users/${localStorage.getItem(
+          "userEmail",
+        )}/texts/${text_id}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ content: textValue }),
+        },
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const result = texts.data.filter((text, index) => text._id === text_id);
 
   return (
@@ -74,12 +95,9 @@ const TextCardDetail = () => {
                 defaultValue={result[0].content}
               />
               <Button
-                style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg p-0"
-                onClick={handleDownloadClick}
+                style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg"
+                onClick={updateText}
               >
-                다운로드
-              </Button>
-              <Button style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg">
                 수정
               </Button>
               <Button
