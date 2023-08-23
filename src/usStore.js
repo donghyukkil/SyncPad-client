@@ -5,12 +5,12 @@ import { CONFIG } from "./constants/config";
 const useStore = create(set => ({
   texts: {},
   setTexts: texts => set({ texts }),
-  fetchTexts: async () => {
+  fetchTexts: async currentPage => {
     try {
       const response = await fetch(
         `${CONFIG.BACKEND_SERVER_URL}/users/${localStorage.getItem(
           "userEmail",
-        )}/texts`,
+        )}/texts?per_page=6&page=${currentPage}`,
       );
 
       const texts = await response.json();
@@ -23,6 +23,9 @@ const useStore = create(set => ({
   setSelectedTextId: selectedTextId => {
     set({ selectedTextId });
   },
+
+  currentPage: 1,
+  setCurrentPage: page => set(() => ({ currentPage: page })),
 }));
 
 export default useStore;
