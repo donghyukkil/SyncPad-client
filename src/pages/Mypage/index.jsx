@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import TextCard from "../../components/TextCard";
 import NavBar from "../../components/NavBar";
 import useStore from "../../usStore";
+import Button from "../../components/Button";
 
 const Mypage = () => {
   const { texts, fetchTexts, currentPage, setCurrentPage } = useStore();
@@ -36,6 +37,46 @@ const Mypage = () => {
                 ))
               : null}
           </main>
+          <nav className="flex justify-center">
+            <ul className="list-style-none flex">
+              <li>
+                <Button
+                  style={
+                    "relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400"
+                  }
+                  onClick={onPrevButtonClick}
+                  disabled={currentPage === 1}
+                >
+                  Previous
+                </Button>
+              </li>
+              {[...Array(totalPages).keys()].map(pageNumber => (
+                <li key={pageNumber}>
+                  <Button
+                    style={`relative block rounded bg-transparent px-3 py-1.5 text-sm transition-all duration-300 dark:text-neutral-400 ${
+                      pageNumber + 1 === currentPage
+                        ? "text-neutral-700 shadow-lg"
+                        : "text-neutral-500"
+                    }`}
+                    onClick={() => setCurrentPage(pageNumber + 1)}
+                  >
+                    {pageNumber + 1}
+                  </Button>
+                </li>
+              ))}
+              <li>
+                <Button
+                  style={
+                    "relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400"
+                  }
+                  onClick={onNextButtonClick}
+                  disabled={currentPage === totalPages}
+                >
+                  Next
+                </Button>
+              </li>
+            </ul>
+          </nav>
         </div>
       </div>
     </div>
