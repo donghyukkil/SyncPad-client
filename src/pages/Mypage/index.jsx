@@ -5,7 +5,7 @@ import NavBar from "../../components/NavBar";
 import useStore from "../../usStore";
 
 const Mypage = () => {
-  const { texts, fetchTexts, currentPage } = useStore();
+  const { texts, fetchTexts, currentPage, setCurrentPage } = useStore();
   const [totalPages, setTotalPages] = useState(1);
 
   useEffect(() => {
@@ -15,6 +15,14 @@ const Mypage = () => {
       setTotalPages(texts.totalPages);
     }
   }, [currentPage, texts]);
+
+  const onPrevButtonClick = () => {
+    setCurrentPage(currentPage - 1);
+  };
+
+  const onNextButtonClick = () => {
+    setCurrentPage(currentPage + 1);
+  };
 
   return (
     <div className="flex">
