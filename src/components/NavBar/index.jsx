@@ -9,6 +9,8 @@ const NavBar = () => {
 
   const navigate = useNavigate();
 
+  const userPhotoURL = localStorage.getItem("userPhotoURL");
+
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
   };
@@ -92,7 +94,11 @@ const NavBar = () => {
             style={"relative flex rounded-full bg-gray-800 text-sm"}
             onClick={toggleMenu}
           >
-            <img className="h-8 w-8 rounded-full m-6" src="" alt="" />
+            <img
+              className="h-8 w-8 rounded-full m-6"
+              src={userPhotoURL}
+              alt="userPhoto"
+            />
           </Button>
 
           {menuOpen && (

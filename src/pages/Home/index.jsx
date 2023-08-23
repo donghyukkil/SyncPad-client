@@ -15,7 +15,7 @@ const Home = () => {
       const user = result.user;
 
       localStorage.setItem("userEmail", user.email);
-      localStorage.setItem("userphtoURL", user.photoURL);
+      localStorage.setItem("userPhotoURL", user.photoURL);
 
       const authenticateUser = async () => {
         try {
