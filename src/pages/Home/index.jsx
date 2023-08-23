@@ -4,10 +4,12 @@ import Button from "../../components/Button";
 import NavBar from "../../components/NavBar";
 
 import { CONFIG } from "../../constants/config";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
+  const navigate = useNavigate();
 
   const signInWithGoogle = async () => {
     try {
@@ -39,6 +41,8 @@ const Home = () => {
       };
 
       await authenticateUser();
+
+      navigate("/create");
     } catch (error) {
       console.error("오류 발생", error.message);
     }
