@@ -10,6 +10,7 @@ const TextCardDetail = () => {
   const { texts } = useStore();
 
   const [textValue, setTextValue] = useState(texts);
+  const [updateMode, setUpdateMode] = useState(false);
 
   const navigate = useNavigate();
 
@@ -68,6 +69,8 @@ const TextCardDetail = () => {
           body: JSON.stringify({ content: textValue }),
         },
       );
+
+      setUpdateMode(!false);
     } catch (error) {
       console.log(error);
     }
@@ -94,12 +97,26 @@ const TextCardDetail = () => {
                 }}
                 defaultValue={result[0].content}
               />
-              <Button
-                style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg"
-                onClick={updateText}
-              >
-                수정
-              </Button>
+              {updateMode ? (
+                <>
+                  <Button
+                    style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg p-0"
+                    onClick={handleDownloadClick}
+                  >
+                    다운로드
+                  </Button>
+                  <Button style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg">
+                    수정 완료
+                  </Button>
+                </>
+              ) : (
+                <Button
+                  style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg"
+                  onClick={updateText}
+                >
+                  수정
+                </Button>
+              )}
               <Button
                 style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg"
                 onClick={navigateToMypage}
