@@ -5,6 +5,8 @@ import { CONFIG } from "../../constants/config";
 
 const LegalpadTextarea = ({ text }) => {
   const [textValue, setTextValue] = useState(text);
+  const [updateMode, setUpdateMode] = useState(false);
+
   const textareaRef = useRef(null);
 
   const handleDownloadClick = () => {
@@ -57,7 +59,7 @@ const LegalpadTextarea = ({ text }) => {
         },
       );
 
-      const data = await response.json();
+      setUpdateMode(!false);
     } catch (error) {
       console.log("Image upload error", error.message);
     }
@@ -67,31 +69,47 @@ const LegalpadTextarea = ({ text }) => {
     <>
       <div className="flex flex-col justify-evenly w-3/4">
         <div className="relative">
-          <div className="bg-amber-700 w-full h-1/6 rounded-md"></div>
+          <div className="bg-amber-700 w-full h-1/5 rounded-md"></div>
           <textarea
             className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-48 resize-none"
             ref={textareaRef}
             onChange={event => setTextValue(event.target.value)}
             style={{
-              lineHeight: "36px",
+              lineHeight: "34px",
               fontFamily: "Courier New",
               color: "#000",
               width: "100%",
             }}
           />
         </div>
-        <Button
-          style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg p-0"
-          onClick={handleDownloadClick}
-        >
-          다운로드
-        </Button>
-        <Button
-          style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg"
-          onClick={createTextToServer}
-        >
-          저장
-        </Button>
+        {updateMode ? (
+          <>
+            <Button
+              style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg p-0"
+              onClick={handleDownloadClick}
+            >
+              다운로드
+            </Button>
+            <Button style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg">
+              저장 완료
+            </Button>
+          </>
+        ) : (
+          <>
+            <Button
+              style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg p-0"
+              onClick={handleDownloadClick}
+            >
+              다운로드
+            </Button>
+            <Button
+              style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg"
+              onClick={createTextToServer}
+            >
+              저장
+            </Button>
+          </>
+        )}
       </div>
     </>
   );
