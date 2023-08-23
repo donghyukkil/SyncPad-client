@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Button from "../Button";
+import { CONFIG } from "../../constants/config";
 
 const NavBar = () => {
   const [menuOpen, setMenuOpen] = useState(false);
@@ -26,6 +27,28 @@ const NavBar = () => {
 
   const navigateToMyPage = () => {
     navigate("/mypage");
+  };
+
+  const handleLogout = async () => {
+    try {
+      const response = await fetch(
+        `${CONFIG.BACKEND_SERVER_URL}/users/logout`,
+        {
+          method: "POST",
+          credentials: "include",
+        },
+      );
+
+      if (response.ok) {
+        console.log("로그아웃 성공");
+      } else {
+        console.error("로그아웃 실패");
+      }
+      localStorage.clear();
+      navigate("/");
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -71,10 +94,15 @@ const NavBar = () => {
           >
             <img className="h-8 w-8 rounded-full m-6" src="" alt="" />
           </Button>
+
           {menuOpen && (
             <div className="bg-white">
-              <Button style={"block text-sm text-gray-700"}>MYPAGE</Button>
-              <Button style={"block text-sm text-gray-700"}>LOGOUT</Button>
+              <Button
+                style={"block text-sm text-gray-700"}
+                onClick={handleLogout}
+              >
+                LOGOUT
+              </Button>
             </div>
           )}
         </div>
