@@ -76,6 +76,24 @@ const TextCardDetail = () => {
     }
   };
 
+  const deleteText = async () => {
+    try {
+      const response = await fetch(
+        `${CONFIG.BACKEND_SERVER_URL}/users/${localStorage.getItem(
+          "userEmail",
+        )}/texts/${text_id}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const result = texts.data.filter((text, index) => text._id === text_id);
 
   return (
@@ -119,9 +137,9 @@ const TextCardDetail = () => {
               )}
               <Button
                 style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg"
-                onClick={navigateToMypage}
+                onClick={deleteText}
               >
-                마이페이지
+                삭제
               </Button>
             </div>
           </div>
