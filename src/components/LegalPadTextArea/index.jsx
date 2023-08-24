@@ -3,7 +3,7 @@ import Button from "../Button";
 
 import { CONFIG } from "../../constants/config";
 
-const LegalpadTextarea = ({ text }) => {
+const LegalPadTextArea = ({ text }) => {
   const [textValue, setTextValue] = useState(text);
   const [updateMode, setUpdateMode] = useState(false);
 
@@ -115,4 +115,4 @@ const LegalpadTextarea = ({ text }) => {
   );
 };
 
-export default LegalpadTextarea;
+export default LegalPadTextArea;

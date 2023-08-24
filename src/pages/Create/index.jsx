@@ -1,5 +1,5 @@
 import NavBar from "../../components/NavBar";
-import LegalPadTextarea from "../../components/LegalpadTextArea";
+import LegalPadTextarea from "../../components/LegalPadTextArea";
 
 const Create = () => {
   return (
