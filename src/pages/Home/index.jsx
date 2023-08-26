@@ -54,7 +54,7 @@ const Home = () => {
       <NavBar />
       <div className="bg-yellow-300 w-screen h-screen flex flex-col">
         <SubNavBar />
-        <div className="flex bg-teal-950 w-6/12 h-2/4 m-auto py-0 justify-center rounded-md">
+        <div className="flex bg-teal-950 w-3/4 h-3/4 m-auto py-0 justify-center rounded-md">
           <div className="flex flex-col justify-evenly w-3/4">
             <div
               className="p-3 border bg-white border-gray-400 rounded-lg h-48 resize-none text-center text-2xl"
