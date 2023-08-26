@@ -1,10 +1,13 @@
 import { useState, useRef } from "react";
+
+import useStore from "../../useStore";
+
 import Button from "../Button";
 
 import { CONFIG } from "../../constants/config";
 
-const LegalPadTextArea = ({ text }) => {
-  const [textValue, setTextValue] = useState(text);
+const LegalPadTextArea = () => {
+  const { textValue, setTextValue } = useStore();
   const [updateMode, setUpdateMode] = useState(false);
 
   const textareaRef = useRef(null);
@@ -58,7 +61,6 @@ const LegalPadTextArea = ({ text }) => {
           body: JSON.stringify({ content: textValue }),
         },
       );
-
       setUpdateMode(!false);
     } catch (error) {
       console.log("Image upload error", error.message);
