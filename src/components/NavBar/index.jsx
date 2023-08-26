@@ -25,6 +25,10 @@ const NavBar = () => {
     navigate("/mypage");
   };
 
+  const navigateToChat = () => {
+    navigate("/chat");
+  };
+
   const handleLogout = async () => {
     try {
       const response = await fetch(
@@ -81,6 +85,14 @@ const NavBar = () => {
           onClick={navigateToMyPage}
         >
           마이페이지
+        </Button>
+        <Button
+          style={
+            "bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
+          }
+          onClick={navigateToChat}
+        >
+          채팅
         </Button>
       </div>
     </nav>
