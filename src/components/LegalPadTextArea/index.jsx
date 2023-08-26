@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useRef } from "react";
 
 import useStore from "../../useStore";
 
@@ -8,7 +8,6 @@ import { CONFIG } from "../../constants/config";
 
 const LegalPadTextArea = () => {
   const { textValue, setTextValue } = useStore();
-  const [updateMode, setUpdateMode] = useState(false);
 
   const textareaRef = useRef(null);
 
@@ -61,7 +60,6 @@ const LegalPadTextArea = () => {
           body: JSON.stringify({ content: textValue }),
         },
       );
-      setUpdateMode(!false);
     } catch (error) {
       console.log("Image upload error", error.message);
     }
@@ -84,34 +82,18 @@ const LegalPadTextArea = () => {
             }}
           />
         </div>
-        {updateMode ? (
-          <>
-            <Button
-              style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg p-0"
-              onClick={handleDownloadClick}
-            >
-              다운로드
-            </Button>
-            <Button style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg">
-              저장 완료
-            </Button>
-          </>
-        ) : (
-          <>
-            <Button
-              style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg p-0"
-              onClick={handleDownloadClick}
-            >
-              다운로드
-            </Button>
-            <Button
-              style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg"
-              onClick={createTextToServer}
-            >
-              저장
-            </Button>
-          </>
-        )}
+        <Button
+          style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg p-0"
+          onClick={handleDownloadClick}
+        >
+          다운로드
+        </Button>
+        <Button
+          style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg"
+          onClick={createTextToServer}
+        >
+          저장
+        </Button>
       </div>
     </>
   );
