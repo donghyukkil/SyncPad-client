@@ -42,16 +42,16 @@ const Chatting = () => {
       <NavBar />
       <div className="bg-yellow-300 w-screen h-screen flex flex-col">
         <SubNavBar />
-        <div className="flex bg-teal-950 w-3/4 h-3/4 m-auto py-0 justify-center rounded-md">
-          <div className="m-auto my-8 h-full w-2/3">
-            <div className="bg-red-400 w-full h-11 text-center line leading-10 text-2xl rounded-md">
+        <div className="flex flex-col bg-teal-950 w-3/4 h-3/4 m-auto py-0 justify-center rounded-md">
+          <div className="h-full w-2/3 m-auto my-20">
+            <div className="bg-red-400 w-full h-10 text-center line leading-10 text-2xl rounded-md">
               Hello, legalPad!
             </div>
-            <div className="bg-white w-full h-6 text-center leading-8 text-sm">
+            <div className="bg-white w-full h-8 text-center leading-8 text-sm">
               다른 사용자에게 메시지를 보내보세요
             </div>
             <div
-              className="p-3 bg-red-200 border border-gray-400 h-2/3 w-full"
+              className="p-3 bg-red-200 border border-gray-400 h-96 w-full"
               style={{
                 lineHeight: "28px",
                 fontSize: "20px",
@@ -74,10 +74,9 @@ const Chatting = () => {
                 type="text"
                 value={text}
                 onChange={e => setText(e.target.value)}
-                placeholder="메시지를 입력하세요"
-                className="text-center h-10"
+                placeholder="메시지를 입력하고 엔터를 누르세요."
+                className="text-center h-14"
               />
-              <Button style={"bg-sky-400 my-4"}>전송</Button>
             </form>
           </div>
         </div>
