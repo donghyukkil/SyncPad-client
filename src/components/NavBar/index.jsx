@@ -9,12 +9,6 @@ const NavBar = () => {
 
   const navigate = useNavigate();
 
-  const userPhotoURL = localStorage.getItem("userPhotoURL");
-
-  const toggleMenu = () => {
-    setMenuOpen(!menuOpen);
-  };
-
   const navigateToHome = () => {
     navigate("/");
   };
@@ -88,30 +82,6 @@ const NavBar = () => {
         >
           마이페이지
         </Button>
-
-        <div className="mt-2 ml-3">
-          <Button
-            style={"relative flex rounded-full bg-gray-800 text-sm"}
-            onClick={toggleMenu}
-          >
-            <img
-              className="h-8 w-8 rounded-full m-6"
-              src={userPhotoURL}
-              alt="userPhoto"
-            />
-          </Button>
-
-          {menuOpen && (
-            <div className="bg-white">
-              <Button
-                style={"block text-sm text-gray-700"}
-                onClick={handleLogout}
-              >
-                LOGOUT
-              </Button>
-            </div>
-          )}
-        </div>
       </div>
     </nav>
   );
