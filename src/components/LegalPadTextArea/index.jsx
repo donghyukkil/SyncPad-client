@@ -69,9 +69,11 @@ const LegalPadTextArea = () => {
     <>
       <div className="flex flex-col justify-evenly w-3/4">
         <div className="relative">
-          <div className="bg-amber-700 w-full h-1/5 rounded-md"></div>
+          <div className="bg-amber-700 w-full h-1/5 rounded-md text-center line leading-10 text-2xl">
+            Hello, legalPad!
+          </div>
           <textarea
-            className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 resize-none"
+            className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 resize-none text-center"
             ref={textareaRef}
             onChange={event => setTextValue(event.target.value)}
             style={{

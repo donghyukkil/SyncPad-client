@@ -44,7 +44,7 @@ const Chatting = () => {
         <SubNavBar />
         <div className="flex bg-teal-950 w-3/4 h-3/4 m-auto py-0 justify-center rounded-md">
           <div className="m-auto my-8 h-full w-2/3">
-            <div className="bg-red-400 w-full h-11 text-center line leading-10 text-2xl">
+            <div className="bg-red-400 w-full h-11 text-center line leading-10 text-2xl rounded-md">
               Hello, legalPad!
             </div>
             <div className="bg-white w-full h-6 text-center leading-8 text-sm">
