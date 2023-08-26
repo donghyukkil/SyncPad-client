@@ -9,7 +9,7 @@ const TextCard = ({ text }) => {
 
   return (
     <div className="flex flex-col" onClick={navigateToDetailPage}>
-      <div className="bg-rose-800 w-full h-1/6 text-center line leading-10 text-sm text-green-50 rounded-md">
+      <div className="bg-rose-800 w-full h-12 text-center line leading-10 text-sm text-green-50 rounded-md">
         Hello, legalPad!
       </div>
       <div className="bg-yellow-300 flex">
