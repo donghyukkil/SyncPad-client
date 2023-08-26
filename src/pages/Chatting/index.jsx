@@ -5,6 +5,7 @@ import { io } from "socket.io-client";
 import { CONFIG } from "../../constants/config";
 import NavBar from "../../components/NavBar";
 import Button from "../../components/Button";
+import SubNavBar from "../../components/SubNavBar";
 
 const Chatting = () => {
   const [text, setText] = useState("");
@@ -40,6 +41,7 @@ const Chatting = () => {
     <div className="flex">
       <NavBar />
       <div className="bg-yellow-300 w-screen h-screen flex flex-col">
+        <SubNavBar />
         <div className="flex flex-col bg-teal-950 w-6/12 h-2/4 m-auto rounded-md">
           <div className="m-auto my-8 h-full w-2/3">
             <div className="bg-red-400 w-full h-11 text-center line leading-10 text-2xl">

@@ -2,6 +2,7 @@ import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
 
 import Button from "../../components/Button";
 import NavBar from "../../components/NavBar";
+import SubNavBar from "../../components/SubNavBar";
 
 import { CONFIG } from "../../constants/config";
 import { useNavigate } from "react-router-dom";
@@ -51,7 +52,8 @@ const Home = () => {
   return (
     <div className="flex">
       <NavBar />
-      <div className="bg-yellow-300 w-screen h-screen flex">
+      <div className="bg-yellow-300 w-screen h-screen flex flex-col">
+        <SubNavBar />
         <div className="flex bg-teal-950 w-6/12 h-2/4 m-auto py-0 justify-center rounded-md">
           <div className="flex flex-col justify-evenly w-3/4">
             <div

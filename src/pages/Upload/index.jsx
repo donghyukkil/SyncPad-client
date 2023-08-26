@@ -1,5 +1,6 @@
 import ImageUploader from "../../components/ImageUploader";
 import NavBar from "../../components/NavBar";
+import SubNavBar from "../../components/SubNavBar";
 
 import { CONFIG } from "../../constants/config";
 
@@ -28,7 +29,8 @@ const Upload = () => {
   return (
     <div className="flex">
       <NavBar />
-      <div className="bg-yellow-300 w-screen h-screen flex">
+      <div className="bg-yellow-300 w-screen h-screen flex flex-col">
+        <SubNavBar />
         <div className="flex bg-teal-950 w-6/12 h-2/4 m-auto py-0 justify-center rounded-md">
           <ImageUploader onUpload={uploadImageToServer} />
         </div>
