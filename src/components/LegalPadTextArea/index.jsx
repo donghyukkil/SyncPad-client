@@ -73,7 +73,7 @@ const LegalPadTextArea = () => {
             Hello, legalPad!
           </div>
           <textarea
-            className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 resize-none text-center"
+            className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 resize-none"
             ref={textareaRef}
             onChange={event => setTextValue(event.target.value)}
             style={{
