@@ -107,7 +107,7 @@ const TextCardDetail = () => {
           <div className="flex bg-teal-950 w-3/4 h-3/4 m-auto py-0 justify-center rounded-md">
             <div className="flex flex-col justify-evenly w-3/4">
               <textarea
-                className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-48 resize-none"
+                className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 resize-none"
                 ref={textareaRef}
                 onChange={event => setTextValue(event.target.value)}
                 style={{
