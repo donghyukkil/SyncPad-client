@@ -1,5 +1,8 @@
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 
+import { io } from "socket.io-client";
+
+import { CONFIG } from "../../constants/config";
 import NavBar from "../../components/NavBar";
 import Button from "../../components/Button";
 
@@ -7,8 +10,30 @@ const Chatting = () => {
   const [text, setText] = useState("");
   const [messages, setMessages] = useState([]);
 
+  const socket = useRef();
+
+  useEffect(() => {
+    socket.current = io(CONFIG.BACKEND_SERVER_URL);
+
+    socket.current.on("chat message", message => {
+      setMessages(prevMessages => [...prevMessages, message]);
+    });
+
+    return () => {
+      if (socket.current) {
+        socket.current.disconnect();
+      }
+    };
+  }, [messages]);
+
   const handleSubmit = event => {
     event.preventDefault();
+
+    if (socket.current && text.trim()) {
+      socket.current.emit("chat message", text);
+      setMessages(prevMessage => [...prevMessage, text]);
+      setText("");
+    }
   };
 
   return (
