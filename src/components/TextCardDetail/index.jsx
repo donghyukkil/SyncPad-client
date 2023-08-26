@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import useStore from "../../usStore";
+import useStore from "../../useStore";
 import Button from "../Button";
 import { CONFIG } from "../../constants/config";
 

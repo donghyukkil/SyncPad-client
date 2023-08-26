@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 import TextCard from "../../components/TextCard";
 import NavBar from "../../components/NavBar";
-import useStore from "../../usStore";
+import useStore from "../../useStore";
 import Button from "../../components/Button";
 
 const Mypage = () => {
