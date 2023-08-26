@@ -4,6 +4,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import useStore from "../../useStore";
 import Button from "../Button";
 import { CONFIG } from "../../constants/config";
+import NavBar from "../NavBar";
+import SubNavBar from "../SubNavBar";
 
 const TextCardDetail = () => {
   const { text_id } = useParams();
@@ -98,10 +100,11 @@ const TextCardDetail = () => {
 
   return (
     <>
-      <div className="flex flex-col">
-        <div className="bg-amber-700 w-full h-16"></div>
-        <div className="bg-yellow-300 w-screen h-screen flex">
-          <div className="flex bg-teal-950 w-6/12 h-2/4 m-auto py-0 justify-center rounded-md">
+      <div className="flex">
+        <NavBar />
+        <div className="bg-yellow-300 w-screen h-screen flex flex-col">
+          <SubNavBar />
+          <div className="flex bg-teal-950 w-3/4 h-3/4 m-auto py-0 justify-center rounded-md">
             <div className="flex flex-col justify-evenly w-3/4">
               <textarea
                 className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-48 resize-none"
