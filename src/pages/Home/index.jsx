@@ -57,7 +57,7 @@ const Home = () => {
         <div className="flex bg-teal-950 w-3/4 h-3/4 m-auto py-0 justify-center rounded-md">
           <div className="flex flex-col justify-evenly w-3/4">
             <div
-              className="p-3 border bg-white border-gray-400 rounded-lg h-48 resize-none text-center text-2xl"
+              className="p-3 border bg-white border-gray-400 rounded-lg h-72 resize-none text-center text-2xl"
               style={{ paddingTop: "15%" }}
             >
               Hello, legalPad! 환영합니다.

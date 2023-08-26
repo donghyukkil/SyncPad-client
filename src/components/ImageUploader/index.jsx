@@ -38,7 +38,7 @@ const ImageUploader = ({ onUpload }) => {
       {selectedImage ? (
         <div className="w-3/4 h-full">
           <div className="flex flex-col justify-evenly h-full">
-            <div className="p-3 border bg-white border-gray-400 rounded-lg h-48 resize-none text-center text-2xl flex justify-center">
+            <div className="p-3 border bg-white border-gray-400 rounded-lg h-72 resize-none text-center text-2xl flex justify-center">
               <img
                 src={`data:image/jpeg;base64,${selectedImage}`}
                 alt="Uploaded"
@@ -69,7 +69,7 @@ const ImageUploader = ({ onUpload }) => {
       ) : (
         <div className="w-3/4 h-full">
           <div className="flex flex-col justify-evenly h-full">
-            <div className="p-3 border bg-white border-gray-400 rounded-lg h-48 resize-none text-center text-2xl flex justify-center">
+            <div className="p-3 border bg-white border-gray-400 rounded-lg h-72 resize-none text-center text-2xl flex justify-center">
               <img
                 src={"../src/assets/img.png"}
                 className="w-1/3 h-1/2 m-auto"
