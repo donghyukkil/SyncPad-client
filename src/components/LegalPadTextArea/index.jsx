@@ -82,6 +82,7 @@ const LegalPadTextArea = () => {
               color: "#000",
               width: "100%",
             }}
+            placeholder="메모하고 싶은 내용을 적고 저장 버튼이나 다운로드 버튼을 누르세요"
           />
         </div>
         <Button
