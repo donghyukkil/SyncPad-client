@@ -91,6 +91,8 @@ const TextCardDetail = () => {
           },
         },
       );
+
+      navigateToMypage();
     } catch (error) {
       console.log(error);
     }
@@ -126,7 +128,10 @@ const TextCardDetail = () => {
                   >
                     다운로드
                   </Button>
-                  <Button style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg">
+                  <Button
+                    style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg"
+                    onClick={navigateToMypage}
+                  >
                     수정 완료
                   </Button>
                 </>
