@@ -69,7 +69,7 @@ const LegalPadTextArea = () => {
     <>
       <div className="flex flex-col justify-evenly w-3/4">
         <div className="relative">
-          <div className="bg-amber-700 w-full h-1/5 rounded-md text-center line leading-10 text-2xl">
+          <div className="bg-amber-700 w-full h-1/6 rounded-md text-center line leading-10 text-2xl">
             Hello, legalPad!
           </div>
           <textarea
