@@ -4,7 +4,6 @@ import { io } from "socket.io-client";
 
 import { CONFIG } from "../../constants/config";
 import NavBar from "../../components/NavBar";
-import Button from "../../components/Button";
 import SubNavBar from "../../components/SubNavBar";
 
 const Chatting = () => {
@@ -30,6 +29,16 @@ const Chatting = () => {
     return color;
   };
 
+  const handleSubmit = event => {
+    event.preventDefault();
+
+    if (socket.current && text.trim()) {
+      socket.current.emit("chat message", text);
+      setMessages(prevMessage => [...prevMessage, text]);
+      setText("");
+    }
+  };
+
   useEffect(() => {
     socket.current = io(CONFIG.BACKEND_SERVER_URL);
 
@@ -43,16 +52,6 @@ const Chatting = () => {
       }
     };
   }, [messages]);
-
-  const handleSubmit = event => {
-    event.preventDefault();
-
-    if (socket.current && text.trim()) {
-      socket.current.emit("chat message", text);
-      setMessages(prevMessage => [...prevMessage, text]);
-      setText("");
-    }
-  };
 
   return (
     <div className="flex">
