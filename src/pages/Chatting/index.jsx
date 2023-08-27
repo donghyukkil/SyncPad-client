@@ -13,6 +13,23 @@ const Chatting = () => {
 
   const socket = useRef();
 
+  const stringToColor = string => {
+    let hash = 0;
+
+    for (let i = 0; i < string.length; i++) {
+      hash = string.charCodeAt(i) + ((hash << 5) - hash);
+    }
+
+    let color = "#";
+
+    for (let i = 0; i < 3; i++) {
+      const value = (hash >> (i * 8)) & 0xff;
+      color += ("00" + value.toString(16)).substr(-2);
+    }
+
+    return color;
+  };
+
   useEffect(() => {
     socket.current = io(CONFIG.BACKEND_SERVER_URL);
 
@@ -60,8 +77,15 @@ const Chatting = () => {
             >
               <ul>
                 {messages.map((message, index) => (
-                  <div>
-                    <li key={index}>{message}</li>
+                  <div key={index}>
+                    <li
+                      key={index}
+                      style={{
+                        color: stringToColor(message),
+                      }}
+                    >
+                      {message}
+                    </li>
                   </div>
                 ))}
               </ul>
