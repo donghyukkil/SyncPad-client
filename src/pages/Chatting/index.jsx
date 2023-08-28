@@ -15,6 +15,8 @@ const Chatting = () => {
 
   const captureDivRef = useRef(null);
 
+  const userEmail = localStorage.getItem("userEmail");
+
   const stringToColor = string => {
     let hash = 0;
 
@@ -36,8 +38,9 @@ const Chatting = () => {
     event.preventDefault();
 
     if (socket.current && text.trim()) {
-      socket.current.emit("chat message", text);
-      setMessages(prevMessage => [...prevMessage, text]);
+      const formattedMessage = `${userEmail}: ${text}`;
+      socket.current.emit("chat message", formattedMessage);
+      setMessages(prevMessage => [...prevMessage, formattedMessage]);
       setText("");
     }
   };
