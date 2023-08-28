@@ -1,5 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 
+import { useNavigate } from "react-router-dom";
+
 import { io } from "socket.io-client";
 
 import { CONFIG } from "../../constants/config";
@@ -14,6 +16,8 @@ const Chatting = () => {
   const socket = useRef();
 
   const captureDivRef = useRef(null);
+
+  const navigate = useNavigate();
 
   const userEmail = localStorage.getItem("userEmail");
 
@@ -96,9 +100,15 @@ const Chatting = () => {
           body: JSON.stringify({ content: messages }),
         },
       );
+
+      nagigateToMypage();
     } catch (error) {
       console.log("메시지 업로드 오류", error.message);
     }
+  };
+
+  const nagigateToMypage = () => {
+    navigate("/mypage");
   };
 
   useEffect(() => {
