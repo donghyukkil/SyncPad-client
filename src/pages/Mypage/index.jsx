@@ -8,15 +8,19 @@ import SubNavBar from "../../components/SubNavBar";
 
 const Mypage = () => {
   const { texts, fetchTexts, currentPage, setCurrentPage } = useStore();
-  const [totalPages, setTotalPages] = useState(1);
+  const [localTotalPages, setLocalTotalPages] = useState(1);
+
+  const { data, totalPages } = texts;
 
   useEffect(() => {
     fetchTexts(currentPage);
-
-    if (texts.totalPages) {
-      setTotalPages(texts.totalPages);
-    }
   }, [currentPage]);
+
+  useEffect(() => {
+    if (totalPages) {
+      setLocalTotalPages(totalPages);
+    }
+  }, [totalPages]);
 
   const onPrevButtonClick = () => {
     setCurrentPage(currentPage - 1);
