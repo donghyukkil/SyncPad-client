@@ -18,7 +18,7 @@ const TextCard = ({ text }) => {
             className="bg-white m-auto rounded-md overflow-hidden text-sm text-center"
             style={{ width: "140px", height: "130px" }}
           >
-            {text.content.substring(0, 50)}
+            {text.content}
           </div>
         </div>
       </div>
