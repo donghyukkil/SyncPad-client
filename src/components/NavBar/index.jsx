@@ -37,7 +37,7 @@ const NavBar = () => {
       <div className="flex flex-col space-y-20 justify-evenly">
         <Button
           style={
-            "bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
+            "bg-gray-900 text-white rounded-md px-3 py-2 text-lg font-semibold font-mono"
           }
           onClick={navigateToHome}
         >
@@ -45,7 +45,7 @@ const NavBar = () => {
         </Button>
         <Button
           style={
-            "bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
+            "bg-gray-900 text-white rounded-md px-3 py-2 text-lg font-semibold font-mono"
           }
           onClick={navigateToCreate}
         >
@@ -53,7 +53,7 @@ const NavBar = () => {
         </Button>
         <Button
           style={
-            "bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
+            "bg-gray-900 text-white rounded-md px-3 py-2 text-lg font-semibold font-mono"
           }
           onClick={navigateToUpload}
         >
@@ -61,7 +61,7 @@ const NavBar = () => {
         </Button>
         <Button
           style={
-            "bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
+            "bg-gray-900 text-white rounded-md px-3 py-2 text-lg font-semibold font-mono"
           }
           onClick={navigateToMyPage}
         >
@@ -69,11 +69,11 @@ const NavBar = () => {
         </Button>
         <Button
           style={
-            "bg-gray-900 text-white rounded-md px-3 py-2 text-sm font-medium"
+            "bg-gray-900 text-white rounded-md px-3 py-2 text-lg font-semibold font-mono"
           }
           onClick={navigateToChat}
         >
-          채팅
+          팀워크
         </Button>
       </div>
     </nav>

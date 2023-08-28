@@ -49,7 +49,7 @@ const ImageUploader = ({ onUpload }) => {
             {uploadedImage ? (
               <Button
                 style={
-                  "bg-pink-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg p-0"
+                  "bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
                 }
               >
                 이미지가 업로드되었습니다.
@@ -58,7 +58,7 @@ const ImageUploader = ({ onUpload }) => {
               <Button
                 onClick={handleSaveImage}
                 style={
-                  "bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg p-0"
+                  "bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
                 }
               >
                 저장
@@ -84,7 +84,7 @@ const ImageUploader = ({ onUpload }) => {
             />
             <label
               htmlFor="fileInput"
-              className="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center"
+              className="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
             >
               원하는 이미지를 업로드하세요
             </label>

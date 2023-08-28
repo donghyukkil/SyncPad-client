@@ -98,7 +98,7 @@ const LegalPadTextArea = () => {
     <>
       <div className="flex flex-col justify-evenly w-3/4">
         <div className="relative">
-          <div className="bg-amber-700 w-full h-1/6 rounded-md text-center line leading-10 text-2xl">
+          <div className="bg-amber-700 w-full h-1/6 rounded-md text-center line text-2xl font-semibold font-mono flex items-center justify-center">
             Hello, legalPad!
           </div>
           <div
@@ -134,13 +134,13 @@ const LegalPadTextArea = () => {
           </form>
         </div>
         <Button
-          style="bg-white hover:bg-gray-100 hover:border-0 text-black px-4 py-2 rounded-lg p-0"
+          style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
           onClick={handleDownloadClick}
         >
           다운로드
         </Button>
         <Button
-          style="bg-white hover:bg-gray-100 hover:border-0 text-black px-4 py-2 rounded-lg p-0"
+          style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
           onClick={createTextToServer}
         >
           저장

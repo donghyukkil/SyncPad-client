@@ -60,14 +60,14 @@ const Home = () => {
         >
           <div className="flex flex-col justify-evenly w-3/4">
             <div
-              className="p-3 border bg-white border-gray-400 rounded-lg h-72 resize-none text-center text-2xl"
-              style={{ paddingTop: "15%" }}
+              className="p-3 border bg-white border-gray-400 rounded-lg h-72 resize-none text-center text-3xl font-mono font-semibold"
+              style={{ paddingTop: "18%" }}
             >
               Hello, legalPad! 환영합니다.
             </div>
             <Button
               style={
-                "bg-white hover:bg-gray-100 hover:border-0 text-black px-4 py-2 rounded-lg p-0"
+                "bg-white hover:bg-gray-100 hover:border-0 text-black px-4 py-2 rounded-lg p-0 text-lg font-semibold font-mono"
               }
               onClick={signInWithGoogle}
             >

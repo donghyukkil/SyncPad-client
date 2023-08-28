@@ -138,11 +138,11 @@ const Chatting = () => {
           style={{ backgroundColor: "#DAC0A3" }}
         >
           <div className="h-full w-2/3 m-auto my-20 p-0">
-            <div className="bg-red-400 w-full h-10 text-center line leading-10 text-2xl rounded-md">
+            <div className="bg-amber-700 w-full h-1/6 rounded-md text-center line text-2xl font-semibold font-mono flex items-center justify-center">
               Hello, legalPad!
             </div>
             <div
-              className="p-3 bg-red-200 border border-gray-400 h-full w-full overflow-auto"
+              className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 overflow-y-auto"
               style={{
                 lineHeight: "28px",
                 fontSize: "20px",
@@ -177,13 +177,13 @@ const Chatting = () => {
           </div>
           <div className="flex flex-col justify-around w-2/3 m-auto my-10 space-y-4">
             <Button
-              style="bg-white hover:bg-gray-100 hover:border-0 text-black px-4 py-2 rounded-lg p-0"
+              style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
               onClick={handleDownloadClick}
             >
               다운로드
             </Button>
             <Button
-              style="bg-white hover:bg-gray-100 hover:border-0 text-black px-4 py-2 rounded-lg p-0"
+              style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
               onClick={createTextToServer}
             >
               저장
