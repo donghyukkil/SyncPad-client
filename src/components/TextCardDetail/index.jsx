@@ -97,7 +97,9 @@ const TextCardDetail = () => {
     }
   };
 
-  const result = texts.data.filter((text, index) => text._id === text_id);
+  const result = texts.data
+    ? texts.data.filter((text, index) => text._id === text_id)
+    : [];
 
   return (
     <>
@@ -123,7 +125,9 @@ const TextCardDetail = () => {
                   color: "#000",
                   width: "100%",
                 }}
-                defaultValue={result[0].content}
+                defaultValue={
+                  result.length > 0 ? result[0].content.join("\n") : ""
+                }
               />
               {updateMode ? (
                 <>
