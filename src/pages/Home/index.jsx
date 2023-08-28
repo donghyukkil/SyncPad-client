@@ -56,7 +56,7 @@ const Home = () => {
         <SubNavBar />
         <div
           className="flex w-3/4 h-3/4 m-auto py-0 justify-center rounded-md"
-          style={{ backgroundColor: "#526D82" }}
+          style={{ backgroundColor: "#DAC0A3" }}
         >
           <div className="flex flex-col justify-evenly w-3/4">
             <div
