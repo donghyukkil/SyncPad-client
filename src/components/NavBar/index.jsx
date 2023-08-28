@@ -1,12 +1,8 @@
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Button from "../Button";
-import { CONFIG } from "../../constants/config";
 
 const NavBar = () => {
-  const [menuOpen, setMenuOpen] = useState(false);
-
   const navigate = useNavigate();
 
   const navigateToHome = () => {
