@@ -24,7 +24,35 @@ const LegalPadTextArea = () => {
     const padding = 15;
 
     const canvasWidth = captureDivRef.current.offsetWidth;
-    const canvasHeight = captureDivRef.current.offsetHeight;
+
+    const ctxTest = document.createElement("canvas").getContext("2d");
+    ctxTest.font = "18px Courier New";
+
+    let totalLines = [];
+
+    messages.forEach(message => {
+      let words = message.split(" ");
+      let line = "";
+      let linesForMessage = [];
+
+      words.forEach(word => {
+        const testLine = line + word + " ";
+        const metrics = ctxTest.measureText(testLine);
+        const testWidth = metrics.width;
+
+        if (testWidth > canvasWidth - 2 * padding && line.length > 0) {
+          linesForMessage.push(line);
+          line = word + " ";
+        } else {
+          line = testLine;
+        }
+      });
+
+      linesForMessage.push(line);
+      totalLines = totalLines.concat(linesForMessage);
+    });
+
+    const canvasHeight = totalLines.length * lineHeight + 2 * padding;
 
     const canvas = document.createElement("canvas");
     canvas.width = canvasWidth;
@@ -38,9 +66,9 @@ const LegalPadTextArea = () => {
     ctx.fillStyle = "#000";
     ctx.font = "18px Courier New";
 
-    messages.forEach((message, i) => {
+    totalLines.forEach((line, i) => {
       const y = padding + i * lineHeight;
-      ctx.fillText(message, padding, y + lineHeight);
+      ctx.fillText(line, padding, y + lineHeight);
       ctx.fillRect(padding, y + lineHeight - 1, canvasWidth - 2 * padding, 1);
     });
 
