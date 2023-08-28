@@ -71,8 +71,7 @@ const TextCardDetail = () => {
           body: JSON.stringify({ content: textValue }),
         },
       );
-
-      setUpdateMode(!false);
+      setUpdateMode(!updateMode);
     } catch (error) {
       console.log(error);
     }
