@@ -67,7 +67,7 @@ const Home = () => {
             </div>
             <Button
               style={
-                "bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg p-0"
+                "bg-white hover:bg-gray-100 hover:border-0 text-black px-4 py-2 rounded-lg p-0"
               }
               onClick={signInWithGoogle}
             >
