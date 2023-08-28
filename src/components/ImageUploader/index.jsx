@@ -84,7 +84,7 @@ const ImageUploader = ({ onUpload }) => {
             />
             <label
               htmlFor="fileInput"
-              className="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-md text-center"
+              className="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center"
             >
               원하는 이미지를 업로드하세요
             </label>
