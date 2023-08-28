@@ -126,7 +126,7 @@ const Chatting = () => {
               다른 사용자에게 메시지를 보내보세요
             </div>
             <div
-              className="p-3 bg-red-200 border border-gray-400 h-96 w-full"
+              className="p-3 bg-red-200 border border-gray-400 h-96 w-full overflow-auto"
               style={{
                 lineHeight: "28px",
                 fontSize: "20px",
