@@ -21,6 +21,9 @@ const Chatting = () => {
 
   const userEmail = localStorage.getItem("userEmail");
 
+  const USER_COLOR = "#3498db";
+  const OTHERS_COLOR = "#e74c3c";
+
   const stringToColor = string => {
     let hash = 0;
 
@@ -179,18 +182,23 @@ const Chatting = () => {
               ref={captureDivRef}
             >
               <ul>
-                {messages.map((message, index) => (
-                  <div key={index}>
-                    <li
-                      key={index}
-                      style={{
-                        color: stringToColor(message),
-                      }}
-                    >
-                      {message}
-                    </li>
-                  </div>
-                ))}
+                {messages.map((message, index) => {
+                  const email = message.split(":")[0];
+                  const color = email === userEmail ? USER_COLOR : OTHERS_COLOR;
+
+                  return (
+                    <div key={index}>
+                      <li
+                        key={index}
+                        style={{
+                          color: color,
+                        }}
+                      >
+                        {message}
+                      </li>
+                    </div>
+                  );
+                })}
               </ul>
             </div>
             <form onSubmit={handleSubmit} className="flex flex-col">
