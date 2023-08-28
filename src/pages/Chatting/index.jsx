@@ -134,10 +134,10 @@ const Chatting = () => {
       >
         <SubNavBar />
         <div
-          className="flex flex-col justify-evenly w-3/4 h-3/4 m-auto py-0 rounded-md"
+          className="flex flex-col justify-evenly w-3/4 h-3/4 m-auto py-2 rounded-md"
           style={{ backgroundColor: "#DAC0A3" }}
         >
-          <div className="h-full w-2/3 m-auto my-20 p-0">
+          <div className="h-3/4 w-3/4 m-auto my-10">
             <div className="bg-amber-700 w-full h-1/6 rounded-md text-center line text-2xl font-semibold font-mono flex items-center justify-center">
               Hello, legalPad!
             </div>
@@ -171,11 +171,11 @@ const Chatting = () => {
                 value={text}
                 onChange={e => setText(e.target.value)}
                 placeholder="메시지를 입력하고 엔터를 누르세요."
-                className="text-center h-14"
+                className="text-center h-14 rounded-md"
               />
             </form>
           </div>
-          <div className="flex flex-col justify-around w-2/3 m-auto my-10 space-y-4">
+          <div className="flex flex-col justify-around w-3/4 m-auto space-y-10 py-5">
             <Button
               style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
               onClick={handleDownloadClick}

@@ -102,7 +102,7 @@ const LegalPadTextArea = () => {
             Hello, legalPad!
           </div>
           <div
-            className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 overflow-y-auto"
+            className="p-3 bg-yellow-200 w-full rounded-lg h-72 overflow-y-auto"
             ref={captureDivRef}
           >
             <ul>
@@ -122,7 +122,7 @@ const LegalPadTextArea = () => {
           </div>
           <form onSubmit={handleSubmit}>
             <input
-              className="p-3 bg-yellow-200 border border-gray-400 rounded-lg w-full"
+              className="p-3 rounded-lg w-full"
               value={textValue}
               onChange={event => setTextValue(event.target.value)}
               style={{
