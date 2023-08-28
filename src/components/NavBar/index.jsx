@@ -30,7 +30,10 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="bg-blue-950 h-screen flex justify-center w-1/6">
+    <nav
+      className="h-screen flex justify-center w-1/6"
+      style={{ backgroundColor: "#102C57" }}
+    >
       <div className="flex flex-col space-y-20 justify-evenly">
         <Button
           style={

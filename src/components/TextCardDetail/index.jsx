@@ -103,9 +103,15 @@ const TextCardDetail = () => {
     <>
       <div className="flex">
         <NavBar />
-        <div className="bg-yellow-300 w-screen h-screen flex flex-col">
+        <div
+          className="w-screen h-screen flex flex-col"
+          style={{ backgroundColor: "#F8F0E5" }}
+        >
           <SubNavBar />
-          <div className="flex bg-teal-950 w-3/4 h-3/4 m-auto py-0 justify-center rounded-md">
+          <div
+            className="flex w-3/4 h-3/4 m-auto py-0 justify-center rounded-md"
+            style={{ backgroundColor: "#DAC0A3" }}
+          >
             <div className="flex flex-col justify-evenly w-3/4">
               <textarea
                 className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 resize-none"

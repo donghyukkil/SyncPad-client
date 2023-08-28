@@ -6,9 +6,15 @@ const Create = () => {
   return (
     <div className="flex">
       <NavBar />
-      <div className="bg-yellow-300 w-screen h-screen flex flex-col">
+      <div
+        className="w-screen h-screen flex flex-col"
+        style={{ backgroundColor: "#F8F0E5" }}
+      >
         <SubNavBar />
-        <div className="flex bg-teal-950 w-3/4 h-3/4 m-auto py-0 justify-center rounded-md">
+        <div
+          className="flex w-3/4 h-3/4 m-auto py-0 justify-center rounded-md"
+          style={{ backgroundColor: "#DAC0A3" }}
+        >
           <LegalPadTextarea />
         </div>
       </div>

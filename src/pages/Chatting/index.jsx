@@ -128,9 +128,15 @@ const Chatting = () => {
   return (
     <div className="flex">
       <NavBar />
-      <div className="bg-yellow-300 w-screen h-screen flex flex-col">
+      <div
+        className="w-screen h-screen flex flex-col"
+        style={{ backgroundColor: "#F8F0E5" }}
+      >
         <SubNavBar />
-        <div className="flex flex-col justify-evenly bg-teal-950 w-3/4 h-3/4 m-auto py-0 rounded-md">
+        <div
+          className="flex flex-col justify-evenly w-3/4 h-3/4 m-auto py-0 rounded-md"
+          style={{ backgroundColor: "#DAC0A3" }}
+        >
           <div className="h-full w-2/3 m-auto my-20 p-0">
             <div className="bg-red-400 w-full h-10 text-center line leading-10 text-2xl rounded-md">
               Hello, legalPad!

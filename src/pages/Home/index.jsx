@@ -50,11 +50,14 @@ const Home = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex" style={{ backgroundColor: "#F8F0E5" }}>
       <NavBar />
-      <div className="bg-yellow-300 w-screen h-screen flex flex-col">
+      <div className="w-screen h-screen flex flex-col">
         <SubNavBar />
-        <div className="flex bg-teal-950 w-3/4 h-3/4 m-auto py-0 justify-center rounded-md">
+        <div
+          className="flex w-3/4 h-3/4 m-auto py-0 justify-center rounded-md"
+          style={{ backgroundColor: "#526D82" }}
+        >
           <div className="flex flex-col justify-evenly w-3/4">
             <div
               className="p-3 border bg-white border-gray-400 rounded-lg h-72 resize-none text-center text-2xl"

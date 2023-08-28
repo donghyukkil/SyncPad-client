@@ -41,7 +41,7 @@ const SubNavBar = ({}) => {
   };
 
   return (
-    <div className="mr-10 bg-amber-700 h-16">
+    <div className="mr-10 h-16" style={{ backgroundColor: "#DAC0A3" }}>
       <div className="flex justify-end my-2 mr-16 ml-96">
         <Button style={"text-sm"}>
           <img

@@ -29,9 +29,12 @@ const Mypage = () => {
   return (
     <div className="flex">
       <NavBar />
-      <div className="bg-yellow-300 w-screen h-screen flex flex-col">
+      <div className="w-screen h-screen flex flex-col">
         <SubNavBar />
-        <div className="flex flex-col bg-teal-950 w-3/4 h-3/4 m-auto py-5 justify-center rounded-md">
+        <div
+          className="flex flex-col w-3/4 h-3/4 m-auto py-5 justify-center rounded-md"
+          style={{ backgroundColor: "#DAC0A3" }}
+        >
           <main className="flex-grow grid grid-cols-3 grid-rows-0.5 gap-6 p-6 m-5">
             {texts.data !== undefined
               ? texts.data.map((text, index) => (
