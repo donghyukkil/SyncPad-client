@@ -79,6 +79,25 @@ const Chatting = () => {
     }, "image/png");
   };
 
+  const createTextToServer = async () => {
+    try {
+      const response = await fetch(
+        `${CONFIG.BACKEND_SERVER_URL}/users/${localStorage.getItem(
+          "userEmail",
+        )}/create`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ content: messages }),
+        },
+      );
+    } catch (error) {
+      console.log("메시지 업로드 오류", error.message);
+    }
+  };
+
   useEffect(() => {
     socket.current = io(CONFIG.BACKEND_SERVER_URL);
 
@@ -147,6 +166,12 @@ const Chatting = () => {
               onClick={handleDownloadClick}
             >
               다운로드
+            </Button>
+            <Button
+              style="bg-sky-400 hover:bg-blue-600 text-black px-4 py-2 rounded-lg p-0"
+              onClick={createTextToServer}
+            >
+              저장
             </Button>
           </div>
         </div>
