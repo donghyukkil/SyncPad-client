@@ -10,7 +10,7 @@ const Mypage = () => {
   const { texts, fetchTexts, currentPage, setCurrentPage } = useStore();
   const [localTotalPages, setLocalTotalPages] = useState(1);
 
-  const { data, totalPages } = texts;
+  const { totalPages } = texts;
 
   useEffect(() => {
     fetchTexts(currentPage);
