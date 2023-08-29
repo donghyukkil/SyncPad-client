@@ -111,7 +111,7 @@ const Chatting = () => {
       const link = document.createElement("a");
 
       link.href = url;
-      link.download = "textarea_content.png";
+      link.download = "legalpad.png";
       link.click();
 
       window.URL.revokeObjectURL(url);
