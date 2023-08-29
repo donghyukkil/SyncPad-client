@@ -63,7 +63,7 @@ const Home = () => {
               className="p-3 border bg-white border-gray-400 rounded-lg h-72 resize-none text-center text-3xl font-mono font-semibold"
               style={{ paddingTop: "18%" }}
             >
-              Hello, legalPad! 환영합니다.
+              Hello, legalPad!
             </div>
             <Button
               style={
