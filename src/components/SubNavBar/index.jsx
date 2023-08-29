@@ -41,9 +41,12 @@ const SubNavBar = ({}) => {
   };
 
   return (
-    <div className="mr-10 h-16" style={{ backgroundColor: "#DAC0A3" }}>
-      <div className="flex justify-end my-2 mr-16 ml-96">
-        <Button style={"text-sm"}>
+    <div
+      className="mr-10 h-16 flex justify-end relative"
+      style={{ backgroundColor: "#DAC0A3" }}
+    >
+      <div className="flex flex-col mr-32 my-2">
+        <Button>
           <img
             className="h-12 w-12 rounded-full"
             src={userPhotoURL}
@@ -52,12 +55,14 @@ const SubNavBar = ({}) => {
           />
         </Button>
         {menuOpen && (
-          <div className="bg-white">
+          <div className="bg-white absolute mt-16">
             <Button
-              style={"block text-sm text-gray-700"}
+              style={
+                "bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
+              }
               onClick={handleLogout}
             >
-              LOGOUT
+              로그아웃
             </Button>
           </div>
         )}

@@ -124,13 +124,13 @@ const LegalPadTextArea = () => {
 
   return (
     <>
-      <div className="flex flex-col justify-evenly w-3/4">
+      <div className="flex flex-col justify-around w-3/4">
         <div className="relative">
           <div className="bg-amber-700 w-full h-1/6 rounded-md text-center line text-2xl font-semibold font-mono flex items-center justify-center">
             Hello, legalPad!
           </div>
           <div
-            className="p-3 bg-yellow-200 w-full rounded-lg h-72 overflow-y-auto"
+            className="p-3 bg-yellow-200 w-full rounded-md h-72 overflow-y-auto border"
             ref={captureDivRef}
           >
             <ul>
@@ -150,7 +150,7 @@ const LegalPadTextArea = () => {
           </div>
           <form onSubmit={handleSubmit}>
             <input
-              className="p-3 rounded-lg w-full"
+              className="p-3 rounded-md w-full text-center"
               value={textValue}
               onChange={event => setTextValue(event.target.value)}
               style={{

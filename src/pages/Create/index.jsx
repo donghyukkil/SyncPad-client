@@ -12,7 +12,7 @@ const Create = () => {
       >
         <SubNavBar />
         <div
-          className="flex w-3/4 h-3/4 m-auto py-0 justify-center rounded-md"
+          className="flex w-3/4 h-3/4 m-auto justify-center rounded-md"
           style={{ backgroundColor: "#DAC0A3" }}
         >
           <LegalPadTextarea />

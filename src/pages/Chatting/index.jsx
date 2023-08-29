@@ -168,12 +168,12 @@ const Chatting = () => {
           className="flex flex-col justify-evenly w-3/4 h-3/4 m-auto py-2 rounded-md"
           style={{ backgroundColor: "#DAC0A3" }}
         >
-          <div className="h-3/4 w-3/4 m-auto my-10">
-            <div className="bg-amber-700 w-full h-1/6 rounded-md text-center line text-2xl font-semibold font-mono flex items-center justify-center">
+          <div className="h-3/4 w-3/4 m-auto my-4">
+            <div className="bg-amber-700 w-full h-16 rounded-md text-center line text-2xl font-semibold font-mono flex items-center justify-center">
               Hello, legalPad!
             </div>
             <div
-              className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 overflow-y-auto"
+              className="p-3 bg-yellow-200 border rounded-lg h-72 overflow-y-auto"
               style={{
                 lineHeight: "28px",
                 fontSize: "20px",
@@ -207,7 +207,7 @@ const Chatting = () => {
                 value={text}
                 onChange={e => setText(e.target.value)}
                 placeholder="메시지를 입력하고 엔터를 누르세요."
-                className="text-center h-14 rounded-md"
+                className="text-center h-12 rounded-md"
               />
             </form>
           </div>
