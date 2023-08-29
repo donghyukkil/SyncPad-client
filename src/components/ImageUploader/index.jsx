@@ -5,6 +5,7 @@ import Button from "../Button";
 const ImageUploader = ({ onUpload }) => {
   const [selectedImage, setSelectedImage] = useState(null);
   const [uploadedImage, setUploadedImage] = useState(null);
+
   const fileInputRef = useRef(null);
 
   const handleImageChange = async event => {
@@ -27,7 +28,6 @@ const ImageUploader = ({ onUpload }) => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
-
       reader.onload = () => resolve(reader.result.split(",")[1]);
       reader.onerror = error => reject(error);
     });

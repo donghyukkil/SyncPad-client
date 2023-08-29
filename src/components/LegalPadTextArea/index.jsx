@@ -13,6 +13,7 @@ const LegalPadTextArea = () => {
   const [messages, setMessages] = useState([]);
 
   const captureDivRef = useRef(null);
+
   const navigate = useNavigate();
 
   const navigateToMypage = () => {
