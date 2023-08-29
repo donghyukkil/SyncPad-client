@@ -50,7 +50,7 @@ const SubNavBar = ({}) => {
           <img
             className="h-12 w-12 rounded-full"
             src={userPhotoURL}
-            alt="userPhoto"
+            alt="profile"
             onClick={toggleMenu}
           />
         </Button>
