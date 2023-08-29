@@ -60,10 +60,7 @@ const Home = () => {
           style={{ backgroundColor: "#DAC0A3" }}
         >
           <div className="flex flex-col justify-evenly w-3/4">
-            <div
-              className="p-3 border bg-white border-gray-400 rounded-lg h-72 resize-none text-center text-3xl font-mono font-semibold"
-              style={{ paddingTop: "18%" }}
-            >
+            <div className="p-3 border bg-white border-gray-400 rounded-lg h-72 resize-none text-center text-3xl font-mono font-semibold flex items-center justify-center">
               Hello, legalPad!
             </div>
             <Button
