@@ -69,7 +69,7 @@ const NavBar = () => {
           }
           onClick={navigateToChat}
         >
-          팀워크
+          협업
         </Button>
       </div>
     </nav>
