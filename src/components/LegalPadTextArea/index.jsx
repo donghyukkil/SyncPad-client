@@ -162,7 +162,7 @@ const LegalPadTextArea = () => {
                 fontFamily: "Courier New",
                 color: "#000",
               }}
-              placeholder="메모하고 싶은 내용을 적고 저장 버튼이나 다운로드 버튼을 누르세요"
+              placeholder="메모하고 싶은 내용을 적고 엔터를 누르세요."
             />
           </form>
         </div>
