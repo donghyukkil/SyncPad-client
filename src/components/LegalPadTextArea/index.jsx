@@ -130,7 +130,12 @@ const LegalPadTextArea = () => {
             Hello, legalPad!
           </div>
           <div
-            className="p-3 bg-yellow-200 w-full rounded-md h-72 overflow-y-auto border"
+            style={{
+              background:
+                "linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px), #feef89",
+              backgroundSize: "100% 35px",
+            }}
+            className="p-3 w-full rounded-md h-72 overflow-y-auto border"
             ref={captureDivRef}
           >
             <ul>

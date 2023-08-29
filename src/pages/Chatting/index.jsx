@@ -175,9 +175,12 @@ const Chatting = () => {
             <div
               className="p-3 bg-yellow-200 border rounded-lg h-72 overflow-y-auto"
               style={{
-                lineHeight: "28px",
-                fontSize: "20px",
+                lineHeight: "33px",
+                fontSize: "25px",
                 fontFamily: "Courier New",
+                background:
+                  "linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px), #feef89",
+                backgroundSize: "100% 35px",
               }}
               ref={captureDivRef}
             >
