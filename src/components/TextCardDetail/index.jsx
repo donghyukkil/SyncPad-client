@@ -3,9 +3,10 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import useStore from "../../useStore";
 import Button from "../Button";
-import { CONFIG } from "../../constants/config";
 import NavBar from "../NavBar";
 import SubNavBar from "../SubNavBar";
+
+import { CONFIG } from "../../constants/config";
 
 const TextCardDetail = () => {
   const { text_id } = useParams();
@@ -71,6 +72,7 @@ const TextCardDetail = () => {
           body: JSON.stringify({ content: textValue }),
         },
       );
+
       setUpdateMode(!updateMode);
     } catch (error) {
       console.log(error);

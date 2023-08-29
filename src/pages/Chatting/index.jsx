@@ -4,10 +4,11 @@ import { useNavigate } from "react-router-dom";
 
 import { io } from "socket.io-client";
 
-import { CONFIG } from "../../constants/config";
 import NavBar from "../../components/NavBar";
 import SubNavBar from "../../components/SubNavBar";
 import Button from "../../components/Button";
+
+import { CONFIG } from "../../constants/config";
 
 const Chatting = () => {
   const [text, setText] = useState("");
