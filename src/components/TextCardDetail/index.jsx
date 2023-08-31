@@ -126,6 +126,9 @@ const TextCardDetail = () => {
                   fontFamily: "Courier New",
                   color: "#000",
                   width: "100%",
+                  background:
+                    "linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px), #feef89",
+                  backgroundSize: "100% 35px",
                 }}
                 defaultValue={
                   result.length > 0 ? result[0].content.join("\n") : ""
