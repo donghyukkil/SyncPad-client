@@ -155,7 +155,7 @@ const TextCardDetail = () => {
                 }
               />
             </div>
-            <div className="flex flex-col w-3/4 m-auto justify-between">
+            <div className="flex flex-col w-3/4 m-auto justify-between mt-0">
               {updateMode ? (
                 <>
                   <Button
@@ -180,15 +180,12 @@ const TextCardDetail = () => {
                 </Button>
               )}
 
-              {text_id && (
-                <Button
-                  style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
-                  onClick={deleteText}
-                >
-                  {" "}
-                  삭제{" "}
-                </Button>
-              )}
+              <Button
+                style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
+                onClick={deleteText}
+              >
+                삭제
+              </Button>
             </div>
           </div>
         </div>
