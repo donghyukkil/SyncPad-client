@@ -130,10 +130,13 @@ const TextCardDetail = () => {
         >
           <SubNavBar />
           <div
-            className="flex w-3/4 h-3/4 m-auto py-0 justify-center rounded-md"
+            className="flex flex-col w-3/4 h-3/4 m-auto rounded-md"
             style={{ backgroundColor: "#DAC0A3" }}
           >
-            <div className="flex flex-col justify-evenly w-3/4">
+            <div className="flex flex-col w-3/4 m-auto">
+              <div className="bg-amber-700 w-full h-16 rounded-md text-center text-2xl font-semibold font-mono flex items-center justify-center">
+                Hello, legalPad!
+              </div>
               <textarea
                 className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 resize-none"
                 ref={textareaRef}
@@ -151,35 +154,41 @@ const TextCardDetail = () => {
                   result.length > 0 ? result[0].content.join("\n") : ""
                 }
               />
+            </div>
+            <div className="flex flex-col w-3/4 m-auto justify-between">
               {updateMode ? (
                 <>
                   <Button
-                    style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
+                    style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
                     onClick={handleDownloadClick}
                   >
                     다운로드
                   </Button>
                   <Button
-                    style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
+                    style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
                     onClick={navigateToMypage}
                   >
-                    수정 완료
+                    {text_id ? "수정 완료" : "저장 완료"}
                   </Button>
                 </>
               ) : (
                 <Button
-                  style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
+                  style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
                   onClick={updateText}
                 >
-                  수정
+                  {text_id ? "수정" : "저장"}
                 </Button>
               )}
-              <Button
-                style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
-                onClick={deleteText}
-              >
-                삭제
-              </Button>
+
+              {text_id && (
+                <Button
+                  style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
+                  onClick={deleteText}
+                >
+                  {" "}
+                  삭제{" "}
+                </Button>
+              )}
             </div>
           </div>
         </div>
