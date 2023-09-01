@@ -127,8 +127,8 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
     }
   };
 
-  const handleTextChange = event => {
-    const newValue = event.target.value;
+  const handleContentChange = event => {
+    const newValue = event.currentTarget.textContent;
     setTextValue(newValue);
 
     socket.current.emit("textChange", { roomId, text: newValue });
@@ -196,11 +196,11 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
               </div>
 
               {roomId ? (
-                <textarea
+                <div
                   className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 resize-none"
                   ref={textareaRef}
-                  onChange={handleTextChange}
-                  value={textValue}
+                  onInput={handleContentChange}
+                  contentEditable={true}
                   style={{
                     lineHeight: "36px",
                     fontFamily: "Courier New",
@@ -209,13 +209,19 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
                     background:
                       "linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px), #feef89",
                     backgroundSize: "100% 35px",
+                    overflowY: "auto",
                   }}
-                />
+                >
+                  {textValue}
+                </div>
               ) : (
-                <textarea
+                <div
                   className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 resize-none"
                   ref={textareaRef}
-                  onChange={event => setTextValue(event.target.value)}
+                  onInput={event =>
+                    setTextValue(event.currentTarget.textContent)
+                  }
+                  contentEditable={true}
                   style={{
                     lineHeight: "36px",
                     fontFamily: "Courier New",
@@ -224,11 +230,11 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
                     background:
                       "linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px), #feef89",
                     backgroundSize: "100% 35px",
+                    overflowY: "auto",
                   }}
-                  defaultValue={
-                    result.length > 0 ? result[0].content.join("\n") : ""
-                  }
-                />
+                >
+                  {result.length > 0 ? result[0].content.join("\n") : ""}
+                </div>
               )}
             </div>
             <div className="flex flex-col w-3/4 m-auto justify-between mt-0">
