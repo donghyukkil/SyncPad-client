@@ -60,18 +60,30 @@ const TextCardDetail = () => {
 
   const updateText = async () => {
     try {
-      const response = await fetch(
-        `${CONFIG.BACKEND_SERVER_URL}/users/${localStorage.getItem(
+      let url;
+      let method;
+
+      if (text_id) {
+        url = `${CONFIG.BACKEND_SERVER_URL}/users/${localStorage.getItem(
           "userEmail",
-        )}/texts/${text_id}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ content: textValue }),
+        )}/texts/${text_id}`;
+        method = "PUT";
+      } else {
+        url = `${CONFIG.BACKEND_SERVER_URL}/users/${localStorage.getItem(
+          "userEmail",
+        )}/create`;
+        method = "POST";
+      }
+
+      const response = await fetch(url, {
+        method: method,
+        headers: {
+          "Content-Type": "application/json",
         },
-      );
+        body: JSON.stringify({ content: textValue }),
+      });
+
+      const data = await response.json();
 
       setUpdateMode(!updateMode);
     } catch (error) {
@@ -80,6 +92,11 @@ const TextCardDetail = () => {
   };
 
   const deleteText = async () => {
+    if (!text_id) {
+      console.log("No text_id available to delete.");
+      return;
+    }
+
     try {
       const response = await fetch(
         `${CONFIG.BACKEND_SERVER_URL}/users/${localStorage.getItem(
