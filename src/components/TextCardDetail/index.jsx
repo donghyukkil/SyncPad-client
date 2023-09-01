@@ -1,5 +1,7 @@
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+
+import { io } from "socket.io-client";
 
 import useStore from "../../useStore";
 import Button from "../Button";
@@ -18,10 +20,12 @@ const TextCardDetail = ({ roomId }) => {
 
   const [textValue, setTextValue] = useState(roomId ? "" : texts);
   const [updateMode, setUpdateMode] = useState(false);
+  const [typingUser, setTypingUser] = useState(null);
 
   const navigate = useNavigate();
 
   const textareaRef = useRef(null);
+  const socket = useRef();
 
   const handleDownloadClick = () => {
     const lineHeight = 36;
@@ -120,6 +124,39 @@ const TextCardDetail = ({ roomId }) => {
     }
   };
 
+  const handleTextChange = event => {
+    const newValue = event.target.value;
+    setTextValue(newValue);
+
+    socket.current.emit("textChange", { roomId, text: newValue });
+
+    socket.current.emit("typing", roomId);
+  };
+
+  useEffect(() => {
+    socket.current = io(CONFIG.BACKEND_SERVER_URL);
+
+    socket.current.emit("joinRoom", roomId);
+
+    socket.current.emit("setUserName", {
+      username: localStorage.getItem("userEmail"),
+    });
+
+    socket.current.on("textChanged", updatedText => {
+      setTextValue(updatedText);
+    });
+
+    socket.current.on("userTyping", username => {
+      setTypingUser(username);
+    });
+
+    return () => {
+      if (socket.current) {
+        socket.current.disconnect();
+      }
+    };
+  }, [roomId]);
+
   return (
     <>
       <div className="flex">
@@ -135,12 +172,16 @@ const TextCardDetail = ({ roomId }) => {
           >
             <div className="flex flex-col w-3/4 m-auto">
               <div className="bg-amber-700 w-full h-16 rounded-md text-center text-2xl font-semibold font-mono flex items-center justify-center">
-                Hello, legalPad!
+                {typingUser
+                  ? `${typingUser}가 입력 중입니다...`
+                  : "Hello, legalPad!"}
               </div>
 
               {roomId ? (
                 <textarea
                   className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 resize-none"
+                  onChange={handleTextChange}
+                  value={textValue}
                   style={{
                     lineHeight: "36px",
                     fontFamily: "Courier New",
