@@ -26,6 +26,9 @@ const TextCardDetail = ({ roomId }) => {
 
   const textareaRef = useRef(null);
   const socket = useRef();
+  const typingTimerRef = useRef(null);
+
+  const TYPING_INTERVAL = 2000;
 
   const handleDownloadClick = () => {
     const lineHeight = 36;
@@ -129,8 +132,15 @@ const TextCardDetail = ({ roomId }) => {
     setTextValue(newValue);
 
     socket.current.emit("textChange", { roomId, text: newValue });
-
     socket.current.emit("typing", roomId);
+
+    if (typingTimerRef.current) {
+      clearTimeout(typingTimerRef.current);
+    }
+
+    typingTimerRef.current = setTimeout(() => {
+      setTypingUser(null);
+    }, TYPING_INTERVAL);
   };
 
   useEffect(() => {
@@ -148,6 +158,14 @@ const TextCardDetail = ({ roomId }) => {
 
     socket.current.on("userTyping", username => {
       setTypingUser(username);
+
+      if (typingTimerRef.current) {
+        clearTimeout(typingTimerRef.current);
+      }
+
+      typingTimerRef.current = setTimeout(() => {
+        setTypingUser(null);
+      }, TYPING_INTERVAL);
     });
 
     return () => {
