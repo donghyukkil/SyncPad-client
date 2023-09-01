@@ -5,7 +5,7 @@ import Button from "../Button";
 
 import { CONFIG } from "../../constants/config";
 
-const SubNavBar = ({}) => {
+const SubNavBar = ({ roomId, setRoomId }) => {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const navigate = useNavigate();
@@ -42,9 +42,24 @@ const SubNavBar = ({}) => {
 
   return (
     <div
-      className="mr-10 h-16 flex justify-end relative"
+      className="mr-10 h-16 flex justify-end relative w-full"
       style={{ backgroundColor: "#DAC0A3" }}
     >
+      {roomId && (
+        <div className="m-4">
+          <select
+            onChange={e => setRoomId(e.target.value)}
+            className="p-2 border rounded"
+          >
+            <option value="" disabled>
+              Select a room
+            </option>
+            <option value="room1">Room 1</option>
+            <option value="room2">Room 2</option>
+            <option value="room3">Room 3</option>
+          </select>
+        </div>
+      )}
       <div className="flex flex-col mr-32 my-2">
         <Button>
           <img

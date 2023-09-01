@@ -10,7 +10,7 @@ import SubNavBar from "../SubNavBar";
 
 import { CONFIG } from "../../constants/config";
 
-const TextCardDetail = ({ roomId }) => {
+const TextCardDetail = ({ roomId, setRoomId }) => {
   const { text_id } = useParams();
   const { texts } = useStore();
 
@@ -183,7 +183,7 @@ const TextCardDetail = ({ roomId }) => {
           className="w-screen h-screen flex flex-col"
           style={{ backgroundColor: "#F8F0E5" }}
         >
-          <SubNavBar />
+          <SubNavBar roomId={roomId} setRoomId={setRoomId} />
           <div
             className="flex flex-col w-3/4 h-3/4 m-auto rounded-md"
             style={{ backgroundColor: "#DAC0A3" }}
