@@ -8,11 +8,15 @@ import SubNavBar from "../SubNavBar";
 
 import { CONFIG } from "../../constants/config";
 
-const TextCardDetail = () => {
+const TextCardDetail = ({ roomId }) => {
   const { text_id } = useParams();
   const { texts } = useStore();
 
-  const [textValue, setTextValue] = useState(texts);
+  const result = texts.data
+    ? texts.data.filter((text, index) => text._id === text_id)
+    : [];
+
+  const [textValue, setTextValue] = useState(roomId ? "" : texts);
   const [updateMode, setUpdateMode] = useState(false);
 
   const navigate = useNavigate();
@@ -116,10 +120,6 @@ const TextCardDetail = () => {
     }
   };
 
-  const result = texts.data
-    ? texts.data.filter((text, index) => text._id === text_id)
-    : [];
-
   return (
     <>
       <div className="flex">
@@ -137,23 +137,39 @@ const TextCardDetail = () => {
               <div className="bg-amber-700 w-full h-16 rounded-md text-center text-2xl font-semibold font-mono flex items-center justify-center">
                 Hello, legalPad!
               </div>
-              <textarea
-                className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 resize-none"
-                ref={textareaRef}
-                onChange={event => setTextValue(event.target.value)}
-                style={{
-                  lineHeight: "36px",
-                  fontFamily: "Courier New",
-                  color: "#000",
-                  width: "100%",
-                  background:
-                    "linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px), #feef89",
-                  backgroundSize: "100% 35px",
-                }}
-                defaultValue={
-                  result.length > 0 ? result[0].content.join("\n") : ""
-                }
-              />
+
+              {roomId ? (
+                <textarea
+                  className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 resize-none"
+                  style={{
+                    lineHeight: "36px",
+                    fontFamily: "Courier New",
+                    color: "#000",
+                    width: "100%",
+                    background:
+                      "linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px), #feef89",
+                    backgroundSize: "100% 35px",
+                  }}
+                />
+              ) : (
+                <textarea
+                  className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 resize-none"
+                  ref={textareaRef}
+                  onChange={event => setTextValue(event.target.value)}
+                  style={{
+                    lineHeight: "36px",
+                    fontFamily: "Courier New",
+                    color: "#000",
+                    width: "100%",
+                    background:
+                      "linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px), #feef89",
+                    backgroundSize: "100% 35px",
+                  }}
+                  defaultValue={
+                    result.length > 0 ? result[0].content.join("\n") : ""
+                  }
+                />
+              )}
             </div>
             <div className="flex flex-col w-3/4 m-auto justify-between mt-0">
               {updateMode ? (
