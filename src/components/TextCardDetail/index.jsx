@@ -180,6 +180,7 @@ const TextCardDetail = ({ roomId }) => {
               {roomId ? (
                 <textarea
                   className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 resize-none"
+                  ref={textareaRef}
                   onChange={handleTextChange}
                   value={textValue}
                   style={{
