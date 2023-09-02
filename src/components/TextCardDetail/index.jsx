@@ -13,15 +13,20 @@ import { CONFIG } from "../../constants/config";
 const convertHTMLToPlainText = html => {
   const tempDiv = document.createElement("div");
   tempDiv.innerHTML = html;
+
   let text = "";
   tempDiv.childNodes.forEach(node => {
-    if (node.nodeName.toLowerCase() === "div") {
+    const nodeName = node.nodeName.toLowerCase();
+    if (nodeName === "div" || nodeName === "p") {
       text += "\n" + (node.textContent || "");
+    } else if (nodeName === "br") {
+      text += "\n";
     } else {
       text += node.textContent;
     }
   });
-  return text;
+
+  return text.startsWith("\n") ? text.slice(1) : text;
 };
 
 const convertPlainTextToHTML = text => {
@@ -53,11 +58,12 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
   const TYPING_INTERVAL = 2000;
 
   const handleDownloadClick = () => {
-    const lineHeight = 36;
+    const fontLineHeight = 24;
+    const getBetweenLines = 36;
     const padding = 15;
     const lines = textValue.split("\n");
     const lineCount = lines.length;
-    const canvasHeight = lineCount * lineHeight + 2 * padding;
+    const canvasHeight = lineCount * getBetweenLines + 2 * padding;
 
     const canvas = document.createElement("canvas");
     canvas.width = textareaRef.current.offsetWidth;
@@ -69,10 +75,13 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
     ctx.fillStyle = "#000";
     ctx.font = "18px Courier New";
 
+    let yOffset = 0;
+
     for (let i = 0; i < lines.length; i++) {
-      const y = padding + i * lineHeight;
-      ctx.fillText(lines[i], padding, y + lineHeight);
-      ctx.fillRect(padding, y + lineHeight - 1, canvas.width - 2 * padding, 1);
+      const y = padding + yOffset;
+      ctx.fillText(lines[i], padding, y);
+      ctx.fillRect(padding, y + 2, canvas.width - 2 * padding, 1);
+      yOffset += getBetweenLines;
     }
 
     canvas.toBlob(blob => {
@@ -254,7 +263,6 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
                   ? `${typingUser}가 입력 중입니다...`
                   : "Hello, legalPad!"}
               </div>
-
               {roomId ? (
                 <div
                   className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 resize-none"
