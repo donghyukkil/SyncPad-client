@@ -130,8 +130,30 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
     }
   };
 
+  const saveSelection = () => {
+    if (window.getSelection) {
+      const sel = window.getSelection();
+      if (sel.getRangeAt && sel.rangeCount) {
+        return sel.getRangeAt(0);
+      }
+    }
+    return null;
+  };
+
+  const restoreSelection = range => {
+    if (range) {
+      if (window.getSelection) {
+        const sel = window.getSelection();
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
+    }
+  };
+
   const handleContentChange = event => {
-    const newValue = event.currentTarget.textContent;
+    const savedSelection = saveSelection();
+
+    const newValue = convertHTMLToPlainText(event.currentTarget.innerHTML);
     setTextValue(newValue);
 
     socket.current.emit("textChange", { roomId, text: newValue });
@@ -144,6 +166,8 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
     typingTimerRef.current = setTimeout(() => {
       setTypingUser(null);
     }, TYPING_INTERVAL);
+
+    restoreSelection(savedSelection);
   };
 
   useEffect(() => {
@@ -177,7 +201,6 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
       }
     };
   }, [roomId]);
-
   useEffect(() => {
     if (textareaRef.current) {
       textareaRef.current.innerText = textValue;
