@@ -18,9 +18,12 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
     ? texts.data.filter((text, index) => text._id === text_id)
     : [];
 
-  const [textValue, setTextValue] = useState(roomId ? "" : texts);
   const [updateMode, setUpdateMode] = useState(false);
   const [typingUser, setTypingUser] = useState(null);
+
+  const resultText = result.length > 0 ? result[0].content.join("\n") : "";
+  const initialTextValue = roomId ? "" : resultText;
+  const [textValue, setTextValue] = useState(initialTextValue);
 
   const navigate = useNavigate();
 
@@ -175,6 +178,18 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
     };
   }, [roomId]);
 
+  useEffect(() => {
+    if (textareaRef.current) {
+      textareaRef.current.innerText = textValue;
+    }
+  }, [textValue]);
+
+  useEffect(() => {
+    if (textareaRef.current && result.length > 0) {
+      textareaRef.current.innerText = result[0].content.join("\n");
+    }
+  }, []);
+
   return (
     <>
       <div className="flex">
@@ -211,9 +226,7 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
                     backgroundSize: "100% 35px",
                     overflowY: "auto",
                   }}
-                >
-                  {textValue}
-                </div>
+                ></div>
               ) : (
                 <div
                   className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 resize-none"
@@ -232,9 +245,7 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
                     backgroundSize: "100% 35px",
                     overflowY: "auto",
                   }}
-                >
-                  {result.length > 0 ? result[0].content.join("\n") : ""}
-                </div>
+                ></div>
               )}
             </div>
             <div className="flex flex-col w-3/4 m-auto justify-between mt-0">
