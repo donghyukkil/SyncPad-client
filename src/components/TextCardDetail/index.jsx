@@ -186,7 +186,6 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
     const newValue = convertHTMLToPlainText(event.currentTarget.innerHTML);
     setTextValue(newValue);
 
-    socket.current.emit("textChange", { roomId, text: newValue });
     socket.current.emit("typing", roomId);
 
     if (typingTimerRef.current) {
@@ -263,43 +262,22 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
                   ? `${typingUser}가 입력 중입니다...`
                   : "Hello, legalPad!"}
               </div>
-              {roomId ? (
-                <div
-                  className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 resize-none"
-                  ref={textareaRef}
-                  onInput={handleContentChange}
-                  contentEditable={true}
-                  style={{
-                    lineHeight: "36px",
-                    fontFamily: "Courier New",
-                    color: "#000",
-                    width: "100%",
-                    background:
-                      "linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px), #feef89",
-                    backgroundSize: "100% 35px",
-                    overflowY: "auto",
-                  }}
-                ></div>
-              ) : (
-                <div
-                  className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 resize-none"
-                  ref={textareaRef}
-                  onInput={event =>
-                    setTextValue(event.currentTarget.textContent)
-                  }
-                  contentEditable={true}
-                  style={{
-                    lineHeight: "36px",
-                    fontFamily: "Courier New",
-                    color: "#000",
-                    width: "100%",
-                    background:
-                      "linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px), #feef89",
-                    backgroundSize: "100% 35px",
-                    overflowY: "auto",
-                  }}
-                ></div>
-              )}
+              <div
+                className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 resize-none"
+                ref={textareaRef}
+                onInput={handleContentChange}
+                contentEditable={true}
+                style={{
+                  lineHeight: "36px",
+                  fontFamily: "Courier New",
+                  color: "#000",
+                  width: "100%",
+                  background:
+                    "linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px), #feef89",
+                  backgroundSize: "100% 35px",
+                  overflowY: "auto",
+                }}
+              ></div>
             </div>
             <div className="flex flex-col w-3/4 m-auto justify-between mt-0">
               {updateMode ? (
