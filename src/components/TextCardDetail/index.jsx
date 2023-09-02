@@ -55,7 +55,7 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
   const socket = useRef();
   const typingTimerRef = useRef(null);
 
-  const TYPING_INTERVAL = 2000;
+  const TYPING_INTERVAL = 1000;
 
   const handleDownloadClick = () => {
     const fontLineHeight = 24;
@@ -319,9 +319,7 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
           >
             <div className="flex flex-col w-3/4 m-auto">
               <div className="bg-amber-700 w-full h-16 rounded-md text-center text-2xl font-semibold font-mono flex items-center justify-center">
-                {typingUser
-                  ? `${typingUser}가 입력 중입니다...`
-                  : "Hello, legalPad!"}
+                Hello, legalPad!
               </div>
               <div
                 className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 resize-none"
@@ -339,6 +337,9 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
                   overflowY: "auto",
                 }}
               ></div>
+              <div className="rounded-md text-center text-lg font-semibold font-mono flex items-center justify-center">
+                {typingUser ? `${typingUser}가 입력 중입니다...` : ""}
+              </div>
             </div>
             <div className="flex flex-col w-3/4 m-auto justify-between mt-0">
               {updateMode ? (
