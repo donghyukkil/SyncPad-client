@@ -10,6 +10,25 @@ import SubNavBar from "../SubNavBar";
 
 import { CONFIG } from "../../constants/config";
 
+const convertHTMLToPlainText = html => {
+  const tempDiv = document.createElement("div");
+  tempDiv.innerHTML = html;
+  let text = "";
+  tempDiv.childNodes.forEach(node => {
+    if (node.nodeName.toLowerCase() === "div") {
+      text += "\n" + (node.textContent || "");
+    } else {
+      text += node.textContent;
+    }
+  });
+  return text;
+};
+
+const convertPlainTextToHTML = text => {
+  const lines = text.split("\n");
+  return lines.map(line => `<div>${line}</div>`).join("");
+};
+
 const TextCardDetail = ({ roomId, setRoomId }) => {
   const { text_id } = useParams();
   const { texts } = useStore();
@@ -77,6 +96,8 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
       let url;
       let method;
 
+      const plainTextContent = convertHTMLToPlainText(textValue);
+
       if (text_id) {
         url = `${CONFIG.BACKEND_SERVER_URL}/users/${localStorage.getItem(
           "userEmail",
@@ -94,7 +115,7 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ content: textValue }),
+        body: JSON.stringify({ content: plainTextContent }),
       });
 
       const data = await response.json();
@@ -180,7 +201,11 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
     });
 
     socket.current.on("textChanged", updatedText => {
-      setTextValue(updatedText);
+      const htmlContent = convertPlainTextToHTML(updatedText);
+      if (textareaRef.current.innerHTML !== htmlContent) {
+        setTextValue(updatedText);
+        textareaRef.current.innerHTML = htmlContent;
+      }
     });
 
     socket.current.on("userTyping", username => {
@@ -201,15 +226,12 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
       }
     };
   }, [roomId]);
-  useEffect(() => {
-    if (textareaRef.current) {
-      textareaRef.current.innerText = textValue;
-    }
-  }, [textValue]);
 
   useEffect(() => {
     if (textareaRef.current && result.length > 0) {
-      textareaRef.current.innerText = result[0].content.join("\n");
+      textareaRef.current.innerHTML = convertPlainTextToHTML(
+        result[0].content.join("\n"),
+      );
     }
   }, []);
 
