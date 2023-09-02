@@ -46,7 +46,7 @@ const Home = () => {
 
       navigate("/create");
     } catch (error) {
-      console.error("오류 발생", error.message);
+      console.log("에러 발생");
     }
   };
 
