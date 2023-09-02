@@ -45,7 +45,7 @@ const NavBar = () => {
           }
           onClick={navigateToCreate}
         >
-          생성
+          새 메모
         </Button>
         <Button
           style={
@@ -53,7 +53,7 @@ const NavBar = () => {
           }
           onClick={navigateToUpload}
         >
-          업로드
+          이미지 메모
         </Button>
         <Button
           style={
@@ -61,7 +61,7 @@ const NavBar = () => {
           }
           onClick={navigateToMyPage}
         >
-          마이페이지
+          마이 페이지
         </Button>
         <Button
           style={
@@ -69,7 +69,7 @@ const NavBar = () => {
           }
           onClick={navigateToChat}
         >
-          협업
+          함께 메모
         </Button>
       </div>
     </nav>
