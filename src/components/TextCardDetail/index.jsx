@@ -182,10 +182,19 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
 
   const handleContentChange = event => {
     const savedSelection = saveSelection();
+    const cursorPosition = savedSelection.getBoundingClientRect();
 
     const newValue = convertHTMLToPlainText(event.currentTarget.innerHTML);
     setTextValue(newValue);
 
+    const userPhotoURL = localStorage.getItem("userPhotoURL");
+
+    socket.current.emit("textChange", {
+      roomId,
+      text: newValue,
+      userPhotoURL,
+      cursorPosition,
+    });
     socket.current.emit("typing", roomId);
 
     if (typingTimerRef.current) {
@@ -196,43 +205,95 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
       setTypingUser(null);
     }, TYPING_INTERVAL);
 
+    const range = savedSelection;
+
+    if (range) {
+      const rect = range.getBoundingClientRect();
+
+      const iconElement = document.createElement("img");
+      iconElement.src = userPhotoURL;
+      iconElement.alt = "User Icon";
+      iconElement.style.width = "32px";
+      iconElement.style.height = "32px";
+      iconElement.style.position = "absolute";
+      iconElement.style.left = rect.left + "px";
+      iconElement.style.top = rect.top + "px";
+
+      textareaRef.current.parentElement.appendChild(iconElement);
+
+      setTimeout(() => {
+        if (iconElement.parentNode) {
+          iconElement.parentNode.removeChild(iconElement);
+        }
+      }, TYPING_INTERVAL);
+    }
+
     restoreSelection(savedSelection);
   };
 
   useEffect(() => {
-    socket.current = io(CONFIG.BACKEND_SERVER_URL);
+    if (roomId) {
+      socket.current = io(CONFIG.BACKEND_SERVER_URL);
 
-    socket.current.emit("joinRoom", roomId);
+      socket.current.emit("joinRoom", roomId);
 
-    socket.current.emit("setUserName", {
-      username: localStorage.getItem("userEmail"),
-    });
+      socket.current.emit("setUserName", {
+        username: localStorage.getItem("userEmail"),
+      });
 
-    socket.current.on("textChanged", updatedText => {
-      const htmlContent = convertPlainTextToHTML(updatedText);
-      if (textareaRef.current.innerHTML !== htmlContent) {
-        setTextValue(updatedText);
-        textareaRef.current.innerHTML = htmlContent;
-      }
-    });
+      socket.current.on(
+        "textChanged",
+        ({ text, userPhotoURL, cursorPosition }) => {
+          const htmlContent = convertPlainTextToHTML(text);
 
-    socket.current.on("userTyping", username => {
-      setTypingUser(username);
+          if (textareaRef.current.innerHTML !== htmlContent) {
+            setTextValue(text);
+            textareaRef.current.innerHTML = htmlContent;
 
-      if (typingTimerRef.current) {
-        clearTimeout(typingTimerRef.current);
-      }
+            const existingImageNode = textareaRef.current.querySelector("img");
 
-      typingTimerRef.current = setTimeout(() => {
-        setTypingUser(null);
-      }, TYPING_INTERVAL);
-    });
+            if (existingImageNode) {
+              textareaRef.current.removeChild(existingImageNode);
+            }
 
-    return () => {
-      if (socket.current) {
-        socket.current.disconnect();
-      }
-    };
+            const iconElement = document.createElement("img");
+            iconElement.src = userPhotoURL;
+            iconElement.alt = "User Icon";
+            iconElement.style.width = "32px";
+            iconElement.style.height = "32px";
+            iconElement.style.position = "absolute";
+            iconElement.style.left = cursorPosition.left + "px";
+            iconElement.style.top = cursorPosition.top + "px";
+
+            textareaRef.current.parentElement.appendChild(iconElement);
+
+            setTimeout(() => {
+              if (iconElement.parentNode) {
+                iconElement.parentNode.removeChild(iconElement);
+              }
+            }, TYPING_INTERVAL);
+          }
+        },
+      );
+
+      socket.current.on("userTyping", username => {
+        setTypingUser(username);
+
+        if (typingTimerRef.current) {
+          clearTimeout(typingTimerRef.current);
+        }
+
+        typingTimerRef.current = setTimeout(() => {
+          setTypingUser(null);
+        }, TYPING_INTERVAL);
+      });
+
+      return () => {
+        if (socket.current) {
+          socket.current.disconnect();
+        }
+      };
+    }
   }, [roomId]);
 
   useEffect(() => {
