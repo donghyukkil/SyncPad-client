@@ -34,6 +34,7 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
   const resultText = result.length > 0 ? result[0].content.join("\n") : "";
   const initialTextValue = roomId ? "" : resultText;
   const [textValue, setTextValue] = useState(initialTextValue);
+  const [backgroundColor, setBackgroundColor] = useState("#f7e79e");
 
   const navigate = useNavigate();
 
@@ -206,13 +207,13 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
                 onInput={handleInputChange}
                 contentEditable={true}
                 style={{
-                  lineHeight: "36px",
+                  lineHeight: "32px",
                   fontFamily: "Courier New",
                   color: "#000",
                   width: "100%",
                   background:
                     "linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px), #feef89",
-                  backgroundSize: "100% 35px",
+                  backgroundSize: "100% 33px",
                   overflowY: "auto",
                 }}
               ></div>
@@ -226,10 +227,21 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
             <div className="flex flex-col w-3/4 m-auto justify-between mt-0">
               {updateMode ? (
                 <>
+                  <label htmlFor="bgcolor">배경 색상 선택:</label>
+                  <input
+                    type="color"
+                    id="bgcolor"
+                    value={backgroundColor}
+                    onChange={e => setBackgroundColor(e.target.value)}
+                  />
                   <Button
                     style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
                     onClick={() => {
-                      handleDownloadClick(textValue, textareaRef);
+                      handleDownloadClick(
+                        textValue,
+                        textareaRef,
+                        backgroundColor,
+                      );
                     }}
                   >
                     다운로드
@@ -250,12 +262,14 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
                 </Button>
               )}
 
-              <Button
-                style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
-                onClick={deleteText}
-              >
-                삭제
-              </Button>
+              {text_id && (
+                <Button
+                  style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
+                  onClick={deleteText}
+                >
+                  삭제
+                </Button>
+              )}
             </div>
           </div>
         </div>
