@@ -21,7 +21,7 @@ import {
 import { handleDownloadClick } from "../../utils/textAction";
 
 const TextEditor = ({ roomId, setRoomId }) => {
-  const { text_id } = useParams();
+  const { text_id, shareRoomId } = useParams();
   const { texts } = useStore();
 
   const result = texts.data
@@ -32,7 +32,7 @@ const TextEditor = ({ roomId, setRoomId }) => {
   const [typingUser, setTypingUser] = useState(null);
 
   const resultText = result.length > 0 ? result[0].content.join("\n") : "";
-  const initialTextValue = roomId ? "" : resultText;
+  const initialTextValue = shareRoomId ? "" : resultText;
   const [textValue, setTextValue] = useState(initialTextValue);
   const [backgroundColor, setBackgroundColor] = useState("#f7e79e");
 
@@ -120,11 +120,43 @@ const TextEditor = ({ roomId, setRoomId }) => {
     }
   };
 
-  useEffect(() => {
-    if (roomId) {
-      socket.current = io(CONFIG.BACKEND_SERVER_URL);
+  const createNewRoom = async () => {
+    try {
+      const response = await fetch(`${CONFIG.BACKEND_SERVER_URL}/createRoom`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          text_id,
+          userId: localStorage.getItem("userEmail"),
+        }),
+      });
+      const data = await response.json();
+      if (data) {
+        const roomURL = `${window.location.origin}/room/${data.data.room.textId}`;
 
-      socket.current.emit("joinRoom", roomId);
+        try {
+          await navigator.clipboard.writeText(roomURL);
+          console.log("URL이 클립보드에 복사되었습니다.");
+        } catch (err) {
+          console.error("클립보드 복사 실패:", err);
+        }
+
+        navigate(`/room/${data.data.room.textId}`);
+        alert(`방이 생성되었습니다! URL: ${roomURL}`);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    const targetRoomId = shareRoomId || roomId || text_id;
+
+    if (targetRoomId) {
+      socket.current = io(CONFIG.BACKEND_SERVER_URL);
+      socket.current.emit("joinRoom", targetRoomId);
 
       socket.current.emit("setUserName", {
         username: localStorage.getItem("userEmail"),
@@ -174,7 +206,7 @@ const TextEditor = ({ roomId, setRoomId }) => {
         }
       };
     }
-  }, [roomId]);
+  }, [roomId, shareRoomId]);
 
   useEffect(() => {
     if (textareaRef.current && result.length > 0) {
@@ -263,12 +295,20 @@ const TextEditor = ({ roomId, setRoomId }) => {
               )}
 
               {text_id && (
-                <Button
-                  style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
-                  onClick={deleteText}
-                >
-                  삭제
-                </Button>
+                <>
+                  <Button
+                    style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
+                    onClick={deleteText}
+                  >
+                    삭제
+                  </Button>
+                  <Button
+                    style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
+                    onClick={createNewRoom}
+                  >
+                    방 생성
+                  </Button>
+                </>
               )}
             </div>
           </div>

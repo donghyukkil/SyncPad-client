@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
@@ -9,6 +9,11 @@ import { CONFIG } from "../../constants/config";
 
 const SubNavBar = ({ roomId, setRoomId }) => {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [rooms, setRooms] = useState([
+    { roomId: "room1", roomName: "Room 1" },
+    { roomId: "room2", roomName: "Room 2" },
+    { roomId: "room3", roomName: "Room 3" },
+  ]);
 
   const navigate = useNavigate();
 
@@ -81,6 +86,31 @@ const SubNavBar = ({ roomId, setRoomId }) => {
       console.log(error);
     }
   };
+  const fetchUserRooms = async () => {
+    const userId = localStorage.getItem("userEmail");
+    try {
+      const response = await fetch(
+        `${CONFIG.BACKEND_SERVER_URL}/getRooms/${userId}`,
+      );
+      const fetchedRooms = await response.json();
+
+      const combinedRooms = [
+        ...rooms,
+        ...fetchedRooms.filter(
+          fetchedRoom =>
+            !rooms.some(room => room.roomId === fetchedRoom.roomId),
+        ),
+      ];
+
+      setRooms(combinedRooms);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchUserRooms();
+  }, []);
 
   return (
     <div
@@ -96,9 +126,11 @@ const SubNavBar = ({ roomId, setRoomId }) => {
             <option value="" disabled>
               Select a room
             </option>
-            <option value="room1">Room 1</option>
-            <option value="room2">Room 2</option>
-            <option value="room3">Room 3</option>
+            {rooms.map(room => (
+              <option key={room.roomId} value={room.roomId}>
+                {room.roomName}
+              </option>
+            ))}
           </select>
         </div>
       )}
