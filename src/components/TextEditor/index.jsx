@@ -28,6 +28,10 @@ const TextEditor = ({ roomId, setRoomId }) => {
     ? texts.data.filter((text, index) => text._id === text_id)
     : [];
 
+  const chatRoomResult = texts.data
+    ? texts.data.filter((text, index) => text._id === roomId)
+    : [];
+
   const [updateMode, setUpdateMode] = useState(false);
   const [typingUser, setTypingUser] = useState(null);
 
@@ -46,6 +50,10 @@ const TextEditor = ({ roomId, setRoomId }) => {
 
   const socket = useRef();
   const typingTimerRef = useRef(null);
+
+  const bgColor = result?.[0]?.backgroundColor
+    ? result[0].backgroundColor
+    : backgroundColor;
 
   const handleInputChange = event => {
     handleContentChange(
@@ -90,7 +98,7 @@ const TextEditor = ({ roomId, setRoomId }) => {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify({ content: plainTextContent }),
+        body: JSON.stringify({ content: plainTextContent, backgroundColor }),
       });
 
       const data = await response.json();
@@ -219,7 +227,7 @@ const TextEditor = ({ roomId, setRoomId }) => {
         result[0].content.join("\n"),
       );
     }
-  }, []);
+  }, [texts]);
 
   return (
     <>
@@ -248,8 +256,7 @@ const TextEditor = ({ roomId, setRoomId }) => {
                   fontFamily: "Courier New",
                   color: "#000",
                   width: "100%",
-                  background:
-                    "linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px), #feef89",
+                  background: `linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px), ${bgColor}`,
                   backgroundSize: "100% 33px",
                   overflowY: "auto",
                 }}
@@ -264,13 +271,6 @@ const TextEditor = ({ roomId, setRoomId }) => {
             <div className="flex flex-col w-3/4 m-auto justify-between mt-0">
               {updateMode ? (
                 <>
-                  <label htmlFor="bgcolor">배경 색상 선택:</label>
-                  <input
-                    type="color"
-                    id="bgcolor"
-                    value={backgroundColor}
-                    onChange={e => setBackgroundColor(e.target.value)}
-                  />
                   <Button
                     style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
                     onClick={() => {
@@ -291,12 +291,22 @@ const TextEditor = ({ roomId, setRoomId }) => {
                   </Button>
                 </>
               ) : (
-                <Button
-                  style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
-                  onClick={updateText}
-                >
-                  {text_id ? "수정" : "저장"}
-                </Button>
+                <>
+                  {!text_id && (
+                    <input
+                      type="color"
+                      id="bgcolor"
+                      value={backgroundColor}
+                      onChange={e => setBackgroundColor(e.target.value)}
+                    />
+                  )}
+                  <Button
+                    style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
+                    onClick={updateText}
+                  >
+                    {text_id ? "수정" : "저장"}
+                  </Button>
+                </>
               )}
 
               {text_id && (

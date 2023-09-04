@@ -23,7 +23,10 @@ const TextCard = ({ text }) => {
       <div className="bg-amber-700 w-full h-10 text-center line leading-10 text-sm rounded-md font-semibold font-mono flex items-center justify-center">
         Hello, legalPad!
       </div>
-      <div className="bg-yellow-200 flex">
+      <div
+        className="bg-yellow-200 flex"
+        style={{ backgroundColor: text.backgroundColor }}
+      >
         <div className="flex flex-col justify-around m-auto border border-indigo-950">
           <div
             className="bg-white m-auto rounded-md overflow-hidden text-sm text-center"
