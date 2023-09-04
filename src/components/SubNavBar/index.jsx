@@ -26,6 +26,29 @@ const SubNavBar = ({ roomId, setRoomId }) => {
     setMenuOpen(!menuOpen);
   };
 
+  const deleteRoom = async () => {
+    // if (!roomId) {
+    //   console.log("No roomId available to delete.");
+    //   return;
+    // }
+
+    try {
+      const response = await fetch(
+        `${CONFIG.BACKEND_SERVER_URL}/users/${localStorage.getItem(
+          "userEmail",
+        )}/deleteRooms/${roomId}`,
+        {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        },
+      );
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   const signInWithGoogle = async () => {
     try {
       const result = await signInWithPopup(auth, provider);
@@ -119,6 +142,12 @@ const SubNavBar = ({ roomId, setRoomId }) => {
     >
       {roomId && (
         <div className="m-4">
+          <Button
+            style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
+            onClick={deleteRoom}
+          >
+            방 삭제
+          </Button>
           <select
             onChange={e => setRoomId(e.target.value)}
             className="p-2 border rounded"
