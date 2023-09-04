@@ -39,10 +39,15 @@ const TextEditor = ({ roomId, setRoomId }) => {
   const navigate = useNavigate();
 
   const textareaRef = useRef(null);
+
+  if (!!shareRoomId) {
+    roomId = shareRoomId;
+  }
+
   const socket = useRef();
   const typingTimerRef = useRef(null);
 
-  const handleInputChange = event =>
+  const handleInputChange = event => {
     handleContentChange(
       event,
       setTextValue,
@@ -53,6 +58,7 @@ const TextEditor = ({ roomId, setRoomId }) => {
       textareaRef,
       setTypingUser,
     );
+  };
 
   const TYPING_INTERVAL = 1000;
 
@@ -153,7 +159,6 @@ const TextEditor = ({ roomId, setRoomId }) => {
 
   useEffect(() => {
     const targetRoomId = shareRoomId || roomId || text_id;
-
     if (targetRoomId) {
       socket.current = io(CONFIG.BACKEND_SERVER_URL);
       socket.current.emit("joinRoom", targetRoomId);
@@ -206,7 +211,7 @@ const TextEditor = ({ roomId, setRoomId }) => {
         }
       };
     }
-  }, [roomId, shareRoomId]);
+  }, [roomId]);
 
   useEffect(() => {
     if (textareaRef.current && result.length > 0) {
