@@ -1,4 +1,4 @@
-import TextCardDetail from "../../components/TextCardDetail";
+import TextEditor from "../../components/TextEditor";
 
 const Create = () => {
   return (
@@ -7,7 +7,7 @@ const Create = () => {
         className="flex w-3/4 h-3/4 m-auto justify-center rounded-md"
         style={{ backgroundColor: "#DAC0A3" }}
       >
-        <TextCardDetail />
+        <TextEditor />
       </div>
     </div>
   );

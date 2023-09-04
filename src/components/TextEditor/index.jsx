@@ -20,7 +20,7 @@ import {
 
 import { handleDownloadClick } from "../../utils/textAction";
 
-const TextCardDetail = ({ roomId, setRoomId }) => {
+const TextEditor = ({ roomId, setRoomId }) => {
   const { text_id } = useParams();
   const { texts } = useStore();
 
@@ -278,4 +278,4 @@ const TextCardDetail = ({ roomId, setRoomId }) => {
   );
 };
 
-export default TextCardDetail;
+export default TextEditor;

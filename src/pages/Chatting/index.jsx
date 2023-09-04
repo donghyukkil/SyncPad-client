@@ -1,6 +1,5 @@
 import { useState } from "react";
-
-import TextCardDetail from "../../components/TextCardDetail";
+import TextEditor from "../../components/TextEditor";
 
 const Chatting = () => {
   const [roomId, setRoomId] = useState(1);
@@ -11,7 +10,7 @@ const Chatting = () => {
         className="w-screen h-screen flex flex-col"
         style={{ backgroundColor: "#F8F0E5" }}
       >
-        <TextCardDetail roomId={roomId} setRoomId={setRoomId} />
+        <TextEditor roomId={roomId} setRoomId={setRoomId} />
       </div>
     </div>
   );
