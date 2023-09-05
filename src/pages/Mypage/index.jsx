@@ -7,7 +7,8 @@ import Button from "../../components/Button";
 import SubNavBar from "../../components/SubNavBar";
 
 const Mypage = () => {
-  const { texts, fetchTexts, currentPage, setCurrentPage } = useStore();
+  const { texts, fetchTexts, currentPage, setCurrentPage, setRoomId } =
+    useStore();
   const [localTotalPages, setLocalTotalPages] = useState(1);
 
   const { totalPages } = texts;
@@ -33,8 +34,11 @@ const Mypage = () => {
   return (
     <div className="flex">
       <NavBar />
-      <div className="w-screen h-screen flex flex-col">
-        <SubNavBar />
+      <div
+        className="w-screen h-screen flex flex-col"
+        style={{ backgroundColor: "#F8F0E5" }}
+      >
+        <SubNavBar setRoomId={setRoomId} />
         <div
           className="flex flex-col w-3/4 h-3/4 m-auto py-5 justify-center rounded-md"
           style={{ backgroundColor: "#DAC0A3" }}

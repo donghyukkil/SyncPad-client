@@ -2,9 +2,12 @@ import ImageUploader from "../../components/ImageUploader";
 import NavBar from "../../components/NavBar";
 import SubNavBar from "../../components/SubNavBar";
 
+import useStore from "../../useStore";
+
 import { CONFIG } from "../../constants/config";
 
 const Upload = () => {
+  const { setRoomId } = useStore();
   const uploadImageToServer = async base64String => {
     try {
       const response = await fetch(
@@ -30,7 +33,7 @@ const Upload = () => {
     <div className="flex" style={{ backgroundColor: "#F8F0E5" }}>
       <NavBar />
       <div className="w-screen h-screen flex flex-col">
-        <SubNavBar />
+        <SubNavBar setRoomId={setRoomId} />
         <div
           className="flex w-3/4 h-3/4 m-auto py-0 justify-center rounded-md"
           style={{ backgroundColor: "#DAC0A3" }}

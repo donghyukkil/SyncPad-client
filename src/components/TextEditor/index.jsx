@@ -228,7 +228,7 @@ const TextEditor = ({ roomId }) => {
         result[0].content.join("\n"),
       );
     }
-  }, [texts]);
+  }, []);
 
   return (
     <>
@@ -238,12 +238,17 @@ const TextEditor = ({ roomId }) => {
           className="w-screen h-screen flex flex-col"
           style={{ backgroundColor: "#F8F0E5" }}
         >
-          <SubNavBar roomId={roomId} setRoomId={setRoomId} />
+          <SubNavBar
+            roomId={roomId}
+            setRoomId={setRoomId}
+            createNewRoom={createNewRoom}
+            text_id={text_id}
+          />
           <div
             className="flex flex-col w-3/4 h-3/4 m-auto rounded-md"
             style={{ backgroundColor: "#DAC0A3" }}
           >
-            <div className="flex flex-col w-3/4 m-auto">
+            <div className="flex flex-col w-3/4 m-auto mt-4">
               <div className="bg-amber-700 w-full h-16 rounded-md text-center text-2xl font-semibold font-mono flex items-center justify-center">
                 Hello, legalPad!
               </div>
@@ -263,18 +268,42 @@ const TextEditor = ({ roomId }) => {
                   overflowY: "auto",
                 }}
               ></div>
-              <div
-                className="rounded-md text-center text-lg font-semibold font-mono flex items-center justify-center"
-                style={{ height: "36px" }}
-              >
-                {typingUser ? `${typingUser}가 입력 중입니다...` : ""}
-              </div>
+              {roomId && (
+                <div
+                  className="rounded-md text-center text-lg font-semibold font-mono flex items-center justify-center"
+                  style={{ height: "5px", marginTop: "15px" }}
+                >
+                  {typingUser ? `${typingUser}가 입력 중입니다...` : ""}
+                </div>
+              )}
             </div>
             <div className="flex flex-col w-3/4 m-auto justify-between mt-0">
               {updateMode ? (
                 <>
                   <Button
                     style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
+                    onClick={navigateToMypage}
+                  >
+                    {"저장완료"}
+                  </Button>
+                </>
+              ) : (
+                <div className="flex flex-col space-y-3">
+                  <input
+                    type="color"
+                    id="bgcolor"
+                    value={backgroundColor}
+                    onChange={e => {
+                      setBackgroundColor(e.target.value);
+                      if (textareaRef.current) {
+                        textareaRef.current.style.backgroundColor =
+                          e.target.value;
+                      }
+                    }}
+                  />
+
+                  <Button
+                    style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
                     onClick={() => {
                       handleDownloadClick(
                         textValue,
@@ -286,44 +315,21 @@ const TextEditor = ({ roomId }) => {
                     다운로드
                   </Button>
                   <Button
-                    style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
-                    onClick={navigateToMypage}
-                  >
-                    {text_id ? "수정 완료" : "저장 완료"}
-                  </Button>
-                </>
-              ) : (
-                <>
-                  {!text_id && (
-                    <input
-                      type="color"
-                      id="bgcolor"
-                      value={backgroundColor}
-                      onChange={e => setBackgroundColor(e.target.value)}
-                    />
-                  )}
-                  <Button
-                    style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
+                    style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
                     onClick={updateText}
                   >
                     {text_id ? "수정" : "저장"}
                   </Button>
-                </>
+                </div>
               )}
 
               {text_id && (
                 <>
                   <Button
-                    style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
+                    style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-4"
                     onClick={deleteText}
                   >
                     삭제
-                  </Button>
-                  <Button
-                    style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
-                    onClick={createNewRoom}
-                  >
-                    방 생성
                   </Button>
                 </>
               )}

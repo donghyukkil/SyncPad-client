@@ -6,12 +6,15 @@ import Button from "../../components/Button";
 import NavBar from "../../components/NavBar";
 import SubNavBar from "../../components/SubNavBar";
 
+import useStore from "../../useStore";
+
 import { CONFIG } from "../../constants/config";
 
 const Home = () => {
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
   const navigate = useNavigate();
+  const { setRoomId } = useStore();
 
   const signInWithGoogle = async () => {
     try {
@@ -54,7 +57,7 @@ const Home = () => {
     <div className="flex" style={{ backgroundColor: "#F8F0E5" }}>
       <NavBar />
       <div className="w-screen h-screen flex flex-col">
-        <SubNavBar />
+        <SubNavBar setRoomId={setRoomId} />
         <div
           className="flex w-3/4 h-3/4 m-auto py-0 justify-center rounded-md"
           style={{ backgroundColor: "#DAC0A3" }}
