@@ -10,9 +10,7 @@ import { CONFIG } from "../../constants/config";
 const SubNavBar = ({ roomId, setRoomId }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [rooms, setRooms] = useState([
-    { roomId: "room1", roomName: "Room 1" },
-    { roomId: "room2", roomName: "Room 2" },
-    { roomId: "room3", roomName: "Room 3" },
+    { roomId: "room1", roomName: "공개 채팅 방" },
   ]);
 
   const navigate = useNavigate();
@@ -26,12 +24,15 @@ const SubNavBar = ({ roomId, setRoomId }) => {
     setMenuOpen(!menuOpen);
   };
 
-  const deleteRoom = async () => {
-    // if (!roomId) {
-    //   console.log("No roomId available to delete.");
-    //   return;
-    // }
+  const handleRoomClick = roomId => {
+    if (roomId === "room1") {
+      navigate("/chat");
+    } else {
+      navigate(`/room/${roomId}`);
+    }
+  };
 
+  const deleteRoom = async () => {
     try {
       const response = await fetch(
         `${CONFIG.BACKEND_SERVER_URL}/users/${localStorage.getItem(
@@ -44,6 +45,7 @@ const SubNavBar = ({ roomId, setRoomId }) => {
           },
         },
       );
+      navigate("/chat");
     } catch (error) {
       console.log(error);
     }
@@ -133,7 +135,7 @@ const SubNavBar = ({ roomId, setRoomId }) => {
 
   useEffect(() => {
     fetchUserRooms();
-  }, []);
+  }, [roomId]);
 
   return (
     <div

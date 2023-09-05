@@ -4,6 +4,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { io } from "socket.io-client";
 
 import useStore from "../../useStore";
+
 import Button from "../Button";
 import NavBar from "../NavBar";
 import SubNavBar from "../SubNavBar";
@@ -20,9 +21,9 @@ import {
 
 import { handleDownloadClick } from "../../utils/textAction";
 
-const TextEditor = ({ roomId, setRoomId }) => {
+const TextEditor = ({ roomId }) => {
   const { text_id, shareRoomId } = useParams();
-  const { texts } = useStore();
+  const { texts, setRoomId } = useStore();
 
   const result = texts.data
     ? texts.data.filter((text, index) => text._id === text_id)
@@ -256,8 +257,9 @@ const TextEditor = ({ roomId, setRoomId }) => {
                   fontFamily: "Courier New",
                   color: "#000",
                   width: "100%",
-                  background: `linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px), ${bgColor}`,
+                  background: `linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px)`,
                   backgroundSize: "100% 33px",
+                  backgroundColor: bgColor,
                   overflowY: "auto",
                 }}
               ></div>
