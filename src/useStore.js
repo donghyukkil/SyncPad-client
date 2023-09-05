@@ -4,8 +4,6 @@ import { CONFIG } from "./constants/config";
 
 const useStore = create(set => ({
   texts: {},
-  textValue: "",
-  setTextValue: textValue => set({ textValue }),
   setTexts: texts => set({ texts }),
   fetchTexts: async currentPage => {
     try {
@@ -21,6 +19,10 @@ const useStore = create(set => ({
       console.log(error);
     }
   },
+
+  textValue: "",
+  setTextValue: textValue => set({ textValue }),
+
   selectedTextId: null,
   setSelectedTextId: selectedTextId => {
     set({ selectedTextId });
@@ -28,6 +30,9 @@ const useStore = create(set => ({
 
   currentPage: 1,
   setCurrentPage: page => set(() => ({ currentPage: page })),
+
+  roomId: 1,
+  setRoomId: roomId => set({ roomId }),
 }));
 
 export default useStore;
