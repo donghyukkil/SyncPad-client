@@ -25,12 +25,8 @@ const TextEditor = ({ roomId }) => {
   const { text_id, shareRoomId } = useParams();
   const { texts, setRoomId } = useStore();
 
-  const result = texts.data
+  let result = texts.data
     ? texts.data.filter((text, index) => text._id === text_id)
-    : [];
-
-  const chatRoomResult = texts.data
-    ? texts.data.filter((text, index) => text._id === roomId)
     : [];
 
   const [updateMode, setUpdateMode] = useState(false);
@@ -47,6 +43,10 @@ const TextEditor = ({ roomId }) => {
 
   if (!!shareRoomId) {
     roomId = shareRoomId;
+
+    result = texts.data
+      ? texts.data.filter((text, index) => text._id === roomId)
+      : [];
   }
 
   const socket = useRef();
@@ -228,7 +228,7 @@ const TextEditor = ({ roomId }) => {
         result[0].content.join("\n"),
       );
     }
-  }, []);
+  }, [shareRoomId]);
 
   return (
     <>
