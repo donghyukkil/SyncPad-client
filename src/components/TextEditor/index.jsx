@@ -69,7 +69,7 @@ const TextEditor = ({ roomId }) => {
     );
   };
 
-  const TYPING_INTERVAL = 1000;
+  const TYPING_INTERVAL = 300;
 
   const navigateToMypage = () => {
     navigate("/mypage");
@@ -271,7 +271,7 @@ const TextEditor = ({ roomId }) => {
               {roomId && (
                 <div
                   className="rounded-md text-center text-lg font-semibold font-mono flex items-center justify-center"
-                  style={{ height: "5px", marginTop: "15px" }}
+                  style={{ height: "5px", marginTop: "25px" }}
                 >
                   {typingUser ? `${typingUser}가 입력 중입니다...` : ""}
                 </div>

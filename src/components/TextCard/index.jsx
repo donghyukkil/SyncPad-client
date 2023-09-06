@@ -27,10 +27,10 @@ const TextCard = ({ text }) => {
         className="bg-yellow-200 flex"
         style={{ backgroundColor: text.backgroundColor }}
       >
-        <div className="flex flex-col justify-around m-auto border border-indigo-950">
+        <div className="flex flex-col justify-around m-auto">
           <div
             className="bg-white m-auto rounded-md overflow-hidden text-sm text-center w-3/5"
-            style={{ height: "120px" }}
+            style={{ height: "100px" }}
           >
             {renderContent(text.content)}
           </div>
