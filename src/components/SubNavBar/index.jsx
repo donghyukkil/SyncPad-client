@@ -139,7 +139,7 @@ const SubNavBar = ({ roomId, setRoomId, text_id, createNewRoom }) => {
 
   return (
     <div
-      className="mr-10 h-16 flex justify-between relative w-full"
+      className="h-16 flex justify-between relative w-full"
       style={{ backgroundColor: "#DAC0A3" }}
     >
       <div className="flex space-x-10 m-auto ml-20">
@@ -150,6 +150,7 @@ const SubNavBar = ({ roomId, setRoomId, text_id, createNewRoom }) => {
             handleRoomClick(selectedRoomId);
           }}
           className="p-2 border rounded"
+          style={{ width: "200px" }}
         >
           <option key="default-option" value="" disabled>
             Select a room
@@ -174,9 +175,9 @@ const SubNavBar = ({ roomId, setRoomId, text_id, createNewRoom }) => {
         </Button>
       </div>
 
-      <div className="flex flex-col mr-32 my-2">
+      <div className="flex flex-col mr-20 my-2">
         {userPhotoURL ? (
-          <>
+          <div style={{ width: "48px", height: "48px" }}>
             <Button>
               <img
                 className="h-12 w-12 rounded-full"
@@ -186,10 +187,10 @@ const SubNavBar = ({ roomId, setRoomId, text_id, createNewRoom }) => {
               />
             </Button>
             {menuOpen && (
-              <div className="bg-white absolute mt-16">
+              <div className="bg-white">
                 <Button
                   style={
-                    "bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
+                    "bg-white hover:border-0 hover:bg-gray-100 text-black rounded-md text-center text-lg font-semibold font-mono w-20 mt-2"
                   }
                   onClick={handleLogout}
                 >
@@ -197,15 +198,15 @@ const SubNavBar = ({ roomId, setRoomId, text_id, createNewRoom }) => {
                 </Button>
               </div>
             )}
-          </>
+          </div>
         ) : (
           <Button
             style={
-              "bg-white hover:bg-gray-100 hover:border-0 text-black px-4 py-2 rounded-lg p-0 text-lg font-semibold font-mono"
+              "bg-white hover:bg-gray-100 hover:border-0 text-black ml-3 rounded-lg font-semibold font-mono h-10 text-lg mt-1"
             }
             onClick={signInWithGoogle}
           >
-            구글 로그인
+            로그인
           </Button>
         )}
       </div>

@@ -20,7 +20,7 @@ const TextCard = ({ text }) => {
 
   return (
     <div className="flex flex-col" onClick={navigateToDetailPage}>
-      <div className="bg-amber-700 w-full h-10 text-center line leading-10 text-sm rounded-md font-semibold font-mono flex items-center justify-center">
+      <div className="bg-amber-700 w-full h-10 text-center line leading-10 text-xs rounded-md font-semibold font-mono flex items-center justify-center">
         Hello, legalPad!
       </div>
       <div
@@ -29,8 +29,8 @@ const TextCard = ({ text }) => {
       >
         <div className="flex flex-col justify-around m-auto border border-indigo-950">
           <div
-            className="bg-white m-auto rounded-md overflow-hidden text-sm text-center"
-            style={{ width: "140px", height: "130px" }}
+            className="bg-white m-auto rounded-md overflow-hidden text-sm text-center w-3/5"
+            style={{ height: "120px" }}
           >
             {renderContent(text.content)}
           </div>
