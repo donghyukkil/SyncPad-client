@@ -159,7 +159,6 @@ const TextEditor = ({ roomId }) => {
         }
 
         navigate(`/room/${data.data.room.textId}`);
-        alert(`방이 생성되었습니다! URL: ${roomURL}`);
       }
     } catch (error) {
       console.log(error);
