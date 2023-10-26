@@ -115,7 +115,9 @@ const SubNavBar = ({ roomId, setRoomId, text_id, createNewRoom }) => {
     const userId = localStorage.getItem("userEmail");
     try {
       const response = await fetch(
-        `${CONFIG.BACKEND_SERVER_URL}/getRooms/${userId}`,
+        `${CONFIG.BACKEND_SERVER_URL}/users/${localStorage.getItem(
+          "userEmail",
+        )}/getRooms`,
       );
       const fetchedRooms = await response.json();
 

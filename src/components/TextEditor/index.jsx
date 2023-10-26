@@ -137,16 +137,21 @@ const TextEditor = ({ roomId }) => {
 
   const createNewRoom = async () => {
     try {
-      const response = await fetch(`${CONFIG.BACKEND_SERVER_URL}/createRoom`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${CONFIG.BACKEND_SERVER_URL}/users/${localStorage.getItem(
+          "userEmail",
+        )}/createRoom`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            text_id,
+            userId: localStorage.getItem("userEmail"),
+          }),
         },
-        body: JSON.stringify({
-          text_id,
-          userId: localStorage.getItem("userEmail"),
-        }),
-      });
+      );
       const data = await response.json();
       if (data) {
         const roomURL = `${window.location.origin}/room/${data.data.room.textId}`;
