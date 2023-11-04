@@ -7,7 +7,7 @@ import Button from "../Button";
 
 import { CONFIG } from "../../constants/config";
 
-const SubNavBar = ({ roomId, setRoomId, text_id, createNewRoom }) => {
+const SubNavBar = ({ roomId, setRoomId, createNewRoom }) => {
   const [menuOpen, setMenuOpen] = useState(false);
   const [rooms, setRooms] = useState([
     { roomId: "room1", roomName: "공개 채팅 방" },

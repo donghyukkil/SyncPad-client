@@ -23,7 +23,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/chat" element={<Chatting />} />
         <Route path="/mypage/:text_id" element={<TextEditor />} />
-        <Route path="/room/:shareRoomId" element={<TextEditor />} />
+        <Route path="/room/:roomId" element={<TextEditor />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,

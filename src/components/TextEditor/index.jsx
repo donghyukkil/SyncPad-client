@@ -21,33 +21,26 @@ import {
 
 import { handleDownloadClick } from "../../utils/textAction";
 
-const TextEditor = ({ roomId }) => {
-  const { text_id, shareRoomId } = useParams();
+const TextEditor = () => {
+  const { text_id, roomId } = useParams();
   const { texts, setRoomId } = useStore();
 
   let result = texts.data
-    ? texts.data.filter((text, index) => text._id === text_id)
+    ? texts.data.filter(
+        (text, index) => text._id === text_id || text._id === roomId,
+      )
     : [];
 
   const [updateMode, setUpdateMode] = useState(false);
   const [typingUser, setTypingUser] = useState(null);
 
   const resultText = result.length > 0 ? result[0].content.join("\n") : "";
-  const initialTextValue = shareRoomId ? "" : resultText;
-  const [textValue, setTextValue] = useState(initialTextValue);
+  const [textValue, setTextValue] = useState(resultText);
   const [backgroundColor, setBackgroundColor] = useState("#f7e79e");
 
   const navigate = useNavigate();
 
   const textareaRef = useRef(null);
-
-  if (!!shareRoomId) {
-    roomId = shareRoomId;
-
-    result = texts.data
-      ? texts.data.filter((text, index) => text._id === roomId)
-      : [];
-  }
 
   const socket = useRef();
   const typingTimerRef = useRef(null);
@@ -171,7 +164,12 @@ const TextEditor = ({ roomId }) => {
   };
 
   useEffect(() => {
-    const targetRoomId = shareRoomId || roomId || text_id;
+    const targetRoomId = roomId || text_id;
+    if (textareaRef.current && result.length > 0) {
+      textareaRef.current.innerHTML = convertPlainTextToHTML(
+        result[0].content.join("\n"),
+      );
+    }
     if (targetRoomId) {
       socket.current = io(CONFIG.BACKEND_SERVER_URL);
       socket.current.emit("joinRoom", targetRoomId);
@@ -224,15 +222,7 @@ const TextEditor = ({ roomId }) => {
         }
       };
     }
-  }, [roomId]);
-
-  useEffect(() => {
-    if (textareaRef.current && result.length > 0) {
-      textareaRef.current.innerHTML = convertPlainTextToHTML(
-        result[0].content.join("\n"),
-      );
-    }
-  }, [shareRoomId]);
+  }, [roomId, text_id, textareaRef]);
 
   return (
     <>
