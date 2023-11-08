@@ -5,24 +5,8 @@ import Button from "../Button";
 const NavBar = () => {
   const navigate = useNavigate();
 
-  const navigateToHome = () => {
-    navigate("/");
-  };
-
-  const navigateToUpload = () => {
-    navigate("/upload");
-  };
-
-  const navigateToCreate = () => {
-    navigate("/create");
-  };
-
-  const navigateToMyPage = () => {
-    navigate("/mypage");
-  };
-
-  const navigateToChat = () => {
-    navigate("/chat");
+  const navigateTo = path => {
+    navigate(path);
   };
 
   return (
@@ -35,7 +19,7 @@ const NavBar = () => {
           style={
             "bg-gray-900 text-white rounded-md px-3 py-2 text-lg font-semibold font-mono"
           }
-          onClick={navigateToHome}
+          onClick={() => navigateTo("/")}
         >
           홈
         </Button>
@@ -43,7 +27,7 @@ const NavBar = () => {
           style={
             "bg-gray-900 text-white rounded-md px-3 py-2 text-lg font-semibold font-mono"
           }
-          onClick={navigateToCreate}
+          onClick={() => navigateTo("/create")}
         >
           새 메모
         </Button>
@@ -51,7 +35,7 @@ const NavBar = () => {
           style={
             "bg-gray-900 text-white rounded-md px-3 py-2 text-lg font-semibold font-mono"
           }
-          onClick={navigateToUpload}
+          onClick={() => navigateTo("/upload")}
         >
           이미지 메모
         </Button>
@@ -59,7 +43,7 @@ const NavBar = () => {
           style={
             "bg-gray-900 text-white rounded-md px-3 py-2 text-lg font-semibold font-mono"
           }
-          onClick={navigateToMyPage}
+          onClick={() => navigateTo("/mypage")}
         >
           마이 페이지
         </Button>
@@ -67,7 +51,7 @@ const NavBar = () => {
           style={
             "bg-gray-900 text-white rounded-md px-3 py-2 text-lg font-semibold font-mono"
           }
-          onClick={navigateToChat}
+          onClick={() => navigateTo("/chat")}
         >
           함께 메모
         </Button>
