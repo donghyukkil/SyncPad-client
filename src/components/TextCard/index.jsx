@@ -15,6 +15,7 @@ const TextCard = ({ text }) => {
         )
         .filter(Boolean);
     }
+
     return content;
   };
 

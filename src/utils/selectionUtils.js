@@ -3,6 +3,7 @@ export const convertHTMLToPlainText = html => {
   tempDiv.innerHTML = html;
 
   let text = "";
+
   tempDiv.childNodes.forEach(node => {
     const nodeName = node.nodeName.toLowerCase();
     if (nodeName === "div" || nodeName === "p") {
@@ -19,16 +20,19 @@ export const convertHTMLToPlainText = html => {
 
 export const convertPlainTextToHTML = text => {
   const lines = text.split("\n");
+
   return lines.map(line => `<div>${line}</div>`).join("");
 };
 
 export const saveSelection = () => {
   if (window.getSelection) {
     const sel = window.getSelection();
+
     if (sel.getRangeAt && sel.rangeCount) {
       return sel.getRangeAt(0);
     }
   }
+
   return null;
 };
 

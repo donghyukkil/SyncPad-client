@@ -41,7 +41,6 @@ const TextEditor = () => {
   const navigate = useNavigate();
 
   const textareaRef = useRef(null);
-
   const socket = useRef();
   const typingTimerRef = useRef(null);
 
@@ -95,8 +94,6 @@ const TextEditor = () => {
         body: JSON.stringify({ content: plainTextContent, backgroundColor }),
       });
 
-      const data = await response.json();
-
       setUpdateMode(!updateMode);
     } catch (error) {
       console.log(error);
@@ -106,6 +103,7 @@ const TextEditor = () => {
   const deleteText = async () => {
     if (!text_id) {
       console.log("No text_id available to delete.");
+
       return;
     }
 
@@ -145,7 +143,9 @@ const TextEditor = () => {
           }),
         },
       );
+
       const data = await response.json();
+
       if (data) {
         const roomURL = `${window.location.origin}/room/${data.data.room.textId}`;
 
@@ -172,6 +172,7 @@ const TextEditor = () => {
     }
     if (targetRoomId) {
       socket.current = io(CONFIG.BACKEND_SERVER_URL);
+
       socket.current.emit("joinRoom", targetRoomId);
 
       socket.current.emit("setUserName", {
@@ -250,7 +251,7 @@ const TextEditor = () => {
                 className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 resize-none"
                 ref={textareaRef}
                 onInput={handleInputChange}
-                contentEditable={true}
+                contentEditable
                 style={{
                   lineHeight: "32px",
                   fontFamily: "Courier New",
@@ -261,7 +262,7 @@ const TextEditor = () => {
                   backgroundColor: bgColor,
                   overflowY: "auto",
                 }}
-              ></div>
+              />
               {roomId && (
                 <div
                   className="rounded-md text-center text-lg font-semibold font-mono flex items-center justify-center"

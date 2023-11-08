@@ -9,6 +9,7 @@ import SubNavBar from "../../components/SubNavBar";
 const Mypage = () => {
   const { texts, fetchTexts, currentPage, setCurrentPage, setRoomId } =
     useStore();
+
   const [localTotalPages, setLocalTotalPages] = useState(1);
 
   const { totalPages } = texts;

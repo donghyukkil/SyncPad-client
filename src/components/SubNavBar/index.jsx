@@ -45,6 +45,7 @@ const SubNavBar = ({ roomId, setRoomId, createNewRoom }) => {
           },
         },
       );
+
       navigate("/chat");
     } catch (error) {
       console.log(error);

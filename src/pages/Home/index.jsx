@@ -13,7 +13,9 @@ import { CONFIG } from "../../constants/config";
 const Home = () => {
   const auth = getAuth();
   const provider = new GoogleAuthProvider();
+
   const navigate = useNavigate();
+
   const { setRoomId } = useStore();
 
   const signInWithGoogle = async () => {

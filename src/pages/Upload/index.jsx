@@ -8,6 +8,7 @@ import { CONFIG } from "../../constants/config";
 
 const Upload = () => {
   const { setRoomId } = useStore();
+
   const uploadImageToServer = async base64String => {
     try {
       const response = await fetch(
@@ -22,8 +23,6 @@ const Upload = () => {
           body: JSON.stringify({ imageBase64: base64String }),
         },
       );
-
-      const data = await response.json();
     } catch (error) {
       console.log("Image upload error", error.message);
     }
