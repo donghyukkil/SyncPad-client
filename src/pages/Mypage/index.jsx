@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 
 import TextCard from "../../components/TextCard";
 import NavBar from "../../components/NavBar";
@@ -10,19 +10,9 @@ const Mypage = () => {
   const { texts, fetchTexts, currentPage, setCurrentPage, setRoomId } =
     useStore();
 
-  const [localTotalPages, setLocalTotalPages] = useState(1);
-
-  const { totalPages } = texts;
-
   useEffect(() => {
     fetchTexts(currentPage);
-  }, [currentPage]);
-
-  useEffect(() => {
-    if (totalPages) {
-      setLocalTotalPages(totalPages);
-    }
-  }, [totalPages]);
+  }, [currentPage, texts.totalPages]);
 
   const onPrevButtonClick = () => {
     setCurrentPage(currentPage - 1);
@@ -64,7 +54,7 @@ const Mypage = () => {
                   Previous
                 </Button>
               </li>
-              {[...Array(totalPages).keys()].map(pageNumber => (
+              {[...Array(texts.totalPages).keys()].map(pageNumber => (
                 <li key={pageNumber}>
                   <Button
                     style={`relative block rounded bg-transparent px-3 py-1.5 text-sm transition-all duration-300 dark:text-neutral-400 ${
@@ -84,7 +74,7 @@ const Mypage = () => {
                     "relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400"
                   }
                   onClick={onNextButtonClick}
-                  disabled={currentPage === totalPages}
+                  disabled={currentPage === texts.totalPages}
                 >
                   Next
                 </Button>
