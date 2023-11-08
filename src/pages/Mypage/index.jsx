@@ -14,12 +14,8 @@ const Mypage = () => {
     fetchTexts(currentPage);
   }, [currentPage, texts.totalPages]);
 
-  const onPrevButtonClick = () => {
-    setCurrentPage(currentPage - 1);
-  };
-
-  const onNextButtonClick = () => {
-    setCurrentPage(currentPage + 1);
+  const changePage = newPage => {
+    setCurrentPage(newPage);
   };
 
   return (
@@ -48,7 +44,7 @@ const Mypage = () => {
                   style={
                     "relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400"
                   }
-                  onClick={onPrevButtonClick}
+                  onClick={() => changePage(currentPage - 1)}
                   disabled={currentPage === 1}
                 >
                   Previous
@@ -62,7 +58,7 @@ const Mypage = () => {
                         ? "text-neutral-700 shadow-lg"
                         : "text-neutral-500"
                     }`}
-                    onClick={() => setCurrentPage(pageNumber + 1)}
+                    onClick={() => changePage(pageNumber + 1)}
                   >
                     {pageNumber + 1}
                   </Button>
@@ -73,7 +69,7 @@ const Mypage = () => {
                   style={
                     "relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400"
                   }
-                  onClick={onNextButtonClick}
+                  onClick={() => changePage(currentPage + 1)}
                   disabled={currentPage === texts.totalPages}
                 >
                   Next
