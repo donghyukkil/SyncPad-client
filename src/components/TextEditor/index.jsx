@@ -23,7 +23,7 @@ import { handleDownloadClick } from "../../utils/textAction";
 
 const TextEditor = () => {
   const { text_id, roomId } = useParams();
-  const { texts, setRoomId } = useStore();
+  const { texts, setRoomId, user } = useStore();
 
   let result = texts.data
     ? texts.data.filter(
@@ -58,6 +58,7 @@ const TextEditor = () => {
       TYPING_INTERVAL,
       textareaRef,
       setTypingUser,
+      user,
     );
   };
 
@@ -75,14 +76,10 @@ const TextEditor = () => {
       const plainTextContent = convertHTMLToPlainText(textValue);
 
       if (text_id) {
-        url = `${CONFIG.BACKEND_SERVER_URL}/users/${localStorage.getItem(
-          "userEmail",
-        )}/texts/${text_id}`;
+        url = `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/texts/${text_id}`;
         method = "PUT";
       } else {
-        url = `${CONFIG.BACKEND_SERVER_URL}/users/${localStorage.getItem(
-          "userEmail",
-        )}/create`;
+        url = `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/create`;
         method = "POST";
       }
 
@@ -109,9 +106,7 @@ const TextEditor = () => {
 
     try {
       const response = await fetch(
-        `${CONFIG.BACKEND_SERVER_URL}/users/${localStorage.getItem(
-          "userEmail",
-        )}/texts/${text_id}`,
+        `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/texts/${text_id}`,
         {
           method: "DELETE",
           headers: {
@@ -129,9 +124,7 @@ const TextEditor = () => {
   const createNewRoom = async () => {
     try {
       const response = await fetch(
-        `${CONFIG.BACKEND_SERVER_URL}/users/${localStorage.getItem(
-          "userEmail",
-        )}/createRoom`,
+        `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/createRoom`,
         {
           method: "POST",
           headers: {
@@ -139,7 +132,7 @@ const TextEditor = () => {
           },
           body: JSON.stringify({
             text_id,
-            userId: localStorage.getItem("userEmail"),
+            userId: user.email,
           }),
         },
       );
@@ -176,7 +169,7 @@ const TextEditor = () => {
       socket.current.emit("joinRoom", targetRoomId);
 
       socket.current.emit("setUserName", {
-        username: localStorage.getItem("userEmail"),
+        username: user,
       });
 
       socket.current.on(
@@ -206,7 +199,7 @@ const TextEditor = () => {
       );
 
       socket.current.on("userTyping", username => {
-        setTypingUser(username);
+        setTypingUser(username.email.split("@")[0]);
 
         if (typingTimerRef.current) {
           clearTimeout(typingTimerRef.current);

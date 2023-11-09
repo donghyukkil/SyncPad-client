@@ -7,14 +7,12 @@ import useStore from "../../useStore";
 import { CONFIG } from "../../constants/config";
 
 const Upload = () => {
-  const { setRoomId } = useStore();
+  const { setRoomId, user } = useStore();
 
   const uploadImageToServer = async base64String => {
     try {
       const response = await fetch(
-        `${CONFIG.BACKEND_SERVER_URL}/users/${localStorage.getItem(
-          "userEmail",
-        )}/upload`,
+        `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/upload`,
         {
           method: "POST",
           headers: {

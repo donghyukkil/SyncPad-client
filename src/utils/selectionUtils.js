@@ -55,6 +55,7 @@ export const handleContentChange = (
   TYPING_INTERVAL,
   textareaRef,
   setTypingUser,
+  user,
 ) => {
   const savedSelection = saveSelection();
   const cursorPosition = savedSelection.getBoundingClientRect();
@@ -62,7 +63,7 @@ export const handleContentChange = (
   const newValue = convertHTMLToPlainText(event.currentTarget.innerHTML);
   setTextValue(newValue);
 
-  const userPhotoURL = localStorage.getItem("userPhotoURL");
+  const userPhotoURL = user.photoURL;
 
   if (!!socket.current) {
     socket.current.emit("textChange", {
