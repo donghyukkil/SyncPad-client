@@ -1,59 +1,15 @@
-import { useNavigate } from "react-router-dom";
-
-import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
-
 import Button from "../../components/Button";
 import NavBar from "../../components/NavBar";
 import SubNavBar from "../../components/SubNavBar";
 
 import useStore from "../../useStore";
 
-import { CONFIG } from "../../constants/config";
+import useSignInWithGoogle from "../../hooks/useSignInWithGoogle";
 
 const Home = () => {
-  const auth = getAuth();
-  const provider = new GoogleAuthProvider();
+  const signInWithGoogle = useSignInWithGoogle();
 
-  const navigate = useNavigate();
-
-  const { setRoomId } = useStore();
-
-  const signInWithGoogle = async () => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      localStorage.setItem("userEmail", user.email);
-      localStorage.setItem("userPhotoURL", user.photoURL);
-
-      const authenticateUser = async () => {
-        try {
-          const response = await fetch(`${CONFIG.BACKEND_SERVER_URL}/users`, {
-            method: "POST",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ userEmail: user.email }),
-          });
-
-          if (response.ok) {
-            console.log("인증 성공");
-          } else {
-            console.log("인증 실패", response);
-          }
-        } catch (error) {
-          console.error(error.message);
-        }
-      };
-
-      await authenticateUser();
-
-      navigate("/create");
-    } catch (error) {
-      console.log("에러 발생");
-    }
-  };
+  const { setRoomId, user } = useStore();
 
   return (
     <div className="flex" style={{ backgroundColor: "#F8F0E5" }}>

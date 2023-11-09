@@ -1,24 +1,24 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
-import { GoogleAuthProvider, signInWithPopup, getAuth } from "firebase/auth";
-
 import Button from "../Button";
+
+import useSignInWithGoogle from "../../hooks/useSignInWithGoogle";
+
+import useStore from "../../useStore";
 
 import { CONFIG } from "../../constants/config";
 
 const SubNavBar = ({ roomId, setRoomId, createNewRoom }) => {
+  const { user, clearUser } = useStore();
+
   const [menuOpen, setMenuOpen] = useState(false);
   const [rooms, setRooms] = useState([
     { roomId: "room1", roomName: "공개 채팅 방" },
   ]);
 
   const navigate = useNavigate();
-
-  const auth = getAuth();
-  const provider = new GoogleAuthProvider();
-
-  const userPhotoURL = localStorage.getItem("userPhotoURL");
+  const signInWithGoogle = useSignInWithGoogle();
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
@@ -35,9 +35,7 @@ const SubNavBar = ({ roomId, setRoomId, createNewRoom }) => {
   const deleteRoom = async () => {
     try {
       const response = await fetch(
-        `${CONFIG.BACKEND_SERVER_URL}/users/${localStorage.getItem(
-          "userEmail",
-        )}/deleteRooms/${roomId}`,
+        `${CONFIG.BACKEND_SERVER_URL}/users/${user}/deleteRooms/${roomId}`,
         {
           method: "DELETE",
           headers: {
@@ -49,43 +47,6 @@ const SubNavBar = ({ roomId, setRoomId, createNewRoom }) => {
       navigate("/chat");
     } catch (error) {
       console.log(error);
-    }
-  };
-
-  const signInWithGoogle = async () => {
-    try {
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      localStorage.setItem("userEmail", user.email);
-      localStorage.setItem("userPhotoURL", user.photoURL);
-
-      const authenticateUser = async () => {
-        try {
-          const response = await fetch(`${CONFIG.BACKEND_SERVER_URL}/users`, {
-            method: "POST",
-            credentials: "include",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ userEmail: user.email }),
-          });
-
-          if (response.ok) {
-            console.log("인증 성공");
-          } else {
-            console.log("인증 실패", response);
-          }
-        } catch (error) {
-          console.error(error.message);
-        }
-      };
-
-      await authenticateUser();
-
-      navigate("/create");
-    } catch (error) {
-      console.log("에러 발생");
     }
   };
 
@@ -105,7 +66,7 @@ const SubNavBar = ({ roomId, setRoomId, createNewRoom }) => {
         console.error("로그아웃 실패");
       }
 
-      localStorage.clear();
+      clearUser();
 
       navigate("/");
     } catch (error) {
@@ -113,12 +74,9 @@ const SubNavBar = ({ roomId, setRoomId, createNewRoom }) => {
     }
   };
   const fetchUserRooms = async () => {
-    const userId = localStorage.getItem("userEmail");
     try {
       const response = await fetch(
-        `${CONFIG.BACKEND_SERVER_URL}/users/${localStorage.getItem(
-          "userEmail",
-        )}/getRooms`,
+        `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/getRooms`,
       );
       const fetchedRooms = await response.json();
 
@@ -179,12 +137,12 @@ const SubNavBar = ({ roomId, setRoomId, createNewRoom }) => {
       </div>
 
       <div className="flex flex-col mr-20 my-2">
-        {userPhotoURL ? (
+        {user ? (
           <div style={{ width: "48px", height: "48px" }}>
             <Button>
               <img
                 className="h-12 w-12 rounded-full"
-                src={userPhotoURL}
+                src={user.photoURL}
                 alt="profile"
                 onClick={toggleMenu}
               />
