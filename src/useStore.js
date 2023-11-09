@@ -1,24 +1,18 @@
 import { create } from "zustand";
 
-import { CONFIG } from "./constants/config";
-
 const useStore = create(set => ({
-  texts: {},
-  setTexts: texts => set({ texts }),
-  fetchTexts: async currentPage => {
-    try {
-      const response = await fetch(
-        `${CONFIG.BACKEND_SERVER_URL}/users/${localStorage.getItem(
-          "userEmail",
-        )}/texts?per_page=6&page=${currentPage}`,
-      );
-
-      const texts = await response.json();
-      set({ texts });
-    } catch (error) {
-      console.log(error);
-    }
+  user: JSON.parse(localStorage.getItem("user")) || null,
+  setUser: user => {
+    localStorage.setItem("user", JSON.stringify(user));
+    set({ user });
   },
+  clearUser: () => {
+    localStorage.removeItem("user");
+    set({ user: null });
+  },
+
+  texts: {},
+  setTexts: texts => set(texts),
 
   textValue: "",
   setTextValue: textValue => set({ textValue }),

@@ -6,13 +6,28 @@ import useStore from "../../useStore";
 import Button from "../../components/Button";
 import SubNavBar from "../../components/SubNavBar";
 
+import { CONFIG } from "../../constants/config";
+
 const Mypage = () => {
-  const { texts, fetchTexts, currentPage, setCurrentPage, setRoomId } =
+  const { texts, currentPage, setCurrentPage, setRoomId, setTexts, user } =
     useStore();
+
+  const fetchTexts = async () => {
+    try {
+      const response = await fetch(
+        `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/texts?per_page=6&page=${currentPage}`,
+      );
+
+      const texts = await response.json();
+      setTexts({ texts });
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     fetchTexts(currentPage);
-  }, [currentPage, texts.totalPages]);
+  }, [currentPage, user]);
 
   const changePage = newPage => {
     setCurrentPage(newPage);
