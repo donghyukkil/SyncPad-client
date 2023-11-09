@@ -9,7 +9,9 @@ import useStore from "../../useStore";
 
 import { CONFIG } from "../../constants/config";
 
-const SubNavBar = ({ roomId, setRoomId, createNewRoom }) => {
+import { createNewRoom, deleteRoom, fetchUserRooms } from "../../utils/helpers";
+
+const SubNavBar = ({ roomId, setRoomId, text_id }) => {
   const { user, clearUser } = useStore();
 
   const [menuOpen, setMenuOpen] = useState(false);
@@ -18,6 +20,7 @@ const SubNavBar = ({ roomId, setRoomId, createNewRoom }) => {
   ]);
 
   const navigate = useNavigate();
+
   const signInWithGoogle = useSignInWithGoogle();
 
   const toggleMenu = () => {
@@ -29,24 +32,6 @@ const SubNavBar = ({ roomId, setRoomId, createNewRoom }) => {
       navigate("/chat");
     } else {
       navigate(`/room/${roomId}`);
-    }
-  };
-
-  const deleteRoom = async () => {
-    try {
-      const response = await fetch(
-        `${CONFIG.BACKEND_SERVER_URL}/users/${user}/deleteRooms/${roomId}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      );
-
-      navigate("/chat");
-    } catch (error) {
-      console.log(error);
     }
   };
 
@@ -73,29 +58,9 @@ const SubNavBar = ({ roomId, setRoomId, createNewRoom }) => {
       console.log(error);
     }
   };
-  const fetchUserRooms = async () => {
-    try {
-      const response = await fetch(
-        `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/getRooms`,
-      );
-      const fetchedRooms = await response.json();
-
-      const combinedRooms = [
-        ...rooms,
-        ...fetchedRooms.filter(
-          fetchedRoom =>
-            !rooms.some(room => room.roomId === fetchedRoom.roomId),
-        ),
-      ];
-
-      setRooms(combinedRooms);
-    } catch (error) {
-      console.log(error);
-    }
-  };
 
   useEffect(() => {
-    fetchUserRooms();
+    fetchUserRooms(user, rooms, setRooms);
   }, [roomId]);
 
   return (
@@ -124,13 +89,13 @@ const SubNavBar = ({ roomId, setRoomId, createNewRoom }) => {
         </select>
         <Button
           style="bg-white hover:border-0 hover:bg-gray-100 text-black px-2 rounded-md text-center text-lg font-semibold font-mono"
-          onClick={createNewRoom}
+          onClick={() => createNewRoom(text_id, user)}
         >
           방 생성
         </Button>
         <Button
           style="bg-white hover:border-0 hover:bg-gray-100 text-black px-2 rounded-md text-center text-lg font-semibold font-mono"
-          onClick={deleteRoom}
+          onClick={() => deleteRoom(roomId, user)}
         >
           방 삭제
         </Button>

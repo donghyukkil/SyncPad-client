@@ -121,41 +121,6 @@ const TextEditor = () => {
     }
   };
 
-  const createNewRoom = async () => {
-    try {
-      const response = await fetch(
-        `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/createRoom`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            text_id,
-            userId: user.email,
-          }),
-        },
-      );
-
-      const data = await response.json();
-
-      if (data) {
-        const roomURL = `${window.location.origin}/room/${data.data.room.textId}`;
-
-        try {
-          await navigator.clipboard.writeText(roomURL);
-          console.log("URL이 클립보드에 복사되었습니다.");
-        } catch (err) {
-          console.error("클립보드 복사 실패:", err);
-        }
-
-        navigate(`/room/${data.data.room.textId}`);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     const targetRoomId = roomId || text_id;
     if (textareaRef.current && result.length > 0) {
@@ -226,12 +191,7 @@ const TextEditor = () => {
           className="w-screen h-screen flex flex-col"
           style={{ backgroundColor: "#F8F0E5" }}
         >
-          <SubNavBar
-            roomId={roomId}
-            setRoomId={setRoomId}
-            createNewRoom={createNewRoom}
-            text_id={text_id}
-          />
+          <SubNavBar roomId={roomId} setRoomId={setRoomId} text_id={text_id} />
           <div
             className="flex flex-col w-3/4 h-3/4 m-auto rounded-md"
             style={{ backgroundColor: "#DAC0A3" }}
