@@ -7,7 +7,6 @@ import Upload from "./pages/Upload";
 import Create from "./pages/Create/index.jsx";
 import MyPage from "./pages/Mypage/index.jsx";
 import TextEditor from "./components/TextEditor/index.jsx";
-import Chatting from "./pages/Chatting/index.jsx";
 
 import "./config/firebase-config";
 
@@ -21,7 +20,6 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/upload" element={<Upload />} />
         <Route path="/create" element={<Create />} />
         <Route path="/mypage" element={<MyPage />} />
-        <Route path="/chat" element={<Chatting />} />
         <Route path="/mypage/:text_id" element={<TextEditor />} />
         <Route path="/room/:roomId" element={<TextEditor />} />
       </Routes>
