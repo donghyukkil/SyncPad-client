@@ -15,9 +15,7 @@ const SubNavBar = ({ roomId, setRoomId, text_id }) => {
   const { user, clearUser } = useStore();
 
   const [menuOpen, setMenuOpen] = useState(false);
-  const [rooms, setRooms] = useState([
-    { roomId: "room1", roomName: "공개 채팅 방" },
-  ]);
+  const [rooms, setRooms] = useState([]);
 
   const navigate = useNavigate();
 
@@ -60,8 +58,8 @@ const SubNavBar = ({ roomId, setRoomId, text_id }) => {
   };
 
   useEffect(() => {
-    fetchUserRooms(user, rooms, setRooms);
-  }, [roomId]);
+    fetchUserRooms(user, setRooms);
+  });
 
   return (
     <div
@@ -75,11 +73,12 @@ const SubNavBar = ({ roomId, setRoomId, text_id }) => {
             setRoomId(selectedRoomId);
             handleRoomClick(selectedRoomId);
           }}
+          value={roomId || ""}
           className="p-2 border rounded"
           style={{ width: "200px" }}
         >
           <option key="default-option" value="" disabled>
-            Select a room
+            select a room
           </option>
           {rooms.map((room, index) => (
             <option key={index} value={room.roomId}>

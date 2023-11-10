@@ -49,19 +49,14 @@ export const deleteRoom = async (roomId, user) => {
   }
 };
 
-export async function fetchUserRooms(user, rooms, setRooms) {
+export async function fetchUserRooms(user, setRooms) {
   try {
     const response = await fetch(
       `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/getRooms`,
     );
     const fetchedRooms = await response.json();
 
-    const combinedRooms = [
-      ...rooms,
-      ...fetchedRooms.filter(
-        fetchedRoom => !rooms.some(room => room.roomId === fetchedRoom.roomId),
-      ),
-    ];
+    const combinedRooms = [...fetchedRooms];
 
     setRooms(combinedRooms);
   } catch (error) {
