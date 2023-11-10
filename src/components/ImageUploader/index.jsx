@@ -1,10 +1,16 @@
 import { useState, useRef } from "react";
 
+import useStore from "../../useStore";
+
 import Button from "../Button";
 
 import imgSrc from "../../assets/img.png";
 
-const ImageUploader = ({ onUpload }) => {
+import { uploadImageToServer } from "../../utils/helpers";
+
+const ImageUploader = () => {
+  const { user } = useStore();
+
   const [selectedImage, setSelectedImage] = useState(null);
   const [uploadedImage, setUploadedImage] = useState(null);
 
@@ -21,7 +27,7 @@ const ImageUploader = ({ onUpload }) => {
 
   const handleSaveImage = () => {
     if (selectedImage) {
-      onUpload(selectedImage);
+      uploadImageToServer(selectedImage, user);
       setUploadedImage(selectedImage);
     }
   };
@@ -85,7 +91,7 @@ const ImageUploader = ({ onUpload }) => {
               htmlFor="fileInput"
               className="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
             >
-              원하는 이미지를 업로드하세요
+              원하는 이미지에서 메모를 추출하세요
             </label>
           </div>
         </div>

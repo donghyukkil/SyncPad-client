@@ -63,3 +63,20 @@ export async function fetchUserRooms(user, setRooms) {
     console.error(error);
   }
 }
+
+export const uploadImageToServer = async (base64String, user) => {
+  try {
+    const response = await fetch(
+      `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/upload`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ imageBase64: base64String }),
+      },
+    );
+  } catch (error) {
+    console.log("Image upload error", error.message);
+  }
+};

@@ -4,27 +4,8 @@ import SubNavBar from "../../components/SubNavBar";
 
 import useStore from "../../useStore";
 
-import { CONFIG } from "../../constants/config";
-
 const Upload = () => {
   const { setRoomId, user } = useStore();
-
-  const uploadImageToServer = async base64String => {
-    try {
-      const response = await fetch(
-        `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/upload`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ imageBase64: base64String }),
-        },
-      );
-    } catch (error) {
-      console.log("Image upload error", error.message);
-    }
-  };
 
   return (
     <div className="flex" style={{ backgroundColor: "#F8F0E5" }}>
@@ -35,7 +16,7 @@ const Upload = () => {
           className="flex w-3/4 h-3/4 m-auto py-0 justify-center rounded-md"
           style={{ backgroundColor: "#DAC0A3" }}
         >
-          <ImageUploader onUpload={uploadImageToServer} />
+          <ImageUploader />
         </div>
       </div>
     </div>
