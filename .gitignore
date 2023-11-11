@@ -31,3 +31,5 @@ dist-ssr
 .env.local
 
 jest.setup.cjs
+
+coverage
