@@ -21,7 +21,7 @@ const NavBar = () => {
           }
           onClick={() => navigateTo("/create")}
         >
-          새 메모
+          메모 만들기
         </Button>
         <Button
           style={
@@ -29,7 +29,7 @@ const NavBar = () => {
           }
           onClick={() => navigateTo("/upload")}
         >
-          이미지 메모
+          메모 추출하기
         </Button>
         <Button
           style={
@@ -38,14 +38,6 @@ const NavBar = () => {
           onClick={() => navigateTo("/mypage")}
         >
           마이 페이지
-        </Button>
-        <Button
-          style={
-            "bg-gray-900 text-white rounded-md px-3 py-2 text-lg font-semibold font-mono"
-          }
-          onClick={() => navigateTo("/chat")}
-        >
-          함께 메모
         </Button>
       </div>
     </nav>
