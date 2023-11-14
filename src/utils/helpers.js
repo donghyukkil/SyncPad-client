@@ -28,6 +28,8 @@ export const createNewRoom = async (text_id, user) => {
         console.error("클립보드 복사 실패:", err);
       }
     }
+
+    return data;
   } catch (error) {
     console.log(error);
   }
@@ -49,16 +51,14 @@ export const deleteRoom = async (roomId, user) => {
   }
 };
 
-export async function fetchUserRooms(user, setRooms) {
+export async function fetchUserRooms(user) {
   try {
     const response = await fetch(
       `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/getRooms`,
     );
     const fetchedRooms = await response.json();
 
-    const combinedRooms = [...fetchedRooms];
-
-    setRooms(combinedRooms);
+    return fetchedRooms;
   } catch (error) {
     console.error(error);
   }
