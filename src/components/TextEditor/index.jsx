@@ -20,6 +20,7 @@ import {
 } from "../../utils/selectionUtils";
 
 import { handleDownloadClick } from "../../utils/textAction";
+import { createNewRoom } from "../../utils/helpers";
 
 const TextEditor = () => {
   const { text_id, roomId } = useParams();
@@ -121,6 +122,15 @@ const TextEditor = () => {
     }
   };
 
+  const handleCreateRoom = async () => {
+    try {
+      const roomData = await createNewRoom(text_id, user);
+      navigate(`/room/${roomData.data.room.textId}`);
+    } catch (error) {
+      console.error("Room creation failed", error);
+    }
+  };
+
   useEffect(() => {
     const targetRoomId = roomId || text_id;
     if (textareaRef.current && result.length > 0) {
@@ -216,13 +226,21 @@ const TextEditor = () => {
                   overflowY: "auto",
                 }}
               />
-              {roomId && (
-                <div
-                  className="rounded-md text-center text-lg font-semibold font-mono flex items-center justify-center"
-                  style={{ height: "5px", marginTop: "25px" }}
-                >
-                  {typingUser ? `${typingUser}가 입력 중입니다...` : ""}
-                </div>
+              {text_id && (
+                <>
+                  <div
+                    className="rounded-md text-center text-lg font-semibold font-mono flex items-center justify-center"
+                    style={{ height: "5px", marginTop: "25px" }}
+                  >
+                    {typingUser ? `${typingUser}가 입력 중입니다...` : ""}
+                  </div>
+                  <Button
+                    style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
+                    onClick={() => handleCreateRoom()}
+                  >
+                    {"방 생성"}
+                  </Button>
+                </>
               )}
             </div>
             <div className="flex flex-col w-3/4 m-auto justify-between mt-0">
