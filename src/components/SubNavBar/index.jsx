@@ -9,7 +9,7 @@ import useStore from "../../useStore";
 
 import { CONFIG } from "../../constants/config";
 
-import { createNewRoom, deleteRoom, fetchUserRooms } from "../../utils/helpers";
+import { fetchUserRooms } from "../../utils/helpers";
 
 const SubNavBar = ({ roomId, setRoomId, text_id }) => {
   const { user, clearUser } = useStore();
@@ -58,8 +58,19 @@ const SubNavBar = ({ roomId, setRoomId, text_id }) => {
   };
 
   useEffect(() => {
-    fetchUserRooms(user, setRooms);
-  });
+    const fetchRooms = async () => {
+      try {
+        const roomsData = await fetchUserRooms(user);
+        setRooms(roomsData);
+      } catch (error) {
+        console.error("fetchUserRooms failed:", error);
+      }
+    };
+
+    if (user) {
+      fetchRooms();
+    }
+  }, [user]);
 
   return (
     <div
@@ -80,24 +91,12 @@ const SubNavBar = ({ roomId, setRoomId, text_id }) => {
           <option key="default-option" value="" disabled>
             select a room
           </option>
-          {rooms.map((room, index) => (
+          {rooms?.map((room, index) => (
             <option key={index} value={room.roomId}>
               {room.roomName}
             </option>
           ))}
         </select>
-        <Button
-          style="bg-white hover:border-0 hover:bg-gray-100 text-black px-2 rounded-md text-center text-lg font-semibold font-mono"
-          onClick={() => createNewRoom(text_id, user)}
-        >
-          방 생성
-        </Button>
-        <Button
-          style="bg-white hover:border-0 hover:bg-gray-100 text-black px-2 rounded-md text-center text-lg font-semibold font-mono"
-          onClick={() => deleteRoom(roomId, user)}
-        >
-          방 삭제
-        </Button>
       </div>
 
       <div className="flex flex-col mr-20 my-2">
