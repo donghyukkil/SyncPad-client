@@ -2,6 +2,8 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { io } from "socket.io-client";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import useStore from "../../useStore";
 
@@ -20,7 +22,7 @@ import {
 } from "../../utils/selectionUtils";
 
 import { handleDownloadClick } from "../../utils/textAction";
-import { createNewRoom } from "../../utils/helpers";
+import { createNewRoom, deleteRoom } from "../../utils/helpers";
 
 const TextEditor = () => {
   const { text_id, roomId } = useParams();
@@ -125,9 +127,33 @@ const TextEditor = () => {
   const handleCreateRoom = async () => {
     try {
       const roomData = await createNewRoom(text_id, user);
-      navigate(`/room/${roomData.data.room.textId}`);
+      toast.success(`생성된 room URL이 클립보드에 복사되었습니다.`, {
+        position: "top-right",
+        autoClose: 5000,
+        hideProgressBar: false,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+      setTimeout(() => navigate(`/room/${roomData.data.room.textId}`), 3000);
     } catch (error) {
-      console.error("Room creation failed", error);
+      console.log("Room creation failed");
+      toast.error("방 생성에 실패했습니다.");
+    }
+  };
+
+  const handleDeleteRoom = async () => {
+    const isConfirmed = window.confirm("정말로 이 방을 삭제하시겠습니까?");
+
+    if (isConfirmed) {
+      try {
+        await deleteRoom(roomId, user);
+        setTimeout(() => navigate("/mypage"), 3000);
+      } catch (error) {
+        toast.error("방 삭제에 실패했습니다.");
+      }
     }
   };
 
@@ -202,6 +228,19 @@ const TextEditor = () => {
           style={{ backgroundColor: "#F8F0E5" }}
         >
           <SubNavBar roomId={roomId} setRoomId={setRoomId} text_id={text_id} />
+          <ToastContainer
+            position="top-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
+
           <div
             className="flex flex-col w-3/4 h-3/4 m-auto rounded-md"
             style={{ backgroundColor: "#DAC0A3" }}
@@ -239,6 +278,23 @@ const TextEditor = () => {
                     onClick={() => handleCreateRoom()}
                   >
                     {"방 생성"}
+                  </Button>
+                </>
+              )}
+
+              {roomId && (
+                <>
+                  <div
+                    className="rounded-md text-center text-lg font-semibold font-mono flex items-center justify-center"
+                    style={{ height: "5px", marginTop: "25px" }}
+                  >
+                    {typingUser ? `${typingUser}가 입력 중입니다...` : ""}
+                  </div>
+                  <Button
+                    style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
+                    onClick={() => handleDeleteRoom()}
+                  >
+                    {"방 삭제"}
                   </Button>
                 </>
               )}

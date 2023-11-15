@@ -1,3 +1,4 @@
+import { toast } from "react-toastify";
 import { CONFIG } from "../constants/config";
 
 export const createNewRoom = async (text_id, user) => {
@@ -46,6 +47,16 @@ export const deleteRoom = async (roomId, user) => {
         },
       },
     );
+    toast.success("room이 삭제되었습니다", {
+      position: "top-right",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   } catch (error) {
     console.log(error);
   }
