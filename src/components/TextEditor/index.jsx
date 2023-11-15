@@ -107,26 +107,42 @@ const TextEditor = () => {
       return;
     }
 
-    try {
-      const response = await fetch(
-        `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/texts/${text_id}`,
-        {
-          method: "DELETE",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      );
+    const isConfirmed = window.confirm("정말로 이 메모를 삭제하시겠습니까?");
 
-      navigateToMypage();
-    } catch (error) {
-      console.log(error);
+    if (isConfirmed) {
+      try {
+        const response = await fetch(
+          `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/texts/${text_id}`,
+          {
+            method: "DELETE",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          },
+        );
+
+        toast.success(`메모가 삭제되었습니다.`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
+
+        setTimeout(() => navigateToMypage(), 3000);
+      } catch (error) {
+        console.log(error);
+      }
     }
   };
 
   const handleCreateRoom = async () => {
     try {
       const roomData = await createNewRoom(text_id, user);
+
       toast.success(`생성된 room URL이 클립보드에 복사되었습니다.`, {
         position: "top-right",
         autoClose: 5000,
@@ -137,6 +153,7 @@ const TextEditor = () => {
         progress: undefined,
         theme: "light",
       });
+
       setTimeout(() => navigate(`/room/${roomData.data.room.textId}`), 3000);
     } catch (error) {
       console.log("Room creation failed");
@@ -150,6 +167,7 @@ const TextEditor = () => {
     if (isConfirmed) {
       try {
         await deleteRoom(roomId, user);
+
         setTimeout(() => navigate("/mypage"), 3000);
       } catch (error) {
         toast.error("방 삭제에 실패했습니다.");
