@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import { CONFIG } from "../constants/config";
 
-export const createNewRoom = async (text_id, user) => {
+export const createNewRoom = async (text_id, roomName, user, result) => {
   try {
     const response = await fetch(
       `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/createRoom`,
@@ -13,6 +13,8 @@ export const createNewRoom = async (text_id, user) => {
         body: JSON.stringify({
           text_id,
           userId: user.email,
+          roomName: roomName,
+          text: result,
         }),
       },
     );
@@ -29,7 +31,6 @@ export const createNewRoom = async (text_id, user) => {
         console.error("클립보드 복사 실패:", err);
       }
     }
-
     return data;
   } catch (error) {
     console.log(error);
