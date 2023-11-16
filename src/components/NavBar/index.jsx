@@ -39,6 +39,14 @@ const NavBar = () => {
         >
           마이 페이지
         </Button>
+        <Button
+          style={
+            "bg-gray-900 text-white rounded-md px-3 py-2 text-lg font-semibold font-mono"
+          }
+          onClick={() => navigateTo("/SharedRooms")}
+        >
+          Shared Rooms
+        </Button>
       </div>
     </nav>
   );

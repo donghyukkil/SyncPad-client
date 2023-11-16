@@ -178,7 +178,7 @@ const TextEditor = () => {
       try {
         await deleteRoom(roomId, user);
 
-        setTimeout(() => navigate("/mypage"), 3000);
+        setTimeout(() => navigate("/SharedRooms"), 3000);
       } catch (error) {
         toast.error("방 삭제에 실패했습니다.");
       }

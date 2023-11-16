@@ -7,6 +7,7 @@ import Upload from "./pages/Upload";
 import Create from "./pages/Create/index.jsx";
 import MyPage from "./pages/Mypage/index.jsx";
 import TextEditor from "./components/TextEditor/index.jsx";
+import SharedRooms from "./pages/SharedRooms";
 
 import "./config/firebase-config";
 
@@ -22,6 +23,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
         <Route path="/mypage" element={<MyPage />} />
         <Route path="/mypage/:text_id" element={<TextEditor />} />
         <Route path="/room/:roomId" element={<TextEditor />} />
+        <Route path="/SharedRooms" element={<SharedRooms />} />
       </Routes>
     </BrowserRouter>
   </React.StrictMode>,
