@@ -1,10 +1,14 @@
 import { useNavigate } from "react-router-dom";
 
-const TextCard = ({ text }) => {
+const TextCard = ({ item }) => {
   const navigate = useNavigate();
 
   const navigateToDetailPage = () => {
-    navigate(`/mypage/${text._id}`);
+    const path = item.roomName
+      ? `/room/${item.roomName}`
+      : `/mypage/${item._id}`;
+
+    navigate(path);
   };
 
   const renderContent = content => {
@@ -15,9 +19,11 @@ const TextCard = ({ text }) => {
         )
         .filter(Boolean);
     }
-
     return content;
   };
+
+  const backgroundColor = item.backgroundColor || "#f0f0f0";
+  const content = item.content || item.roomName;
 
   return (
     <div className="flex flex-col" onClick={navigateToDetailPage}>
@@ -26,14 +32,14 @@ const TextCard = ({ text }) => {
       </div>
       <div
         className="bg-yellow-200 flex"
-        style={{ backgroundColor: text.backgroundColor }}
+        style={{ backgroundColor: backgroundColor }}
       >
         <div className="flex flex-col justify-around m-auto">
           <div
             className="bg-white m-auto rounded-md overflow-hidden text-sm text-center w-3/5"
             style={{ height: "100px" }}
           >
-            {renderContent(text.content)}
+            <div>{renderContent(content)}</div>
           </div>
         </div>
       </div>

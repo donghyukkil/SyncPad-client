@@ -47,7 +47,7 @@ const Mypage = () => {
           <main className="flex-grow grid grid-cols-3 grid-rows-0.5 gap-6 p-6 m-5">
             {texts.data !== undefined
               ? texts.data.map((text, index) => (
-                  <TextCard key={index} text={text} />
+                  <TextCard key={index} item={text} />
                 ))
               : null}
           </main>
