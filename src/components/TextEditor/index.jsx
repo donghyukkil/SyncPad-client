@@ -26,19 +26,19 @@ import { createNewRoom, deleteRoom } from "../../utils/helpers";
 
 const TextEditor = () => {
   const { text_id, roomId } = useParams();
-  const { texts, setRoomId, user } = useStore();
+  const { texts, setRoomId, user, setRooms, rooms } = useStore();
 
   let result = texts.data
-    ? texts.data.filter(
-        (text, index) => text._id === text_id || text._id === roomId,
-      )
+    ? texts.data.filter(text => text._id === text_id)
     : [];
 
   const [updateMode, setUpdateMode] = useState(false);
   const [typingUser, setTypingUser] = useState(null);
 
-  const resultText = result.length > 0 ? result[0].content.join("\n") : "";
+  let resultText = result?.length > 0 ? result[0].content.join("\n") : "";
+
   const [textValue, setTextValue] = useState(resultText);
+
   const [backgroundColor, setBackgroundColor] = useState("#f7e79e");
 
   const navigate = useNavigate();
@@ -140,24 +140,28 @@ const TextEditor = () => {
   };
 
   const handleCreateRoom = async () => {
-    try {
-      const roomData = await createNewRoom(text_id, user);
+    const roomName = window.prompt("방 이름을 입력해주세요.");
+    if (roomName) {
+      try {
+        const roomData = await createNewRoom(text_id, roomName, user, result);
 
-      toast.success(`생성된 room URL이 클립보드에 복사되었습니다.`, {
-        position: "top-right",
-        autoClose: 5000,
-        hideProgressBar: false,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-        progress: undefined,
-        theme: "light",
-      });
+        toast.success(`room이 생성되었습니다.`, {
+          position: "top-right",
+          autoClose: 5000,
+          hideProgressBar: false,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+        });
 
-      setTimeout(() => navigate(`/room/${roomData.data.room.textId}`), 3000);
-    } catch (error) {
-      console.log("Room creation failed");
-      toast.error("방 생성에 실패했습니다.");
+        setTimeout(() => navigate(`/room/${roomData.data.room.textId}`), 3000);
+      } catch (error) {
+        console.log("Room creation failed");
+        console.log(error);
+        toast.error("방 생성에 실패했습니다.");
+      }
     }
   };
 
@@ -176,6 +180,12 @@ const TextEditor = () => {
   };
 
   useEffect(() => {
+    let roomResult;
+
+    if (roomId) {
+      roomResult = rooms.filter(room => room.roomName === roomId);
+      setTextValue(roomResult[0]?.text.join("\n"));
+    }
     const targetRoomId = roomId || text_id;
     if (textareaRef.current && result.length > 0) {
       textareaRef.current.innerHTML = convertPlainTextToHTML(
@@ -235,7 +245,7 @@ const TextEditor = () => {
         }
       };
     }
-  }, [roomId, text_id, textareaRef]);
+  }, [roomId]);
 
   return (
     <>
