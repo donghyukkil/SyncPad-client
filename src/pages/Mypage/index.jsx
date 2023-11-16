@@ -9,8 +9,7 @@ import SubNavBar from "../../components/SubNavBar";
 import { CONFIG } from "../../constants/config";
 
 const Mypage = () => {
-  const { texts, currentPage, setCurrentPage, setRoomId, setTexts, user } =
-    useStore();
+  const { texts, currentPage, setCurrentPage, setTexts, user } = useStore();
 
   const fetchTexts = async () => {
     try {
@@ -40,7 +39,7 @@ const Mypage = () => {
         className="w-screen h-screen flex flex-col"
         style={{ backgroundColor: "#F8F0E5" }}
       >
-        <SubNavBar setRoomId={setRoomId} />
+        <SubNavBar />
         <div
           className="flex flex-col w-3/4 h-3/4 m-auto py-5 justify-center rounded-md"
           style={{ backgroundColor: "#DAC0A3" }}

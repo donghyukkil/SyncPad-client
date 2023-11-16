@@ -11,8 +11,8 @@ import { CONFIG } from "../../constants/config";
 
 import { fetchUserRooms } from "../../utils/helpers";
 
-const SubNavBar = ({ roomId, setRoomId }) => {
-  const { user, clearUser, rooms, setRooms } = useStore();
+const SubNavBar = () => {
+  const { user, clearUser, rooms, setRooms, setRoomId, roomId } = useStore();
 
   const [menuOpen, setMenuOpen] = useState(false);
 

@@ -26,7 +26,7 @@ import { createNewRoom, deleteRoom } from "../../utils/helpers";
 
 const TextEditor = () => {
   const { text_id, roomId } = useParams();
-  const { texts, setRoomId, user, setRooms, rooms } = useStore();
+  const { texts, user, rooms } = useStore();
 
   let result = texts.data
     ? texts.data.filter(text => text._id === text_id)
@@ -255,7 +255,7 @@ const TextEditor = () => {
           className="w-screen h-screen flex flex-col"
           style={{ backgroundColor: "#F8F0E5" }}
         >
-          <SubNavBar roomId={roomId} setRoomId={setRoomId} text_id={text_id} />
+          <SubNavBar />
           <ToastContainer
             position="top-right"
             autoClose={5000}

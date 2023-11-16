@@ -15,7 +15,7 @@ const useStore = create(set => ({
   setTexts: texts => set(texts),
 
   rooms: [],
-  setRooms: newRoom => set(state => ({ rooms: newRoom })),
+  setRooms: newRoom => set({ rooms: newRoom }),
 
   textValue: "",
   setTextValue: textValue => set({ textValue }),
