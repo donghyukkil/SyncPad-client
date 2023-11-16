@@ -28,9 +28,15 @@ const TextEditor = () => {
   const { text_id, roomId } = useParams();
   const { texts, user, rooms } = useStore();
 
-  let result = texts.data
-    ? texts.data.filter(text => text._id === text_id)
-    : [];
+  let result;
+
+  if (roomId) {
+    result = rooms.filter(room => room.roomName === roomId);
+  } else if (texts.data) {
+    result = texts.data.filter(text => text._id === text_id);
+  } else {
+    result = [];
+  }
 
   const [updateMode, setUpdateMode] = useState(false);
   const [typingUser, setTypingUser] = useState(null);
@@ -145,7 +151,7 @@ const TextEditor = () => {
       try {
         const roomData = await createNewRoom(text_id, roomName, user, result);
 
-        toast.success(`room이 생성되었습니다.`, {
+        toast.success(`room이 생성되었습니다. 해당 room으로 이동합니다!`, {
           position: "top-right",
           autoClose: 5000,
           hideProgressBar: false,
@@ -180,12 +186,6 @@ const TextEditor = () => {
   };
 
   useEffect(() => {
-    let roomResult;
-
-    if (roomId) {
-      roomResult = rooms.filter(room => room.roomName === roomId);
-      setTextValue(roomResult[0]?.text.join("\n"));
-    }
     const targetRoomId = roomId || text_id;
     if (textareaRef.current && result.length > 0) {
       textareaRef.current.innerHTML = convertPlainTextToHTML(
