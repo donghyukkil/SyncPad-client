@@ -21,16 +21,6 @@ export const createNewRoom = async (text_id, roomName, user, result) => {
 
     const data = await response.json();
 
-    if (data) {
-      const roomURL = `${window.location.origin}/room/${data.data.room.textId}`;
-
-      try {
-        await navigator.clipboard.writeText(roomURL);
-        console.log("URL이 클립보드에 복사되었습니다.");
-      } catch (err) {
-        console.error("클립보드 복사 실패:", err);
-      }
-    }
     return data;
   } catch (error) {
     console.log(error);
