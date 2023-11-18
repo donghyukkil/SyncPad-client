@@ -16,13 +16,16 @@ import { CONFIG } from "../../constants/config";
 import {
   convertHTMLToPlainText,
   convertPlainTextToHTML,
-  handleContentChange,
+  saveSelection,
+  restoreSelection,
   showProfileImage,
   removeProfileImage,
 } from "../../utils/selectionUtils";
 
 import { handleDownloadClick } from "../../utils/textAction";
 import { createNewRoom, deleteRoom } from "../../utils/helpers";
+
+const TYPING_INTERVAL = 300;
 
 const TextEditor = () => {
   const { text_id, roomId } = useParams();
@@ -58,20 +61,40 @@ const TextEditor = () => {
     : backgroundColor;
 
   const handleInputChange = event => {
-    handleContentChange(
-      event,
-      setTextValue,
-      socket,
-      roomId,
-      typingTimerRef,
-      TYPING_INTERVAL,
-      textareaRef,
-      setTypingUser,
-      user,
-    );
-  };
+    const savedSelection = saveSelection();
+    const cursorPosition = savedSelection.getBoundingClientRect();
 
-  const TYPING_INTERVAL = 300;
+    const newValue = convertHTMLToPlainText(event.currentTarget.innerHTML);
+    setTextValue(newValue);
+
+    if (!!socket.current) {
+      socket.current.emit("textChange", {
+        roomId,
+        text: newValue,
+        userPhotoURL: user.photoURL,
+        cursorPosition,
+      });
+      socket.current.emit("typing", roomId);
+    }
+
+    if (typingTimerRef.current) {
+      clearTimeout(typingTimerRef.current);
+    }
+
+    typingTimerRef.current = setTimeout(() => {
+      setTypingUser(null);
+    }, TYPING_INTERVAL);
+
+    const iconElement = showProfileImage(
+      userPhotoURL,
+      cursorPosition,
+      textareaRef.current.parentElement,
+    );
+
+    removeProfileImage(iconElement, TYPING_INTERVAL);
+
+    restoreSelection(savedSelection);
+  };
 
   const navigateToMypage = () => {
     navigate("/mypage");

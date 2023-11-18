@@ -46,54 +46,6 @@ export const restoreSelection = range => {
   }
 };
 
-export const handleContentChange = (
-  event,
-  setTextValue,
-  socket,
-  roomId,
-  typingTimerRef,
-  TYPING_INTERVAL,
-  textareaRef,
-  setTypingUser,
-  user,
-) => {
-  const savedSelection = saveSelection();
-  const cursorPosition = savedSelection.getBoundingClientRect();
-
-  const newValue = convertHTMLToPlainText(event.currentTarget.innerHTML);
-  setTextValue(newValue);
-
-  const userPhotoURL = user.photoURL;
-
-  if (!!socket.current) {
-    socket.current.emit("textChange", {
-      roomId,
-      text: newValue,
-      userPhotoURL,
-      cursorPosition,
-    });
-    socket.current.emit("typing", roomId);
-  }
-
-  if (typingTimerRef.current) {
-    clearTimeout(typingTimerRef.current);
-  }
-
-  typingTimerRef.current = setTimeout(() => {
-    setTypingUser(null);
-  }, TYPING_INTERVAL);
-
-  const iconElement = showProfileImage(
-    userPhotoURL,
-    cursorPosition,
-    textareaRef.current.parentElement,
-  );
-
-  removeProfileImage(iconElement, TYPING_INTERVAL);
-
-  restoreSelection(savedSelection);
-};
-
 export const showProfileImage = (userPhotoURL, cursorPosition, container) => {
   const iconElement = document.createElement("img");
   iconElement.src = userPhotoURL;
