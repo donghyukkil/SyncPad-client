@@ -86,7 +86,7 @@ const TextEditor = () => {
     }, TYPING_INTERVAL);
 
     const iconElement = showProfileImage(
-      userPhotoURL,
+      user.photoURL,
       cursorPosition,
       textareaRef.current.parentElement,
     );
@@ -209,20 +209,16 @@ const TextEditor = () => {
   };
 
   useEffect(() => {
-    const targetRoomId = roomId || text_id;
     if (textareaRef.current && result.length > 0) {
       textareaRef.current.innerHTML = convertPlainTextToHTML(
         result[0].content.join("\n"),
       );
     }
-    if (targetRoomId) {
+
+    if (roomId) {
       socket.current = io(CONFIG.BACKEND_SERVER_URL);
 
-      socket.current.emit("joinRoom", targetRoomId);
-
-      socket.current.emit("setUserName", {
-        username: user,
-      });
+      socket.current.emit("joinRoom", roomId, user);
 
       socket.current.on(
         "textChanged",
