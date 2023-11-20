@@ -71,10 +71,9 @@ const TextEditor = () => {
       socket.current.emit("textChange", {
         roomId,
         text: newValue,
-        userPhotoURL: user.photoURL,
+        user: user || null,
         cursorPosition,
       });
-      socket.current.emit("typing", roomId);
     }
 
     if (typingTimerRef.current) {
@@ -84,16 +83,6 @@ const TextEditor = () => {
     typingTimerRef.current = setTimeout(() => {
       setTypingUser(null);
     }, TYPING_INTERVAL);
-
-    const iconElement = showProfileImage(
-      user.photoURL,
-      cursorPosition,
-      textareaRef.current.parentElement,
-    );
-
-    removeProfileImage(iconElement, TYPING_INTERVAL);
-
-    restoreSelection(savedSelection);
   };
 
   const navigateToMypage = () => {
@@ -222,41 +211,30 @@ const TextEditor = () => {
 
       socket.current.on(
         "textChanged",
-        ({ text, userPhotoURL, cursorPosition }) => {
+        ({ text, photoURL, cursorPosition, email }) => {
           const htmlContent = convertPlainTextToHTML(text);
-
           if (textareaRef.current.innerHTML !== htmlContent) {
-            setTextValue(text);
             textareaRef.current.innerHTML = htmlContent;
 
-            const existingImageNode = textareaRef.current.querySelector("img");
-
-            if (existingImageNode) {
-              textareaRef.current.removeChild(existingImageNode);
-            }
-
             const iconElement = showProfileImage(
-              userPhotoURL,
+              photoURL,
               cursorPosition,
               textareaRef.current.parentElement,
             );
 
             removeProfileImage(iconElement, TYPING_INTERVAL);
+            setTypingUser(email.split("@")[0]);
+
+            if (typingTimerRef.current) {
+              clearTimeout(typingTimerRef.current);
+            }
+
+            typingTimerRef.current = setTimeout(() => {
+              setTypingUser(null);
+            }, TYPING_INTERVAL);
           }
         },
       );
-
-      socket.current.on("userTyping", username => {
-        setTypingUser(username.email.split("@")[0]);
-
-        if (typingTimerRef.current) {
-          clearTimeout(typingTimerRef.current);
-        }
-
-        typingTimerRef.current = setTimeout(() => {
-          setTypingUser(null);
-        }, TYPING_INTERVAL);
-      });
 
       return () => {
         if (socket.current) {
