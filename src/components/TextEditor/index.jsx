@@ -206,8 +206,15 @@ const TextEditor = () => {
 
     if (roomId) {
       socket.current = io(CONFIG.BACKEND_SERVER_URL);
+      socket.current.emit("joinRoom", roomId, user, textValue);
 
-      socket.current.emit("joinRoom", roomId, user);
+      socket.current.on("currentText", ({ text }) => {
+        if (textareaRef.current) {
+          textareaRef.current.innerHTML = convertPlainTextToHTML(
+            text.toString(),
+          );
+        }
+      });
 
       socket.current.on(
         "textChanged",
