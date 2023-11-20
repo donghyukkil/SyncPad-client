@@ -174,7 +174,7 @@ const TextEditor = () => {
           theme: "light",
         });
 
-        setTimeout(() => navigate(`/room/${roomData.data.room.textId}`), 3000);
+        setTimeout(() => navigate(`/room/${roomData.data.room.roomId}`), 3000);
       } catch (error) {
         console.log("Room creation failed");
         console.log(error);
