@@ -92,7 +92,7 @@ const SubNavBar = () => {
           </option>
           {rooms?.map((room, index) => (
             <option key={index} value={room.roomId}>
-              {room.roomName}
+              {room.roomId}
             </option>
           ))}
         </select>

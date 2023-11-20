@@ -1,7 +1,7 @@
 import { toast } from "react-toastify";
 import { CONFIG } from "../constants/config";
 
-export const createNewRoom = async (text_id, roomName, user, result) => {
+export const createNewRoom = async (text_id, roomId, user, result) => {
   try {
     const response = await fetch(
       `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/createRoom`,
@@ -13,7 +13,7 @@ export const createNewRoom = async (text_id, roomName, user, result) => {
         body: JSON.stringify({
           text_id,
           userId: user.email,
-          roomName: roomName,
+          roomId,
           text: result,
         }),
       },

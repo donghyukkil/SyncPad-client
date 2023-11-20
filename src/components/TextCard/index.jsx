@@ -4,9 +4,7 @@ const TextCard = ({ item }) => {
   const navigate = useNavigate();
 
   const navigateToDetailPage = () => {
-    const path = item.roomName
-      ? `/room/${item.roomName}`
-      : `/mypage/${item._id}`;
+    const path = item.roomId ? `/room/${item.roomId}` : `/mypage/${item._id}`;
 
     navigate(path);
   };
@@ -23,7 +21,7 @@ const TextCard = ({ item }) => {
   };
 
   const backgroundColor = item.backgroundColor || "#f0f0f0";
-  const content = item.content || item.roomName;
+  const content = item.content || item.roomId;
 
   return (
     <div className="flex flex-col" onClick={navigateToDetailPage}>

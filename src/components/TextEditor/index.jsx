@@ -34,7 +34,7 @@ const TextEditor = () => {
   let result;
 
   if (roomId) {
-    result = rooms.filter(room => room.roomName === roomId);
+    result = rooms.filter(room => room.roomId === roomId);
   } else if (texts.data) {
     result = texts.data.filter(text => text._id === text_id);
   } else {
@@ -158,10 +158,10 @@ const TextEditor = () => {
   };
 
   const handleCreateRoom = async () => {
-    const roomName = window.prompt("방 이름을 입력해주세요.");
-    if (roomName) {
+    const roomId = window.prompt("방 이름을 입력해주세요.");
+    if (roomId) {
       try {
-        const roomData = await createNewRoom(text_id, roomName, user, result);
+        const roomData = await createNewRoom(text_id, roomId, user, result);
 
         toast.success(`room이 생성되었습니다. 해당 room으로 이동합니다!`, {
           position: "top-right",
@@ -209,6 +209,7 @@ const TextEditor = () => {
       socket.current.emit("joinRoom", roomId, user, textValue);
 
       socket.current.on("currentText", ({ text }) => {
+        console.log(text);
         if (textareaRef.current) {
           textareaRef.current.innerHTML = convertPlainTextToHTML(
             text.toString(),
