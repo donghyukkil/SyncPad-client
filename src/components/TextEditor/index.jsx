@@ -16,8 +16,6 @@ import { CONFIG } from "../../constants/config";
 import {
   convertHTMLToPlainText,
   convertPlainTextToHTML,
-  saveSelection,
-  restoreSelection,
   showProfileImage,
   removeProfileImage,
 } from "../../utils/selectionUtils";
@@ -61,8 +59,18 @@ const TextEditor = () => {
     : backgroundColor;
 
   const handleInputChange = event => {
-    const savedSelection = saveSelection();
-    const cursorPosition = savedSelection.getBoundingClientRect();
+    const selection = window.getSelection();
+    if (!selection.rangeCount) return null;
+
+    const range = selection.getRangeAt(0);
+    const cursorPosition = range.getBoundingClientRect();
+
+    const textareaRect = textareaRef.current.getBoundingClientRect();
+
+    const relativeCursorPosition = {
+      x: cursorPosition.left - textareaRect.left,
+      y: cursorPosition.top - textareaRect.top,
+    };
 
     const newValue = convertHTMLToPlainText(event.currentTarget.innerHTML);
     setTextValue(newValue);
@@ -72,7 +80,7 @@ const TextEditor = () => {
         roomId,
         text: newValue,
         user: user || null,
-        cursorPosition,
+        cursorPosition: relativeCursorPosition,
       });
     }
 
@@ -209,7 +217,6 @@ const TextEditor = () => {
       socket.current.emit("joinRoom", roomId, user, textValue);
 
       socket.current.on("currentText", ({ text }) => {
-        console.log(text);
         if (textareaRef.current) {
           textareaRef.current.innerHTML = convertPlainTextToHTML(
             text.toString(),

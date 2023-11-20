@@ -53,8 +53,13 @@ export const showProfileImage = (userPhotoURL, cursorPosition, container) => {
   iconElement.style.width = "32px";
   iconElement.style.height = "32px";
   iconElement.style.position = "absolute";
-  iconElement.style.left = cursorPosition.left + "px";
-  iconElement.style.top = cursorPosition.top + "px";
+
+  const containerRect = container.getBoundingClientRect();
+  iconElement.style.left = cursorPosition.x + containerRect.left + "px";
+
+  const verticalOffset = 50;
+  iconElement.style.top =
+    cursorPosition.y + containerRect.top + verticalOffset + "px";
 
   container.appendChild(iconElement);
 
