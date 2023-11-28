@@ -263,10 +263,7 @@ const TextEditor = () => {
     <>
       <div className="flex">
         <NavBar />
-        <div
-          className="w-screen h-screen flex flex-col"
-          style={{ backgroundColor: "#F8F0E5" }}
-        >
+        <div className="w-screen h-screen flex flex-col">
           <SubNavBar />
           <ToastContainer
             position="top-right"
@@ -281,12 +278,9 @@ const TextEditor = () => {
             theme="light"
           />
 
-          <div
-            className="flex flex-col w-3/4 h-3/4 m-auto rounded-md"
-            style={{ backgroundColor: "#DAC0A3" }}
-          >
+          <div className="flex flex-col w-3/4 h-3/4 bg-zinc-100 m-auto rounded-md">
             <div className="flex flex-col w-3/4 m-auto mt-4">
-              <div className="bg-amber-700 w-full h-16 rounded-md text-center text-2xl font-semibold font-mono flex items-center justify-center">
+              <div className="bg-blue-900 w-full h-1/6 rounded-md text-center text-white text-xl font-semibold font-mono flex items-center justify-center">
                 Hello, legalPad!
               </div>
               <div
@@ -314,7 +308,7 @@ const TextEditor = () => {
                     {typingUser ? `${typingUser}가 입력 중입니다...` : ""}
                   </div>
                   <Button
-                    style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
+                    style="bg-yellow-300 hover:bg-white hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
                     onClick={() => handleCreateRoom()}
                   >
                     {"방 생성"}
@@ -331,7 +325,7 @@ const TextEditor = () => {
                     {typingUser ? `${typingUser}가 입력 중입니다...` : ""}
                   </div>
                   <Button
-                    style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
+                    style="bg-yellow-300 hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
                     onClick={() => handleDeleteRoom()}
                   >
                     {"방 삭제"}
@@ -343,7 +337,7 @@ const TextEditor = () => {
               {updateMode ? (
                 <>
                   <Button
-                    style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
+                    style="bg-yellow-300 hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
                     onClick={navigateToMypage}
                   >
                     {"저장완료"}
@@ -365,7 +359,7 @@ const TextEditor = () => {
                   />
 
                   <Button
-                    style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
+                    style="bg-yellow-300 hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
                     onClick={() => {
                       handleDownloadClick(
                         textValue,
@@ -377,7 +371,7 @@ const TextEditor = () => {
                     다운로드
                   </Button>
                   <Button
-                    style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
+                    style="bg-yellow-300 hover:bg-white hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
                     onClick={updateText}
                   >
                     {text_id ? "수정" : "저장"}
@@ -388,7 +382,7 @@ const TextEditor = () => {
               {text_id && (
                 <>
                   <Button
-                    style="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-4"
+                    style="bg-yellow-300 hover:bg-white hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-4"
                     onClick={deleteText}
                   >
                     삭제

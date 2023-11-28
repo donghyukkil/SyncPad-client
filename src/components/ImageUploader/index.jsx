@@ -57,7 +57,7 @@ const ImageUploader = () => {
             {uploadedImage ? (
               <Button
                 style={
-                  "bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
+                  "bg-white hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
                 }
               >
                 이미지가 업로드되었습니다.
@@ -66,7 +66,7 @@ const ImageUploader = () => {
               <Button
                 onClick={handleSaveImage}
                 style={
-                  "bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
+                  "bg-white hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
                 }
               >
                 저장
@@ -89,7 +89,7 @@ const ImageUploader = () => {
             />
             <label
               htmlFor="fileInput"
-              className="bg-white hover:border-0 hover:bg-gray-100 text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
+              className="bg-yellow-300 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
             >
               원하는 이미지에서 메모를 추출하세요
             </label>

@@ -6,19 +6,16 @@ const Home = () => {
   const signInWithGoogle = useSignInWithGoogle();
 
   return (
-    <div className="flex" style={{ backgroundColor: "#F8F0E5" }}>
+    <div className="flex bg-zinc-100">
       <div className="w-screen h-screen flex flex-col">
-        <div
-          className="flex w-3/4 h-3/4 m-auto py-0 justify-center rounded-md"
-          style={{ backgroundColor: "#DAC0A3" }}
-        >
+        <div className="flex w-3/4 h-3/4 m-auto py-0 justify-center rounded-md">
           <div className="flex flex-col justify-evenly w-3/4">
-            <div className="p-3 border bg-white border-gray-400 rounded-lg h-72 resize-none text-center text-3xl font-mono font-semibold flex items-center justify-center">
+            <div className="p-3 border-2 bg-white border-yellow-300 rounded-lg h-72 resize-none text-center text-3xl font-mono font-semibold flex items-center justify-center">
               Hello, legalPad!
             </div>
             <Button
               style={
-                "bg-white hover:bg-gray-100 hover:border-0 text-black px-4 py-2 rounded-lg p-0 text-lg font-semibold font-mono"
+                "bg-yellow-300 hover:bg-white hover:border-0 text-black px-4 py-2 rounded-lg p-0 text-lg font-semibold font-mono"
               }
               onClick={signInWithGoogle}
             >

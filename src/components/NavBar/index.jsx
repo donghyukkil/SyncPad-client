@@ -10,39 +10,28 @@ const NavBar = () => {
   };
 
   return (
-    <nav
-      className="h-screen flex justify-center w-1/6"
-      style={{ backgroundColor: "#102C57" }}
-    >
+    <nav className="bg-zinc-200 h-screen flex justify-center w-1/6">
       <div className="flex flex-col space-y-20 justify-evenly">
         <Button
-          style={
-            "bg-gray-900 text-white rounded-md px-3 py-2 text-lg font-semibold font-mono"
-          }
+          style={"bg-white rounded-md px-3 py-2 font-semibold font-mono"}
           onClick={() => navigateTo("/create")}
         >
           메모 만들기
         </Button>
         <Button
-          style={
-            "bg-gray-900 text-white rounded-md px-3 py-2 text-lg font-semibold font-mono"
-          }
+          style={"bg-white rounded-md px-3 py-2 font-semibold font-mono"}
           onClick={() => navigateTo("/upload")}
         >
           메모 추출하기
         </Button>
         <Button
-          style={
-            "bg-gray-900 text-white rounded-md px-3 py-2 text-lg font-semibold font-mono"
-          }
+          style={"bg-white rounded-md px-3 py-2 font-semibold font-mono"}
           onClick={() => navigateTo("/mypage")}
         >
           마이 페이지
         </Button>
         <Button
-          style={
-            "bg-gray-900 text-white rounded-md px-3 py-2 text-lg font-semibold font-mono"
-          }
+          style={"bg-white rounded-md px-3 py-2 font-semibold font-mono"}
           onClick={() => navigateTo("/SharedRooms")}
         >
           Shared Rooms

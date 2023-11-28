@@ -11,15 +11,9 @@ const SharedRooms = () => {
   return (
     <div className="flex">
       <NavBar />
-      <div
-        className="w-screen h-screen flex flex-col"
-        style={{ backgroundColor: "#F8F0E5" }}
-      >
+      <div className="w-screen h-screen flex flex-col">
         <SubNavBar />
-        <div
-          className="flex flex-col w-3/4 h-3/4 m-auto py-5 justify-center rounded-md"
-          style={{ backgroundColor: "#DAC0A3" }}
-        >
+        <div className="flex flex-col bg-zinc-100 w-3/4 h-3/4 m-auto py-5 justify-center rounded-md">
           <main className="flex-grow grid grid-cols-3 grid-rows-0.5 gap-6 p-6 m-5">
             {rooms?.map((room, index) => (
               <TextCard key={index} item={room} />

@@ -72,10 +72,7 @@ const SubNavBar = () => {
   }, [user]);
 
   return (
-    <div
-      className="h-16 flex justify-between relative w-full"
-      style={{ backgroundColor: "#DAC0A3" }}
-    >
+    <div className="h-16 bg-zinc-100 flex justify-between relative w-full">
       <div className="flex space-x-10 m-auto ml-20">
         <select
           onChange={e => {
@@ -113,7 +110,7 @@ const SubNavBar = () => {
               <div className="bg-white">
                 <Button
                   style={
-                    "bg-white hover:border-0 hover:bg-gray-100 text-black rounded-md text-center text-lg font-semibold font-mono w-20 mt-2"
+                    "bg-white hover:border-0 hover:bg-white text-black rounded-md text-center text-lg font-semibold font-mono w-20 mt-2"
                   }
                   onClick={handleLogout}
                 >
@@ -125,7 +122,7 @@ const SubNavBar = () => {
         ) : (
           <Button
             style={
-              "bg-white hover:bg-gray-100 hover:border-0 text-black ml-3 rounded-lg font-semibold font-mono h-10 text-lg mt-1"
+              "bg-white hover:bg-white hover:border-0 text-black ml-3 rounded-lg font-semibold font-mono h-10 text-lg mt-1"
             }
             onClick={signInWithGoogle}
           >
