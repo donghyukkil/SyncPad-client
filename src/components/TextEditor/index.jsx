@@ -16,14 +16,18 @@ import { CONFIG } from "../../constants/config";
 import {
   convertHTMLToPlainText,
   convertPlainTextToHTML,
-  showProfileImage,
-  removeProfileImage,
 } from "../../utils/selectionUtils";
 
 import { handleDownloadClick } from "../../utils/textAction";
 import { createNewRoom, deleteRoom } from "../../utils/helpers";
 
 const TYPING_INTERVAL = 300;
+
+const targetNodeStyle = {
+  backgroundColor: "#ffffff",
+  opacity: 0.7,
+  transition: "background-color 500ms ease-in-out, opacity 500ms ease-in-out",
+};
 
 const TextEditor = () => {
   const { text_id, roomId } = useParams();
@@ -41,6 +45,7 @@ const TextEditor = () => {
 
   const [updateMode, setUpdateMode] = useState(false);
   const [typingUser, setTypingUser] = useState(null);
+  const [textInput, setTextInput] = useState();
 
   let resultText = result?.length > 0 ? result[0].content.join("\n") : "";
 
@@ -59,18 +64,27 @@ const TextEditor = () => {
     : backgroundColor;
 
   const handleInputChange = event => {
+    setTextInput(event.nativeEvent.data);
+
     const selection = window.getSelection();
-    if (!selection.rangeCount) return null;
+
+    if (!selection.rangeCount) {
+      return;
+    }
 
     const range = selection.getRangeAt(0);
-    const cursorPosition = range.getBoundingClientRect();
+    const cursorNode = range.startContainer;
 
-    const textareaRect = textareaRef.current.getBoundingClientRect();
+    const childNodes = Array.from(event.target.childNodes);
 
-    const relativeCursorPosition = {
-      x: cursorPosition.left - textareaRect.left,
-      y: cursorPosition.top - textareaRect.top,
-    };
+    let cursorNodeIndex = -1;
+    childNodes.forEach((node, index) => {
+      if (node.contains(cursorNode)) {
+        cursorNodeIndex = index;
+      } else {
+        node.style = {};
+      }
+    });
 
     const newValue = convertHTMLToPlainText(event.currentTarget.innerHTML);
     setTextValue(newValue);
@@ -80,7 +94,8 @@ const TextEditor = () => {
         roomId,
         text: newValue,
         user: user || null,
-        cursorPosition: relativeCursorPosition,
+        cursorIndex: cursorNodeIndex,
+        textInput,
       });
     }
 
@@ -205,6 +220,48 @@ const TextEditor = () => {
     }
   };
 
+  const findTextInNode = (node, textInput, imageUrl) => {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const index = node.nodeValue.indexOf(textInput);
+      if (index !== -1) {
+        const existingImage = document.getElementById("profile-image");
+        if (existingImage) {
+          existingImage.remove();
+        }
+
+        const span = document.createElement("span");
+        span.textContent = textInput;
+
+        const afterTextNode = node.splitText(index);
+        afterTextNode.nodeValue = afterTextNode.nodeValue.substring(
+          textInput.length,
+        );
+
+        node.parentNode.insertBefore(span, afterTextNode);
+
+        const img = document.createElement("img");
+        img.id = "profile-image";
+        img.src = imageUrl;
+        img.alt = "프로필 이미지";
+        img.style.position = "absolute";
+        img.style.width = "30px";
+        img.style.height = "30px";
+        img.style.opacity = 0.6;
+        img.style.transition = "opacity 0.5s ease-in-out";
+
+        const rect = span.getBoundingClientRect();
+        img.style.left = `${rect.left + window.scrollX}px`;
+        img.style.top = `${rect.top + window.scrollY}px`;
+
+        document.body.appendChild(img);
+      }
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      Array.from(node.childNodes).forEach(childNode =>
+        findTextInNode(childNode, textInput, imageUrl),
+      );
+    }
+  };
+
   useEffect(() => {
     if (textareaRef.current && result.length > 0) {
       textareaRef.current.innerHTML = convertPlainTextToHTML(
@@ -226,18 +283,19 @@ const TextEditor = () => {
 
       socket.current.on(
         "textChanged",
-        ({ text, photoURL, cursorPosition, email }) => {
+        ({ text, photoURL, email, cursorIndex, textInput }) => {
           const htmlContent = convertPlainTextToHTML(text);
           if (textareaRef.current.innerHTML !== htmlContent) {
             textareaRef.current.innerHTML = htmlContent;
 
-            const iconElement = showProfileImage(
-              photoURL,
-              cursorPosition,
-              textareaRef.current.parentElement,
-            );
+            const targetNode = textareaRef.current.childNodes[cursorIndex];
+            Object.assign(targetNode.style, targetNodeStyle);
 
-            removeProfileImage(iconElement, TYPING_INTERVAL);
+            if (targetNode) {
+              findTextInNode(targetNode, textInput, photoURL);
+              targetNode.classList.add("profile-icon");
+            }
+
             setTypingUser(email.split("@")[0]);
 
             if (typingTimerRef.current) {
