@@ -45,7 +45,6 @@ const TextEditor = () => {
 
   const [updateMode, setUpdateMode] = useState(false);
   const [typingUser, setTypingUser] = useState(null);
-  const [textInput, setTextInput] = useState();
 
   let resultText = result?.length > 0 ? result[0].content.join("\n") : "";
 
@@ -64,8 +63,6 @@ const TextEditor = () => {
     : backgroundColor;
 
   const handleInputChange = event => {
-    setTextInput(event.nativeEvent.data);
-
     const selection = window.getSelection();
 
     if (!selection.rangeCount) {
@@ -95,7 +92,6 @@ const TextEditor = () => {
         text: newValue,
         user: user || null,
         cursorIndex: cursorNodeIndex,
-        textInput,
       });
     }
 
@@ -127,7 +123,7 @@ const TextEditor = () => {
         method = "POST";
       }
 
-      const response = await fetch(url, {
+      await fetch(url, {
         method: method,
         headers: {
           "Content-Type": "application/json",
@@ -152,7 +148,7 @@ const TextEditor = () => {
 
     if (isConfirmed) {
       try {
-        const response = await fetch(
+        await fetch(
           `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/texts/${text_id}`,
           {
             method: "DELETE",
@@ -200,7 +196,6 @@ const TextEditor = () => {
         setTimeout(() => navigate(`/room/${roomData.data.room.roomId}`), 3000);
       } catch (error) {
         console.log("Room creation failed");
-        console.log(error);
         toast.error("방 생성에 실패했습니다.");
       }
     }
@@ -220,45 +215,25 @@ const TextEditor = () => {
     }
   };
 
-  const findTextInNode = (node, textInput, imageUrl) => {
-    if (node.nodeType === Node.TEXT_NODE) {
-      const index = node.nodeValue.indexOf(textInput);
-      if (index !== -1) {
-        const existingImage = document.getElementById("profile-image");
-        if (existingImage) {
-          existingImage.remove();
-        }
+  const renderProfileImageAtNodeEnd = (targetNode, imageUrl) => {
+    const existingImage = document.getElementById("profile-image");
+    if (existingImage) {
+      existingImage.remove();
+    }
 
-        const span = document.createElement("span");
-        span.textContent = textInput;
+    if (targetNode) {
+      const rect = targetNode.getBoundingClientRect();
+      const imageElement = document.createElement("img");
+      imageElement.id = "profile-image";
+      imageElement.src = imageUrl;
+      imageElement.alt = "프로필 이미지";
+      imageElement.style.position = "absolute";
+      imageElement.style.left = `${rect.left + window.scrollX - 40}px`;
+      imageElement.style.top = `${rect.top + window.scrollY}px`;
+      imageElement.style.width = "30px";
+      imageElement.style.height = "30px";
 
-        const afterTextNode = node.splitText(index);
-        afterTextNode.nodeValue = afterTextNode.nodeValue.substring(
-          textInput.length,
-        );
-
-        node.parentNode.insertBefore(span, afterTextNode);
-
-        const img = document.createElement("img");
-        img.id = "profile-image";
-        img.src = imageUrl;
-        img.alt = "프로필 이미지";
-        img.style.position = "absolute";
-        img.style.width = "30px";
-        img.style.height = "30px";
-        img.style.opacity = 0.6;
-        img.style.transition = "opacity 0.5s ease-in-out";
-
-        const rect = span.getBoundingClientRect();
-        img.style.left = `${rect.left + window.scrollX}px`;
-        img.style.top = `${rect.top + window.scrollY}px`;
-
-        document.body.appendChild(img);
-      }
-    } else if (node.nodeType === Node.ELEMENT_NODE) {
-      Array.from(node.childNodes).forEach(childNode =>
-        findTextInNode(childNode, textInput, imageUrl),
-      );
+      document.body.appendChild(imageElement);
     }
   };
 
@@ -283,8 +258,9 @@ const TextEditor = () => {
 
       socket.current.on(
         "textChanged",
-        ({ text, photoURL, email, cursorIndex, textInput }) => {
+        ({ text, photoURL, email, cursorIndex }) => {
           const htmlContent = convertPlainTextToHTML(text);
+
           if (textareaRef.current.innerHTML !== htmlContent) {
             textareaRef.current.innerHTML = htmlContent;
 
@@ -292,10 +268,10 @@ const TextEditor = () => {
             Object.assign(targetNode.style, targetNodeStyle);
 
             if (targetNode) {
-              findTextInNode(targetNode, textInput, photoURL);
               targetNode.classList.add("profile-icon");
             }
 
+            renderProfileImageAtNodeEnd(targetNode, photoURL);
             setTypingUser(email.split("@")[0]);
 
             if (typingTimerRef.current) {
@@ -312,6 +288,12 @@ const TextEditor = () => {
       return () => {
         if (socket.current) {
           socket.current.disconnect();
+        }
+
+        const existingImage = document.getElementById("profile-image");
+
+        if (existingImage) {
+          existingImage.remove();
         }
       };
     }
