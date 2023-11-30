@@ -72,7 +72,7 @@ const SubNavBar = () => {
   }, [user]);
 
   return (
-    <div className="h-16 bg-zinc-100 flex justify-between relative w-full">
+    <div className="h-[8vh] bg-zinc-100 flex gap-x-[45vw]">
       <div className="flex space-x-10 m-auto ml-20">
         <select
           onChange={e => {
@@ -81,8 +81,7 @@ const SubNavBar = () => {
             handleRoomClick(selectedRoomId);
           }}
           value={roomId || ""}
-          className="p-2 border rounded"
-          style={{ width: "200px" }}
+          className="p-2 border rounded w-[15vw]"
         >
           <option key="default-option" value="" disabled>
             select a room
@@ -94,13 +93,12 @@ const SubNavBar = () => {
           ))}
         </select>
       </div>
-
-      <div className="flex flex-col mr-20 my-2">
+      <div className="flex flex-col m-auto">
         {user ? (
-          <div style={{ width: "48px", height: "48px" }}>
+          <div>
             <Button>
               <img
-                className="h-12 w-12 rounded-full"
+                className="h-[5vh] w-[3vw] rounded-full"
                 src={user.photoURL}
                 alt="profile"
                 onClick={toggleMenu}

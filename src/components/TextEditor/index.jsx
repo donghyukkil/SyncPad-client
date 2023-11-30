@@ -8,8 +8,6 @@ import "react-toastify/dist/ReactToastify.css";
 import useStore from "../../useStore";
 
 import Button from "../Button";
-import NavBar from "../NavBar";
-import SubNavBar from "../SubNavBar";
 
 import { CONFIG } from "../../constants/config";
 
@@ -300,140 +298,133 @@ const TextEditor = () => {
   }, [roomId]);
 
   return (
-    <>
-      <div className="flex">
-        <NavBar />
-        <div className="w-screen h-screen flex flex-col">
-          <SubNavBar />
-          <ToastContainer
-            position="top-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
+    <div className="flex">
+      <div className="flex flex-col mx-auto">
+        <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+        />
 
-          <div className="flex flex-col w-3/4 h-3/4 bg-zinc-100 m-auto rounded-md">
-            <div className="flex flex-col w-3/4 m-auto mt-4">
-              <div className="bg-blue-900 w-full h-1/6 rounded-md text-center text-white text-xl font-semibold font-mono flex items-center justify-center">
-                Hello, legalPad!
-              </div>
-              <div
-                className="p-3 bg-yellow-200 border border-gray-400 rounded-lg h-72 resize-none"
-                ref={textareaRef}
-                onInput={handleInputChange}
-                contentEditable
-                style={{
-                  lineHeight: "32px",
-                  fontFamily: "Courier New",
-                  color: "#000",
-                  width: "100%",
-                  background: `linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px)`,
-                  backgroundSize: "100% 33px",
-                  backgroundColor: bgColor,
-                  overflowY: "auto",
+        <div className="bg-blue-900 w-full h-[7vh] text-center rounded-md  text-white text-[2.5vw] font-semibold font-mono">
+          Hello, legalPad!
+        </div>
+        <div
+          className="bg-yellow-200 border-gray-400 rounded-lg min-h-[55vh] max-h-[80%] min-w-[25vw] max-w-[100%] text-2xl"
+          ref={textareaRef}
+          onInput={handleInputChange}
+          contentEditable
+          style={{
+            lineHeight: "33px",
+            fontFamily: "Courier New",
+            color: "#000",
+            background: `linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px)`,
+            backgroundSize: "100% 33px",
+            backgroundColor: bgColor,
+            overflowY: "auto",
+          }}
+        />
+      </div>
+
+      {text_id && (
+        <>
+          <div
+            className="rounded-md text-center text-lg font-semibold font-mono flex items-center justify-center"
+            style={{ height: "5px", marginTop: "25px" }}
+          >
+            {typingUser ? `${typingUser}가 입력 중입니다...` : ""}
+          </div>
+          <Button
+            style="bg-yellow-300 hover:bg-white hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
+            onClick={() => handleCreateRoom()}
+          >
+            {"방 생성"}
+          </Button>
+        </>
+      )}
+
+      {roomId && (
+        <>
+          <div
+            className="rounded-md text-center text-lg font-semibold font-mono flex items-center justify-center"
+            style={{ height: "5px", marginTop: "25px" }}
+          >
+            {typingUser ? `${typingUser}가 입력 중입니다...` : ""}
+          </div>
+          <Button
+            style="bg-yellow-300 hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
+            onClick={() => handleDeleteRoom()}
+          >
+            {"방 삭제"}
+          </Button>
+        </>
+      )}
+      <div className="flex flex-col w-2/5 m-auto mt-0">
+        {updateMode ? (
+          <>
+            <Button
+              style="bg-yellow-300 hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
+              onClick={navigateToMypage}
+            >
+              {"저장완료"}
+            </Button>
+          </>
+        ) : (
+          <div className="flex flex-col justify-between h-[60vh]">
+            <div className="flex flex-col">
+              <label className="py-0 text-xl font-bold" htmlFor="bgcolor">
+                Color Picker
+              </label>
+              <input
+                className="h-[5vh] w-[6vw]"
+                type="color"
+                id="bgcolor"
+                value={backgroundColor}
+                onChange={e => {
+                  setBackgroundColor(e.target.value);
+                  if (textareaRef.current) {
+                    textareaRef.current.style.backgroundColor = e.target.value;
+                  }
                 }}
               />
-              {text_id && (
-                <>
-                  <div
-                    className="rounded-md text-center text-lg font-semibold font-mono flex items-center justify-center"
-                    style={{ height: "5px", marginTop: "25px" }}
-                  >
-                    {typingUser ? `${typingUser}가 입력 중입니다...` : ""}
-                  </div>
-                  <Button
-                    style="bg-yellow-300 hover:bg-white hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
-                    onClick={() => handleCreateRoom()}
-                  >
-                    {"방 생성"}
-                  </Button>
-                </>
-              )}
-
-              {roomId && (
-                <>
-                  <div
-                    className="rounded-md text-center text-lg font-semibold font-mono flex items-center justify-center"
-                    style={{ height: "5px", marginTop: "25px" }}
-                  >
-                    {typingUser ? `${typingUser}가 입력 중입니다...` : ""}
-                  </div>
-                  <Button
-                    style="bg-yellow-300 hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
-                    onClick={() => handleDeleteRoom()}
-                  >
-                    {"방 삭제"}
-                  </Button>
-                </>
-              )}
             </div>
-            <div className="flex flex-col w-3/4 m-auto justify-between mt-0">
-              {updateMode ? (
-                <>
-                  <Button
-                    style="bg-yellow-300 hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
-                    onClick={navigateToMypage}
-                  >
-                    {"저장완료"}
-                  </Button>
-                </>
-              ) : (
-                <div className="flex flex-col space-y-3">
-                  <input
-                    type="color"
-                    id="bgcolor"
-                    value={backgroundColor}
-                    onChange={e => {
-                      setBackgroundColor(e.target.value);
-                      if (textareaRef.current) {
-                        textareaRef.current.style.backgroundColor =
-                          e.target.value;
-                      }
-                    }}
-                  />
 
-                  <Button
-                    style="bg-yellow-300 hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
-                    onClick={() => {
-                      handleDownloadClick(
-                        textValue,
-                        textareaRef,
-                        backgroundColor,
-                      );
-                    }}
-                  >
-                    다운로드
-                  </Button>
-                  <Button
-                    style="bg-yellow-300 hover:bg-white hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
-                    onClick={updateText}
-                  >
-                    {text_id ? "수정" : "저장"}
-                  </Button>
-                </div>
-              )}
-
-              {text_id && (
-                <>
-                  <Button
-                    style="bg-yellow-300 hover:bg-white hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-4"
-                    onClick={deleteText}
-                  >
-                    삭제
-                  </Button>
-                </>
-              )}
-            </div>
+            <Button
+              style="bg-yellow-300 h-[7vh] hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
+              onClick={() => {
+                handleDownloadClick(textValue, textareaRef, backgroundColor);
+              }}
+            >
+              다운로드
+            </Button>
+            <Button
+              style="bg-yellow-300 h-[7vh] hover:border-0 bg-white hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
+              onClick={updateText}
+            >
+              {text_id ? "수정" : "저장"}
+            </Button>
           </div>
-        </div>
+        )}
+
+        {text_id && (
+          <>
+            <Button
+              style="bg-yellow-300 hover:bg-white hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-4"
+              onClick={deleteText}
+            >
+              삭제
+            </Button>
+          </>
+        )}
       </div>
-    </>
+    </div>
   );
 };
 
