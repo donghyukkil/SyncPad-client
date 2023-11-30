@@ -19,6 +19,12 @@ import {
 import { handleDownloadClick } from "../../utils/textAction";
 import { createNewRoom, deleteRoom } from "../../utils/helpers";
 
+import deleteIcon from "../../assets/deleteIcon.png";
+import downloadIcon from "../../assets/downloadIcon.png";
+import eraserIcon from "../../assets/eraserIcon.png";
+import roomIcon from "../../assets/roomIcon.png";
+import roomDelete from "../../assets/roomDelete.png";
+
 const TYPING_INTERVAL = 300;
 
 const targetNodeStyle = {
@@ -41,7 +47,6 @@ const TextEditor = () => {
     result = [];
   }
 
-  const [updateMode, setUpdateMode] = useState(false);
   const [typingUser, setTypingUser] = useState(null);
 
   let resultText = result?.length > 0 ? result[0].content.join("\n") : "";
@@ -102,10 +107,6 @@ const TextEditor = () => {
     }, TYPING_INTERVAL);
   };
 
-  const navigateToMypage = () => {
-    navigate("/mypage");
-  };
-
   const updateText = async () => {
     try {
       let url;
@@ -116,20 +117,48 @@ const TextEditor = () => {
       if (text_id) {
         url = `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/texts/${text_id}`;
         method = "PUT";
+
+        await fetch(url, {
+          method: method,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ content: plainTextContent, backgroundColor }),
+        });
+
+        toast.success(`메모가 수정되었습니다.`, {
+          position: "top-right",
+          autoClose: 2000,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+        });
+
+        setTimeout(() => navigate("/mypage"), 2000);
       } else {
         url = `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/create`;
         method = "POST";
+
+        await fetch(url, {
+          method: method,
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ content: plainTextContent, backgroundColor }),
+        });
+
+        toast.success(`메모가 생성되었습니다.`, {
+          position: "top-right",
+          autoClose: 2000,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+        });
+
+        setTimeout(() => navigate("/mypage"), 2000);
       }
-
-      await fetch(url, {
-        method: method,
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ content: plainTextContent, backgroundColor }),
-      });
-
-      setUpdateMode(!updateMode);
     } catch (error) {
       console.log(error);
     }
@@ -158,8 +187,7 @@ const TextEditor = () => {
 
         toast.success(`메모가 삭제되었습니다.`, {
           position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
+          autoClose: 2000,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
@@ -167,7 +195,7 @@ const TextEditor = () => {
           theme: "light",
         });
 
-        setTimeout(() => navigateToMypage(), 3000);
+        setTimeout(() => navigate("/mypage"), 3000);
       } catch (error) {
         console.log(error);
       }
@@ -182,8 +210,7 @@ const TextEditor = () => {
 
         toast.success(`room이 생성되었습니다. 해당 room으로 이동합니다!`, {
           position: "top-right",
-          autoClose: 5000,
-          hideProgressBar: false,
+          autoClose: 2000,
           closeOnClick: true,
           pauseOnHover: true,
           draggable: true,
@@ -206,9 +233,11 @@ const TextEditor = () => {
       try {
         await deleteRoom(roomId, user);
 
-        setTimeout(() => navigate("/SharedRooms"), 3000);
+        setTimeout(() => navigate("/sharedRooms"), 3000);
       } catch (error) {
-        toast.error("방 삭제에 실패했습니다.");
+        toast.error("방 삭제에 실패했습니다.", {
+          hideProgressBar: true,
+        });
       }
     }
   };
@@ -299,11 +328,11 @@ const TextEditor = () => {
 
   return (
     <div className="flex">
-      <div className="flex flex-col mx-auto">
+      <div className="flex flex-col mx-auto min-h-[30vh] min-w-[25%] max-h-[30vh] max-w-[50%]">
         <ToastContainer
           position="top-right"
-          autoClose={5000}
-          hideProgressBar={false}
+          autoClose={2000}
+          hideProgressBar={true}
           newestOnTop={false}
           closeOnClick
           rtl={false}
@@ -311,8 +340,8 @@ const TextEditor = () => {
           draggable
           pauseOnHover
           theme="light"
+          style={{ top: "9vh" }}
         />
-
         <div className="bg-blue-900 w-full h-[7vh] text-center rounded-md  text-white text-[2.5vw] font-semibold font-mono">
           Hello, legalPad!
         </div>
@@ -331,98 +360,119 @@ const TextEditor = () => {
             overflowY: "auto",
           }}
         />
+        {roomId && (
+          <div
+            className="rounded-md text-center text-lg font-semibold font-mono flex items-center justify-center"
+            style={{ height: "5px", marginTop: "25px" }}
+          >
+            {typingUser ? `${typingUser}가 입력 중입니다...` : ""}
+          </div>
+        )}
       </div>
 
-      {text_id && (
-        <>
-          <div
-            className="rounded-md text-center text-lg font-semibold font-mono flex items-center justify-center"
-            style={{ height: "5px", marginTop: "25px" }}
-          >
-            {typingUser ? `${typingUser}가 입력 중입니다...` : ""}
-          </div>
-          <Button
-            style="bg-yellow-300 hover:bg-white hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
-            onClick={() => handleCreateRoom()}
-          >
-            {"방 생성"}
-          </Button>
-        </>
-      )}
-
-      {roomId && (
-        <>
-          <div
-            className="rounded-md text-center text-lg font-semibold font-mono flex items-center justify-center"
-            style={{ height: "5px", marginTop: "25px" }}
-          >
-            {typingUser ? `${typingUser}가 입력 중입니다...` : ""}
-          </div>
-          <Button
-            style="bg-yellow-300 hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
-            onClick={() => handleDeleteRoom()}
-          >
-            {"방 삭제"}
-          </Button>
-        </>
-      )}
       <div className="flex flex-col w-2/5 m-auto mt-0">
-        {updateMode ? (
-          <>
-            <Button
-              style="bg-yellow-300 hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-8"
-              onClick={navigateToMypage}
-            >
-              {"저장완료"}
-            </Button>
-          </>
-        ) : (
-          <div className="flex flex-col justify-between h-[60vh]">
-            <div className="flex flex-col">
-              <label className="py-0 text-xl font-bold" htmlFor="bgcolor">
-                Color Picker
-              </label>
-              <input
-                className="h-[5vh] w-[6vw]"
-                type="color"
-                id="bgcolor"
-                value={backgroundColor}
-                onChange={e => {
-                  setBackgroundColor(e.target.value);
-                  if (textareaRef.current) {
-                    textareaRef.current.style.backgroundColor = e.target.value;
-                  }
-                }}
-              />
-            </div>
-
-            <Button
-              style="bg-yellow-300 h-[7vh] hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
-              onClick={() => {
-                handleDownloadClick(textValue, textareaRef, backgroundColor);
+        <div className="flex flex-col justify-between h-[60vh]">
+          <div className="flex flex-col">
+            <label className="py-0 text-xl font" htmlFor="bgcolor">
+              Color Picker
+            </label>
+            <input
+              className="h-[5vh] w-[6vw]"
+              type="color"
+              id="bgcolor"
+              value={backgroundColor}
+              onChange={e => {
+                setBackgroundColor(e.target.value);
+                if (textareaRef.current) {
+                  textareaRef.current.style.backgroundColor = e.target.value;
+                }
               }}
-            >
-              다운로드
-            </Button>
-            <Button
-              style="bg-yellow-300 h-[7vh] hover:border-0 bg-white hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
-              onClick={updateText}
-            >
-              {text_id ? "수정" : "저장"}
-            </Button>
+            />
           </div>
-        )}
-
-        {text_id && (
-          <>
+          {text_id && (
             <Button
-              style="bg-yellow-300 hover:bg-white hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono mt-4"
+              style="bg-yellow-300 h-[11vh] hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
+              onClick={() => handleCreateRoom()}
+            >
+              <div className="flex items-center gap-[7vw]">
+                <img
+                  className="w-[3vw] h-[5vh]"
+                  src={roomIcon}
+                  alt="방 생성하기"
+                />
+                <span className="text-center text-lg font-semibold font-mono">
+                  방 생성
+                </span>
+              </div>
+            </Button>
+          )}
+          {roomId && (
+            <Button
+              style="bg-yellow-300 h-[11vh] hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
+              onClick={() => handleDeleteRoom()}
+            >
+              <div className="flex items-center gap-[7vw]">
+                <img
+                  className="w-[3vw] h-[5vh]"
+                  src={roomDelete}
+                  alt="방 삭제하기"
+                />
+                <span className="text-center text-lg font-semibold font-mono">
+                  방 삭제
+                </span>
+              </div>
+            </Button>
+          )}
+          <Button
+            style="bg-yellow-300 h-[11vh] hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
+            onClick={() => {
+              handleDownloadClick(textValue, textareaRef, backgroundColor);
+            }}
+          >
+            <div className="flex items-center gap-[7vw]">
+              <img
+                className="w-[3vw] h-[5vh]"
+                src={downloadIcon}
+                alt="다운로드 아이콘"
+              />
+              <span className="text-center text-lg font-semibold font-mono">
+                다운로드
+              </span>
+            </div>
+          </Button>
+          <Button
+            style="bg-yellow-300 h-[11vh] hover:border-0 bg-white hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
+            onClick={updateText}
+          >
+            <div className="flex items-center gap-[7vw]">
+              <img
+                className="w-[3vw] h-[5vh]"
+                src={eraserIcon}
+                alt="수정하기"
+              />
+              <span className="text-center text-lg font-semibold font-mono">
+                {text_id ? "수정하기" : "저장하기"}
+              </span>
+            </div>
+          </Button>
+          {text_id && (
+            <Button
+              style="bg-yellow-300 h-[11vh] hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono w-full"
               onClick={deleteText}
             >
-              삭제
+              <div className="flex items-center gap-[7vw]">
+                <img
+                  className="w-[3vw] h-[5vh]"
+                  src={deleteIcon}
+                  alt="삭제 아이콘"
+                />
+                <span className="text-center text-lg font-semibold font-mono">
+                  삭제하기
+                </span>
+              </div>
             </Button>
-          </>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

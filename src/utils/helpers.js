@@ -1,4 +1,5 @@
 import { toast } from "react-toastify";
+
 import { CONFIG } from "../constants/config";
 
 export const createNewRoom = async (text_id, roomId, user, result) => {
@@ -29,7 +30,7 @@ export const createNewRoom = async (text_id, roomId, user, result) => {
 
 export const deleteRoom = async (roomId, user) => {
   try {
-    const response = await fetch(
+    await fetch(
       `${CONFIG.BACKEND_SERVER_URL}/users/${user}/deleteRooms/${roomId}`,
       {
         method: "DELETE",
@@ -38,10 +39,11 @@ export const deleteRoom = async (roomId, user) => {
         },
       },
     );
+
     toast.success("room이 삭제되었습니다", {
       position: "top-right",
-      autoClose: 5000,
-      hideProgressBar: false,
+      autoClose: 2000,
+      hideProgressBar: true,
       closeOnClick: true,
       pauseOnHover: true,
       draggable: true,
@@ -78,6 +80,24 @@ export const uploadImageToServer = async (base64String, user) => {
         body: JSON.stringify({ imageBase64: base64String }),
       },
     );
+
+    if (response.ok) {
+      return new Promise(resolve => {
+        toast.success("이미지가 업로드되었습니다.", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          progress: undefined,
+          theme: "light",
+          onClose: () => resolve(true),
+        });
+      });
+    } else {
+      throw new Error("Image upload failed");
+    }
   } catch (error) {
     console.log("Image upload error", error.message);
   }

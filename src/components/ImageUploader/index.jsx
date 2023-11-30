@@ -1,6 +1,10 @@
 import { useState, useRef } from "react";
+import { useNavigate } from "react-router-dom";
 
 import useStore from "../../useStore";
+
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import Button from "../Button";
 
@@ -10,6 +14,8 @@ import { uploadImageToServer } from "../../utils/helpers";
 
 const ImageUploader = () => {
   const { user } = useStore();
+
+  const navigate = useNavigate();
 
   const [selectedImage, setSelectedImage] = useState(null);
   const [uploadedImage, setUploadedImage] = useState(null);
@@ -25,10 +31,15 @@ const ImageUploader = () => {
     }
   };
 
-  const handleSaveImage = () => {
+  const handleSaveImage = async () => {
     if (selectedImage) {
-      uploadImageToServer(selectedImage, user);
-      setUploadedImage(selectedImage);
+      const uploadSuccess = await uploadImageToServer(selectedImage, user);
+
+      if (uploadSuccess) {
+        setUploadedImage(selectedImage);
+
+        setTimeout(() => navigate("/mypage"), 2000);
+      }
     }
   };
 
@@ -46,6 +57,19 @@ const ImageUploader = () => {
       {selectedImage ? (
         <div className="w-3/4 h-full">
           <div className="flex flex-col justify-evenly h-full">
+            <ToastContainer
+              position="top-right"
+              autoClose={2000}
+              hideProgressBar={true}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+              style={{ top: "9vh" }}
+            />
             <div className="p-3 border bg-white border-gray-400 rounded-lg h-72 resize-none text-center text-2xl flex justify-center">
               <img
                 src={`data:image/jpeg;base64,${selectedImage}`}
@@ -54,24 +78,14 @@ const ImageUploader = () => {
               />
             </div>
 
-            {uploadedImage ? (
-              <Button
-                style={
-                  "bg-white hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
-                }
-              >
-                이미지가 업로드되었습니다.
-              </Button>
-            ) : (
-              <Button
-                onClick={handleSaveImage}
-                style={
-                  "bg-white hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
-                }
-              >
-                저장
-              </Button>
-            )}
+            <Button
+              onClick={handleSaveImage}
+              style={
+                "bg-yellow-300 h-[8vh] hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
+              }
+            >
+              저장
+            </Button>
           </div>
         </div>
       ) : (
@@ -89,9 +103,9 @@ const ImageUploader = () => {
             />
             <label
               htmlFor="fileInput"
-              className="bg-yellow-300 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
+              className="flex justify-center item-center bg-yellow-300 h-[8vh] hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-2xl font-semibold font-mono"
             >
-              원하는 이미지에서 메모를 추출하세요
+              <div>원하는 이미지에서 메모를 추출하세요</div>
             </label>
           </div>
         </div>
