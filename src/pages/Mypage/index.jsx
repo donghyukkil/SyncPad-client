@@ -1,5 +1,7 @@
 import { useEffect } from "react";
 
+import { ToastContainer } from "react-toastify";
+
 import TextCard from "../../components/TextCard";
 import NavBar from "../../components/NavBar";
 import useStore from "../../useStore";
@@ -13,6 +15,10 @@ const Mypage = () => {
 
   const fetchTexts = async () => {
     try {
+      if (!user) {
+        return;
+      }
+
       const response = await fetch(
         `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/texts?per_page=6&page=${currentPage}`,
       );
@@ -37,6 +43,19 @@ const Mypage = () => {
       <NavBar />
       <div className="w-screen h-screen flex flex-col">
         <SubNavBar />
+        <ToastContainer
+          position="top-right"
+          autoClose={2000}
+          hideProgressBar={true}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="light"
+          style={{ top: "9vh" }}
+        />
         <div className="flex flex-col bg-zinc-100 w-3/4 h-3/4 m-auto py-5 justify-center rounded-md">
           <main className="flex-grow grid grid-cols-3 grid-rows-0.5 gap-6 p-6 m-5">
             {texts.data !== undefined

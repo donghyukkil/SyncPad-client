@@ -110,6 +110,21 @@ const TextEditor = () => {
 
   const updateText = async () => {
     try {
+      if (!user) {
+        toast.error("로그인이 필요합니다!", {
+          position: "top-right",
+          autoClose: 2000,
+          hideProgressBar: true,
+          closeOnClick: true,
+          pauseOnHover: true,
+          draggable: true,
+          theme: "light",
+        });
+
+        setTimeout(() => navigate("/"), 2500);
+        return;
+      }
+
       let url;
       let method;
 
@@ -168,6 +183,12 @@ const TextEditor = () => {
   };
 
   const deleteText = async () => {
+    if (!user) {
+      navigate("/");
+
+      return;
+    }
+
     if (!text_id) {
       console.log("No text_id available to delete.");
 

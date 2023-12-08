@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 
 import useStore from "../../useStore";
 
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import Button from "../Button";
@@ -32,6 +32,21 @@ const ImageUploader = () => {
   };
 
   const handleSaveImage = async () => {
+    if (!user) {
+      toast.error("로그인이 필요합니다!", {
+        position: "top-right",
+        autoClose: 2000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        theme: "light",
+      });
+
+      setTimeout(() => navigate("/"), 2500);
+      return;
+    }
+
     if (selectedImage) {
       const uploadSuccess = await uploadImageToServer(selectedImage, user);
 
