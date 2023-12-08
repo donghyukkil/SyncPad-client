@@ -30,15 +30,20 @@ export const createNewRoom = async (text_id, roomId, user, result) => {
 
 export const deleteRoom = async (roomId, user) => {
   try {
-    await fetch(
+    const response = await fetch(
       `${CONFIG.BACKEND_SERVER_URL}/users/${user}/deleteRooms/${roomId}`,
       {
         method: "DELETE",
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: "include",
       },
     );
+
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
 
     toast.success("room이 삭제되었습니다", {
       position: "top-right",
@@ -52,6 +57,15 @@ export const deleteRoom = async (roomId, user) => {
     });
   } catch (error) {
     console.log(error);
+    toast.error(`요청이 실패했습니다: ${error.message}`, {
+      position: "top-right",
+      autoClose: 5000,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
   }
 };
 
