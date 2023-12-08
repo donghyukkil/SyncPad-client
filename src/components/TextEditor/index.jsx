@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { io } from "socket.io-client";
+
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -47,23 +48,23 @@ const TextEditor = () => {
     result = [];
   }
 
-  const [typingUser, setTypingUser] = useState(null);
-
   let resultText = result?.length > 0 ? result[0].content.join("\n") : "";
+
+  const [typingUser, setTypingUser] = useState(null);
 
   const [textValue, setTextValue] = useState(resultText);
 
   const [backgroundColor, setBackgroundColor] = useState("#f7e79e");
+
+  const bgColor = result?.[0]?.backgroundColor
+    ? result[0].backgroundColor
+    : backgroundColor;
 
   const navigate = useNavigate();
 
   const textareaRef = useRef(null);
   const socket = useRef();
   const typingTimerRef = useRef(null);
-
-  const bgColor = result?.[0]?.backgroundColor
-    ? result[0].backgroundColor
-    : backgroundColor;
 
   const handleInputChange = event => {
     const selection = window.getSelection();
@@ -123,6 +124,7 @@ const TextEditor = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
           body: JSON.stringify({ content: plainTextContent, backgroundColor }),
         });
 
@@ -145,6 +147,7 @@ const TextEditor = () => {
           headers: {
             "Content-Type": "application/json",
           },
+          credentials: "include",
           body: JSON.stringify({ content: plainTextContent, backgroundColor }),
         });
 
@@ -175,13 +178,14 @@ const TextEditor = () => {
 
     if (isConfirmed) {
       try {
-        await fetch(
+        const response = await fetch(
           `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/texts/${text_id}`,
           {
             method: "DELETE",
             headers: {
               "Content-Type": "application/json",
             },
+            credentials: "include",
           },
         );
 
@@ -232,17 +236,13 @@ const TextEditor = () => {
     if (isConfirmed) {
       try {
         await deleteRoom(roomId, user);
-
-        setTimeout(() => navigate("/sharedRooms"), 3000);
       } catch (error) {
-        toast.error("방 삭제에 실패했습니다.", {
-          hideProgressBar: true,
-        });
+        console.log(error);
       }
     }
   };
 
-  const renderProfileImageAtNodeEnd = (targetNode, imageUrl) => {
+  const placeProfileImageNearNode = (targetNode, imageUrl) => {
     const existingImage = document.getElementById("profile-image");
     if (existingImage) {
       existingImage.remove();
@@ -298,7 +298,7 @@ const TextEditor = () => {
               targetNode.classList.add("profile-icon");
             }
 
-            renderProfileImageAtNodeEnd(targetNode, photoURL);
+            placeProfileImageNearNode(targetNode, photoURL);
             setTypingUser(email.split("@")[0]);
 
             if (typingTimerRef.current) {

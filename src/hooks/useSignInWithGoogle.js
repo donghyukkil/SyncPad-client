@@ -24,6 +24,7 @@ const useSignInWithGoogle = () => {
         method: "POST",
         credentials: "include",
         headers: {
+          Authorization: user.accessToken,
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ userEmail: user.email }),
