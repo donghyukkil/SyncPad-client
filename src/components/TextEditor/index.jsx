@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { io } from "socket.io-client";
@@ -28,25 +28,29 @@ import roomDelete from "../../assets/roomDelete.png";
 
 const TYPING_INTERVAL = 300;
 
-const targetNodeStyle = {
-  backgroundColor: "#ffffff",
-  opacity: 0.7,
-  transition: "background-color 500ms ease-in-out, opacity 500ms ease-in-out",
-};
-
 const TextEditor = () => {
   const { text_id, roomId } = useParams();
   const { texts, user, rooms } = useStore();
 
-  let result;
+  const targetNodeStyle = useMemo(
+    () => ({
+      backgroundColor: "#ffffff",
+      opacity: 0.7,
+      transition:
+        "background-color 500ms ease-in-out, opacity 500ms ease-in-out",
+    }),
+    [],
+  );
 
-  if (roomId) {
-    result = rooms.filter(room => room.roomId === roomId);
-  } else if (texts.data) {
-    result = texts.data.filter(text => text._id === text_id);
-  } else {
-    result = [];
-  }
+  const result = useMemo(() => {
+    if (roomId) {
+      return rooms.filter(room => room.roomId === roomId);
+    } else if (texts.data) {
+      return texts.data.filter(text => text._id === text_id);
+    } else {
+      return [];
+    }
+  }, [roomId, text_id, rooms, texts.data]);
 
   let resultText = result?.length > 0 ? result[0].content.join("\n") : "";
 
