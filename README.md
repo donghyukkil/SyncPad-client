@@ -3,6 +3,14 @@
 - [동기](#동기)
 - [주요 기능 소개](#주요-기능-소개)
 - [프로젝트 관심사](#프로젝트-관심사)
+  - [contentEditable](#contenteditable)
+    - [contentEditable 도입한 이유](#contenteditable-도입한-이유)
+    - [비제어 컴포너트](#비제어-컴포넌트)
+    - [비제어 컴포넌트 방식으로 사용자 입력값 렌더링하기](#비제어-컴포넌트-방식으로-사용자-입력값-렌더링하기)
+    - [이미지 다운로드 기능에서 발생했던 문제](#image-download-기능에서-발생했던-문제)
+  - [소켓을 이용한 실시간 메모 기능](#소켓을-이용한-실시간-메모-기능)
+    - [Socket IO 도입한 이유](#socket-io-도입한-이유)
+    - [커서 위치 시각화 위치가 맞지 않은 문제를 어떻게 해결했는지?](#커서-위치-시각화-위치가-맞지-않는-문제를-어떻게-해결했는지)
 - [기술스택](#기술스택)
 - [느낀점](#느낀점)
 - [연락처](#연락처)
@@ -50,7 +58,7 @@
 
 - 메모 앱 애플리케이션을 구현하기 위해선 사용자의 입력을 전달받아야 합니다. 이를 위해서 처음에는 `textarea`를 사용하여 개발을 시작했습니다. `textarea`를 사용하면 별도의 추가 조치 없이 사용자 input을 렌더링할 수 있습니다. 하지만 사용자의 커서 위치를 시각화하기 위해 좌표를 계산해야 했고 이를 위해선 Selection API와 Range API를 사용했어야만 했습니다.
 
-- 하지만 `textarea`에서 이 기술들을 적용하지 못한다는 것을 알게 되었습니다. 그 이유는 Selection과 Range API는 주로 `contenteditable` 속성을 가진 요소나 document 객체에서 작동하도록 설계되었기 때문입니다.`textarea`는 텍스트가 DOM 노드로 분리되어 있지 않고 단일한 문자열로 취급되기 때문에, 이러한 API를 사용하는 것이 어렵거나 비효율적입니다.
+- 하지만 `textarea`에서 이 기술들을 적용하지 못한다는 것을 알게 되었습니다. 그 이유는 Selection과 Range API는 주로 `contenteditable` 속성을 가진 요소나 document 객체에서 작동하도록 설계되었기 때문입니다. `textarea`는 텍스트가 DOM 노드로 분리되어 있지 않고 단일한 문자열로 취급되기 때문에, 이러한 API를 사용하는 것이 어렵거나 비효율적입니다.
 
 - (`textarea`에 Selection과 Range API를 사용하는 것보다는 `textarea` 자체의 속성과 메서드를 사용(textarea의 value, selectionStart, selectionEnd)하여 텍스트 선택과 조작을 하는 것이 일반적입니다.)
 
@@ -77,9 +85,9 @@
 
   - 사용자가 입력한 값은 `contentEditable` 영역의 `event.target.innerHTML`에서 조회할 수 있습니다. 이 값을 상태로 관리하고 `contentEditable`의 content 영역에 넣게 되면 렌더링 시 cursor 초기화가 되고 위와 같은 warning이 발생합니다.
 
-  - 이 warning은 `suppressContentEditableWarning={true}`를 통해 막을 수도 있습지만, 권장되지는 않습니다. 왜냐하면 해당 경고를 막으면, React는 DOM이 변경되었는지 알 수가 없기 때문입니다. element의 innerHTML을 직접 조작하는 방식은 React의 제어 대상에서 벗어나기 때문에, 이를 개발자에게 알려주기 위한 경고가 위에서 인용한 경고입니다. 사용자가 `contentEditable`를 수정하면 실제 DOM이 변경되고 React의 가상 DOM은 이러한 변경 사항을 자동으로 인식하지 않습니다.
+  - 이 warning은 `suppressContentEditableWarning={true}`를 통해 막을 수도 있습지만, 권장되지는 않습니다. 왜냐하면 해당 경고를 막으면, React는 DOM이 변경되었는지 알 수가 없기 때문입니다. element의 innerHTML을 직접 조작하는 방식은 React의 제어 대상에서 벗어나기 때문에, 이를 개발자에게 알려주기 위한 경고가 위에서 인용한 경고입니다.
 
-  - 결국 다음 렌더링 시에 content에 해당 DOM node의 올바른 상태라고 생각하는 것을 React가 overwrite 시켜서 사용자 입력값과 일치하지 않는 문제가 발생합니다. `contentEditable`을 사용한 방식은 실제 DOM 조작에 의해서 React 가상 DOM을 일관되게 유지하는 데 문제가 있으며 이에 대한 대응을 개발자가 해줘야 합니다.
+  - 사용자가 `contentEditable`를 수정하면 실제 DOM이 변경되고 React의 가상 DOM은 이러한 변경 사항을 자동으로 인식하지 않습니다. 결국 다음 렌더링 시에 content에 해당 DOM node의 올바른 상태라고 생각하는 것을 React가 overwrite 시켜서 사용자 입력값과 일치하지 않는 문제가 발생합니다. `contentEditable`을 사용한 방식은 실제 DOM 조작에 의해서 React 가상 DOM을 일관되게 유지하는 데 문제가 있으며 이에 대한 대응을 개발자가 해줘야 합니다.
 
 - **커서 위치 초기화 문제**
 
@@ -107,7 +115,7 @@
     <img src="./src/assets/imageForImageDownLoanIsuue.png", style="max-width: 80%; height: auto">
   </p>
 
-- 이를 해결 하기 위해 아래 사진의 `convertHTMLToPlainText`를 사용하여, HTML 요소의 구조와 상관없이 내부의 텍스트 값만 추출하고, 줄 바꿈을 유지하여 일반 텍스트로 변환하였습니다. 텍스트만을 `textValue`로 상태 관리하여서 이미지 다운로드를 담당하는 함수에 매개 변수로 전달하여 정상적인 모습을 이미지가 다운로드 되게 하였습니다.
+- 이를 해결 하기 위해 아래 사진의 `convertHTMLToPlainText`를 사용하여, HTML 요소의 구조와 상관없이 내부의 텍스트 값만 추출하고, 줄 바꿈을 유지하여 일반 텍스트로 변환하였습니다. 텍스트만을 `textValue`로 상태 관리하여서 이미지 다운로드를 담당하는 함수에 매개 변수로 전달하여 의도한 모습의 이미지가 다운로드 되게 하였습니다.
 
   <p align="center">
     <img src="./src/assets/imageForConverHTMLToPlainText.png", style="max-width: 80%; height: auto">
@@ -140,9 +148,9 @@
 
 - **DOM API의 getBoundingClientRect()을 이용한 방식**
 
-<p align="center">
-  <img src="https://github.com/donghyukkil/hello-legalpad-client/assets/124029691/c57b7e8c-1da5-409c-970b-07b19f026376", style="max-width: 80%; height: auto">
-</p>
+  <p align="center">
+    <img src="https://github.com/donghyukkil/hello-legalpad-client/assets/124029691/c57b7e8c-1da5-409c-970b-07b19f026376", style="max-width: 80%; height: auto">
+  </p>
 
 - 커서 위치를 계산하기 위해 웹 브라우저가 제공하는 DOM API의 `getBoundingClientRect()`을 이용하였습니다. `getBoundingClientRect()`은 해당 element의 viewport 내부에서 위치를 계산합니다. 따라서 커서 위치도 viewport 기준으로 위치를 계산하여서 사용자 브라우저 크기에 따라 프로필 이미지의 배치가 맞지 않는 문제가 발생하였습니다.
 
@@ -169,27 +177,27 @@
   | **1. 입력 발생**                  | `contentEditable` 영역에서 입력이 발생하면 `handleInputChange` 함수가 호출됩니다.                                                                                                                                                                                        |
   | **2. 커서 위치 파악**             | `childNodes` 배열과 `cursorNodeIndex`를 사용하여 현재 커서(`cursorNode`)의 위치를 찾습니다.                                                                                                                                                                              |
   | **3. 소켓을 통한 데이터 송신**    | 사용자 입력 데이터와 커서 위치 정보를 소켓을 통해 다른 사용자에게 전송합니다.                                                                                                                                                                                            |
-  | **4. 소켓 데이터 수신 및 처리**   | 소켓을 통해 수신된 데이터(`text`)를 `textarea.current.innerHTML`에 재할당하고, `cursorIndex`를 사용하여 마지막 커서 위치를 찾습니다.                                                                                                                                     |
+  | **4. 소켓 데이터 수신 및 처리**   | 소켓을 통해 수신된 데이터(`text`)를 `textarea.current.innerHTML`에 재할당하고, `cursorIndex`를 사용하여 마지막 커서 위치를 찾습니다. (`targetNode`)                                                                                                                      |
   | **5. 타겟 노드 좌표 계산**        | `targetNode`의 위치를 `getBoundingClientRect()` 메소드를 사용하여 계산합니다.                                                                                                                                                                                            |
   | **6. 스타일 적용 및 클래스 부여** | `targetNode`에 스타일과 클래스를 적용하여 시각적으로 강조합니다.                                                                                                                                                                                                         |
   | **7. 이미지 렌더링**              | `placeProfileImageNearNode` 함수를 사용하여 `targetNode` 근처에 프로필 이미지를 렌더링합니다.                                                                                                                                                                            |
-  | **8. 요약**                       | 사용자의 텍스트 입력은 소켓을 통해 다른 사용자에게 전달되며, 이때 커서 위치(cursorIndex)가 포함됩니다. 전달받은 사용잔느 변경된 텍스트와 cursorIndex를 사용하여 다른 사용자가 어느 부분을 편집하고 있는지를 DOM 요소를 기반으로 시각화하고 프로필 이미지를 렌더링합니다. |
+  | **8. 요약**                       | 사용자의 텍스트 입력은 소켓을 통해 다른 사용자에게 전달되며, 이때 커서 위치(cursorIndex)가 포함됩니다. 전달받은 사용자는 변경된 텍스트와 cursorIndex를 사용하여 다른 사용자가 어느 부분을 편집하고 있는지를 DOM 요소를 기반으로 시각화하고 프로필 이미지를 렌더링합니다. |
 
 - **상세 설명**
 
   - 원 사용자의 NodeList에서 텍스트 입력 시 이벤트가 발생한 요소를 찾아 변수 `cursorNode`에 할당합니다. 변수 `cursorNode`는 `contentEditable` 영역에서 텍스트가 입력될 때 사용자의 커서 위치에 해당하는 노드입니다.
 
+  - `event.target.childNodes`에서 `cursorNode`의 인덱스를 찾고 이 인덱스가 담긴 변수 `cursorIndex`를 포함한 사용자 텍스트 입력 정보를 소켓으로 다른 사용자에게 전달합니다. 서버는 이 정보를 모든 연결된 클라이언트에게 방송합니다.
+
     <p align="center">
       <img src="https://github.com/donghyukkil/hello-legalpad-client/assets/124029691/5e01eeaf-0612-41a1-87b7-9b1a25115f28", style="max-width: 80%; height: auto">
     </p>
-
-  - `event.target.childNodes`에서 `cursorNode`의 인덱스를 찾고 이 인덱스가 담긴 변수 `cursorIndex`를 포함한 사용자 텍스트 입력 정보를 소켓으로 다른 사용자에게 전달합니다. 서버는 이 정보를 모든 연결된 클라이언트에게 방송합니다.
 
     <p align="center">
       <img src="https://github.com/donghyukkil/hello-legalpad-client/assets/124029691/69aa4183-e51f-4e19-9f87-c7e199133095",  style="max-width: 80%; height: auto">
     </p>
 
-  - textChanged 이벤트를 통해 현재 사용자가 참조하고 있는 NodeList에서 전달받은 인덱스를 이용하여 다른 사용자에 의해 변화가 발생한 DOM 요소를 찾고 새로운 변수 `targetNode`에 할당합니다. `targetNode`으로 어떤 사용자가 어느 부분을 편집하고 있는지를 시각적으로 나타냅니다.
+    - textChanged 이벤트를 통해 현재 사용자가 참조하고 있는 NodeList에서 전달받은 인덱스를 이용하여 다른 사용자에 의해 변화가 발생한 DOM 요소를 찾고 새로운 변수 `targetNode`에 할당합니다. `targetNode`으로 소켓 이벤트를 전송한 사용자가 어느 부분을 편집하고 있는지를 시각적으로 나타냅니다.
 
   - 전달받은 프로필 이미지를 `placeProfileImageNearNode` 함수를 이용하여 해당 DOM 근처에 렌더링합니다.
 

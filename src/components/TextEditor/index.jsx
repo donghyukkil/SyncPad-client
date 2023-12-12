@@ -126,6 +126,7 @@ const TextEditor = () => {
         });
 
         setTimeout(() => navigate("/"), 2500);
+
         return;
       }
 
@@ -233,6 +234,7 @@ const TextEditor = () => {
 
   const handleCreateRoom = async () => {
     const roomId = window.prompt("방 이름을 입력해주세요.");
+
     if (roomId) {
       try {
         const roomData = await createNewRoom(text_id, roomId, user, result);
@@ -269,6 +271,7 @@ const TextEditor = () => {
 
   const placeProfileImageNearNode = (targetNode, imageUrl) => {
     const existingImage = document.getElementById("profile-image");
+
     if (existingImage) {
       existingImage.remove();
     }
@@ -321,9 +324,14 @@ const TextEditor = () => {
 
             if (targetNode) {
               targetNode.classList.add("profile-icon");
+              targetNode.scrollIntoView({
+                behavior: "smooth",
+                block: "center",
+              });
             }
 
             placeProfileImageNearNode(targetNode, photoURL);
+
             setTypingUser(email.split("@")[0]);
 
             if (typingTimerRef.current) {
@@ -408,6 +416,7 @@ const TextEditor = () => {
               value={backgroundColor}
               onChange={e => {
                 setBackgroundColor(e.target.value);
+
                 if (textareaRef.current) {
                   textareaRef.current.style.backgroundColor = e.target.value;
                 }
