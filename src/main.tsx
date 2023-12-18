@@ -3,18 +3,22 @@ import ReactDOM from "react-dom/client";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
 
 import Home from "./pages/Home/index.jsx";
-import Upload from "./pages/Upload";
+import Upload from "./pages/Upload/index.jsx";
 import Create from "./pages/Create/index.jsx";
 import MyPage from "./pages/Mypage/index.jsx";
-import SharedRooms from "./pages/SharedRooms";
+import SharedRooms from "./pages/SharedRooms/index.jsx";
 import DocumentEditor from "./pages/DocumentEditor/index.jsx";
-import RoomTextEditor from "./pages/RoomTextEditor";
+import RoomTextEditor from "./pages/RoomTextEditor/index.jsx";
 
-import "./config/firebase-config";
+import "./config/firebase-config.js";
 
 import "./index.css";
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+const root = ReactDOM.createRoot(
+  document.getElementById("root") as HTMLElement,
+);
+
+root.render(
   <React.StrictMode>
     <BrowserRouter>
       <Routes>
