@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
-import { io } from "socket.io-client";
+import { io, Socket } from "socket.io-client";
 
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -28,8 +28,22 @@ import roomDelete from "../../assets/roomDelete.png";
 
 const TYPING_INTERVAL = 300;
 
-const TextEditor = () => {
-  const { text_id, roomId } = useParams();
+interface TextEditorParams {
+  [key: string]: string | undefined;
+  text_id?: string;
+  roomId?: string;
+}
+
+interface Room {
+  roomId: string;
+}
+
+interface Text {
+  _id: string;
+}
+
+const TextEditor: React.FC = () => {
+  const { text_id, roomId } = useParams<TextEditorParams>();
   const { texts, user, rooms } = useStore();
 
   const targetNodeStyle = useMemo(
@@ -44,9 +58,9 @@ const TextEditor = () => {
 
   const result = useMemo(() => {
     if (roomId) {
-      return rooms.filter(room => room.roomId === roomId);
+      return rooms.filter((room: Room) => room.roomId === roomId);
     } else if (texts.data) {
-      return texts.data.filter(text => text._id === text_id);
+      return texts.data.filter((text: Text) => text._id === text_id);
     } else {
       return [];
     }
@@ -66,28 +80,27 @@ const TextEditor = () => {
 
   const navigate = useNavigate();
 
-  const textareaRef = useRef(null);
-  const socket = useRef();
-  const typingTimerRef = useRef(null);
+  const textareaRef = useRef<HTMLDivElement>(null);
+  const socket = useRef<Socket | null>();
+  const typingTimerRef = useRef<NodeJS.Timeout | number | null>(null);
 
-  const handleInputChange = event => {
+  const handleInputChange = (event: React.FormEvent<HTMLDivElement>) => {
     const selection = window.getSelection();
 
-    if (!selection.rangeCount) {
+    if (!selection || !selection.rangeCount) {
       return;
     }
 
     const range = selection.getRangeAt(0);
     const cursorNode = range.startContainer;
 
-    const childNodes = Array.from(event.target.childNodes);
+    const targetDiv = event.target as HTMLDivElement;
+    const childNodes = Array.from(targetDiv.childNodes);
 
     let cursorNodeIndex = -1;
     childNodes.forEach((node, index) => {
       if (node.contains(cursorNode)) {
         cursorNodeIndex = index;
-      } else {
-        node.style = {};
       }
     });
 
@@ -269,14 +282,14 @@ const TextEditor = () => {
     }
   };
 
-  const placeProfileImageNearNode = (targetNode, imageUrl) => {
+  const placeProfileImageNearNode = (targetNode: Node, imageUrl: string) => {
     const existingImage = document.getElementById("profile-image");
 
     if (existingImage) {
       existingImage.remove();
     }
 
-    if (targetNode) {
+    if (targetNode instanceof Element) {
       const rect = targetNode.getBoundingClientRect();
       const imageElement = document.createElement("img");
       imageElement.id = "profile-image";
@@ -301,49 +314,55 @@ const TextEditor = () => {
 
     if (roomId) {
       socket.current = io(CONFIG.BACKEND_SERVER_URL);
-      socket.current.emit("joinRoom", roomId, user, textValue);
 
-      socket.current.on("currentText", ({ text }) => {
-        if (textareaRef.current) {
-          textareaRef.current.innerHTML = convertPlainTextToHTML(
-            text.toString(),
-          );
-        }
-      });
+      if (socket.current) {
+        socket.current.emit("joinRoom", roomId, user, textValue);
 
-      socket.current.on(
-        "textChanged",
-        ({ text, photoURL, email, cursorIndex }) => {
-          const htmlContent = convertPlainTextToHTML(text);
-
-          if (textareaRef.current.innerHTML !== htmlContent) {
-            textareaRef.current.innerHTML = htmlContent;
-
-            const targetNode = textareaRef.current.childNodes[cursorIndex];
-            Object.assign(targetNode.style, targetNodeStyle);
-
-            if (targetNode) {
-              targetNode.classList.add("profile-icon");
-              targetNode.scrollIntoView({
-                behavior: "smooth",
-                block: "center",
-              });
-            }
-
-            placeProfileImageNearNode(targetNode, photoURL);
-
-            setTypingUser(email.split("@")[0]);
-
-            if (typingTimerRef.current) {
-              clearTimeout(typingTimerRef.current);
-            }
-
-            typingTimerRef.current = setTimeout(() => {
-              setTypingUser(null);
-            }, TYPING_INTERVAL);
+        socket.current.on("currentText", ({ text }) => {
+          if (textareaRef.current) {
+            textareaRef.current.innerHTML = convertPlainTextToHTML(
+              text.toString(),
+            );
           }
-        },
-      );
+        });
+
+        socket.current.on(
+          "textChanged",
+          ({ text, photoURL, email, cursorIndex }) => {
+            const htmlContent = convertPlainTextToHTML(text);
+
+            if (textareaRef.current) {
+              if (textareaRef.current.innerHTML !== htmlContent) {
+                textareaRef.current.innerHTML = htmlContent;
+
+                const targetNode = textareaRef.current.childNodes[cursorIndex];
+
+                if (targetNode instanceof HTMLElement) {
+                  Object.assign(targetNode.style, targetNodeStyle);
+
+                  targetNode.classList.add("profile-icon");
+                  targetNode.scrollIntoView({
+                    behavior: "smooth",
+                    block: "center",
+                  });
+
+                  placeProfileImageNearNode(targetNode, photoURL);
+                }
+
+                setTypingUser(email.split("@")[0]);
+
+                if (typingTimerRef.current) {
+                  clearTimeout(typingTimerRef.current);
+                }
+
+                typingTimerRef.current = setTimeout(() => {
+                  setTypingUser(null);
+                }, TYPING_INTERVAL);
+              }
+            }
+          },
+        );
+      }
 
       return () => {
         if (socket.current) {

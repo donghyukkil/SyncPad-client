@@ -17,13 +17,15 @@ const ImageUploader = () => {
 
   const navigate = useNavigate();
 
-  const [selectedImage, setSelectedImage] = useState(null);
-  const [uploadedImage, setUploadedImage] = useState(null);
+  const [selectedImage, setSelectedImage] = useState<string | null>(null);
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
 
-  const fileInputRef = useRef(null);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleImageChange = async event => {
-    const file = event.target.files[0];
+  const handleImageChange = async (
+    event: React.ChangeEvent<HTMLInputElement>,
+  ) => {
+    const file = event.target.files ? event.target.files[0] : null;
 
     if (file) {
       const base64String = await convertToBase64(file);
@@ -58,11 +60,18 @@ const ImageUploader = () => {
     }
   };
 
-  const convertToBase64 = file => {
+  const convertToBase64 = (file: File): Promise<string> => {
     return new Promise((resolve, reject) => {
       const reader = new FileReader();
       reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result.split(",")[1]);
+      reader.onload = () => {
+        const result = reader.result;
+        if (typeof result === "string") {
+          resolve(result.split(",")[1]);
+        } else {
+          reject(new Error("FileReader result is not a string"));
+        }
+      };
       reader.onerror = error => reject(error);
     });
   };

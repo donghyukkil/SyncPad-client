@@ -11,10 +11,14 @@ import { CONFIG } from "../../constants/config";
 
 import { fetchUserRooms } from "../../utils/helpers";
 
-const SubNavBar = () => {
+interface Room {
+  roomId: string;
+}
+
+const SubNavBar: React.FC = () => {
   const { user, clearUser, rooms, setRooms, setRoomId, roomId } = useStore();
 
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
   const navigate = useNavigate();
 
@@ -24,7 +28,7 @@ const SubNavBar = () => {
     setMenuOpen(!menuOpen);
   };
 
-  const handleRoomClick = roomId => {
+  const handleRoomClick = (roomId: string) => {
     if (roomId === "room1") {
       navigate("/chat");
     } else {
@@ -86,7 +90,7 @@ const SubNavBar = () => {
           <option key="default-option" value="" disabled>
             select a room
           </option>
-          {rooms?.map((room, index) => (
+          {rooms?.map((room: Room, index: number) => (
             <option key={index} value={room.roomId}>
               {room.roomId}
             </option>

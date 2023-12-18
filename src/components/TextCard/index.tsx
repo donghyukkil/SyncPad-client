@@ -1,15 +1,31 @@
 import { useNavigate } from "react-router-dom";
 
-const TextCard = ({ item }) => {
+interface Item {
+  roomId?: string;
+  _id?: string;
+  content?: string | { [key: string]: string };
+  backgroundColor?: string;
+}
+
+interface TextCardProps {
+  item: Item;
+}
+
+const TextCard: React.FC<TextCardProps> = ({ item }) => {
   const navigate = useNavigate();
 
   const navigateToDetailPage = () => {
     const path = item.roomId ? `/room/${item.roomId}` : `/mypage/${item._id}`;
-
     navigate(path);
   };
 
-  const renderContent = content => {
+  const renderContent = (
+    content: string | { [key: string]: string } | undefined,
+  ) => {
+    if (!content) {
+      return null;
+    }
+
     if (typeof content === "object") {
       return Object.values(content)
         .map((value, index) =>

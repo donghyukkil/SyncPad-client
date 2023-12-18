@@ -10,7 +10,7 @@ import sharedRoomImgSrc from "../../assets/meeting.png";
 const NavBar = () => {
   const navigate = useNavigate();
 
-  const navigateTo = path => {
+  const navigateTo = (path: string) => {
     navigate(path);
   };
 
