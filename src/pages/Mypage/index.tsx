@@ -10,8 +10,22 @@ import SubNavBar from "../../components/SubNavBar";
 
 import { CONFIG } from "../../constants/config";
 
+interface StoreState {
+  texts: {
+    data: Array<object>;
+    totalPages: number;
+  };
+  currentPage: number;
+  setCurrentPage: (page: number) => void;
+  setTexts: (texts: { texts: Array<object> }) => void;
+  user: {
+    email: string;
+  } | null;
+}
+
 const Mypage = () => {
-  const { texts, currentPage, setCurrentPage, setTexts, user } = useStore();
+  const { texts, currentPage, setCurrentPage, setTexts, user } =
+    useStore() as StoreState;
 
   const fetchTexts = async () => {
     try {
@@ -31,10 +45,10 @@ const Mypage = () => {
   };
 
   useEffect(() => {
-    fetchTexts(currentPage);
+    fetchTexts();
   }, [currentPage, user]);
 
-  const changePage = newPage => {
+  const changePage = (newPage: number) => {
     setCurrentPage(newPage);
   };
 

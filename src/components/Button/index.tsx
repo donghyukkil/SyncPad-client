@@ -4,6 +4,7 @@ interface ButtonProps {
   onClick?: MouseEventHandler<HTMLButtonElement>;
   style?: string;
   children: ReactNode;
+  disabled?: boolean;
 }
 
 const Button: React.FC<ButtonProps> = ({

@@ -5,6 +5,14 @@ import Button from "../../components/Button";
 
 import useStore from "../../useStore";
 
+interface Room {
+  _id: string;
+  userId: string;
+  textId: string;
+  roomId: string;
+  content: string[];
+}
+
 const SharedRooms = () => {
   const { rooms } = useStore();
 
@@ -15,7 +23,7 @@ const SharedRooms = () => {
         <SubNavBar />
         <div className="flex flex-col bg-zinc-100 w-3/4 h-3/4 m-auto py-5 justify-center rounded-md">
           <main className="flex-grow grid grid-cols-3 grid-rows-0.5 gap-6 p-6 m-5">
-            {rooms?.map((room, index) => (
+            {rooms?.map((room: Room, index: number) => (
               <TextCard key={index} item={room} />
             ))}
           </main>

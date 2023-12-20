@@ -1,8 +1,11 @@
+import { useNavigate } from "react-router-dom";
+
 import Button from "../../components/Button";
 
 import useSignInWithGoogle from "../../hooks/useSignInWithGoogle";
 
 const Home = () => {
+  const navigate = useNavigate();
   const signInWithGoogle = useSignInWithGoogle();
 
   return (
@@ -20,6 +23,14 @@ const Home = () => {
               onClick={signInWithGoogle}
             >
               구글 로그인
+            </Button>
+            <Button
+              style={
+                "bg-yellow-300 h-[8vh] hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-2xl font-semibold font-mono"
+              }
+              onClick={() => navigate("/create")}
+            >
+              체험하기
             </Button>
           </div>
         </div>

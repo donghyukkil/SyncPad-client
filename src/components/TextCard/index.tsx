@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 interface Item {
   roomId?: string;
   _id?: string;
-  content?: string | { [key: string]: string };
+  content?: string[] | { [key: string]: string };
   backgroundColor?: string;
 }
 
@@ -20,7 +20,7 @@ const TextCard: React.FC<TextCardProps> = ({ item }) => {
   };
 
   const renderContent = (
-    content: string | { [key: string]: string } | undefined,
+    content: string | string[] | { [key: string]: string } | undefined,
   ) => {
     if (!content) {
       return null;
