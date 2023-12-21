@@ -1,4 +1,4 @@
-export const convertHTMLToPlainText = html => {
+export const convertHTMLToPlainText = (html: string) => {
   const tempDiv = document.createElement("div");
   tempDiv.innerHTML = html;
 
@@ -18,35 +18,44 @@ export const convertHTMLToPlainText = html => {
   return text.startsWith("\n") ? text.slice(1) : text;
 };
 
-export const convertPlainTextToHTML = text => {
+export const convertPlainTextToHTML = (text: string) => {
   const lines = text.split("\n");
 
   return lines.map(line => `<div>${line}</div>`).join("");
 };
 
-export const saveSelection = () => {
+export const saveSelection = (): Range | null => {
   if (window.getSelection) {
     const sel = window.getSelection();
 
-    if (sel.getRangeAt && sel.rangeCount) {
-      return sel.getRangeAt(0);
+    if (sel) {
+      if (sel.getRangeAt && sel.rangeCount) {
+        return sel.getRangeAt(0);
+      }
     }
   }
 
   return null;
 };
 
-export const restoreSelection = range => {
+export const restoreSelection = (range: Range | null) => {
   if (range) {
     if (window.getSelection) {
       const sel = window.getSelection();
-      sel.removeAllRanges();
-      sel.addRange(range);
+
+      if (sel) {
+        sel.removeAllRanges();
+        sel.addRange(range);
+      }
     }
   }
 };
 
-export const showProfileImage = (userPhotoURL, cursorPosition, container) => {
+export const showProfileImage = (
+  userPhotoURL: string,
+  cursorPosition: { x: number; y: number },
+  container: HTMLElement,
+): HTMLImageElement => {
   const iconElement = document.createElement("img");
   iconElement.src = userPhotoURL;
   iconElement.alt = "User Icon";
@@ -66,7 +75,10 @@ export const showProfileImage = (userPhotoURL, cursorPosition, container) => {
   return iconElement;
 };
 
-export const removeProfileImage = (iconElement, timeoutDuration) => {
+export const removeProfileImage = (
+  iconElement: HTMLImageElement,
+  timeoutDuration: number,
+) => {
   setTimeout(() => {
     if (iconElement.parentNode) {
       iconElement.parentNode.removeChild(iconElement);

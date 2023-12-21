@@ -3,9 +3,17 @@ import { useNavigate } from "react-router-dom";
 import useStore from "../useStore";
 import { CONFIG } from "../constants/config";
 
-const useSignInWithGoogle = () => {
+interface StoreState {
+  setUser: (user: { email: string | null; photoURL: string | null }) => void;
+}
+
+interface Config {
+  BACKEND_SERVER_URL: string;
+}
+
+const useSignInWithGoogle = (): (() => Promise<void>) => {
   const navigate = useNavigate();
-  const { setUser } = useStore();
+  const { setUser } = useStore() as StoreState;
 
   const signInWithGoogle = async () => {
     const auth = getAuth();
@@ -20,15 +28,20 @@ const useSignInWithGoogle = () => {
         photoURL: user.photoURL,
       });
 
-      const response = await fetch(`${CONFIG.BACKEND_SERVER_URL}/users`, {
-        method: "POST",
-        credentials: "include",
-        headers: {
-          Authorization: user.accessToken,
-          "Content-Type": "application/json",
+      const idToken = await user.getIdToken();
+
+      const response: Response = await fetch(
+        `${(CONFIG as Config).BACKEND_SERVER_URL}/users`,
+        {
+          method: "POST",
+          credentials: "include",
+          headers: {
+            Authorization: idToken,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ userEmail: user.email }),
         },
-        body: JSON.stringify({ userEmail: user.email }),
-      });
+      );
 
       if (response.ok) {
         console.log("인증 성공");

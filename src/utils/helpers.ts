@@ -2,7 +2,23 @@ import { toast } from "react-toastify";
 
 import { CONFIG } from "../constants/config";
 
-export const createNewRoom = async (text_id, roomId, user, result) => {
+interface User {
+  email: string;
+}
+
+interface Room {
+  id: string;
+  text_id: string;
+  userId: string;
+  text: string;
+}
+
+export const createNewRoom = async (
+  text_id: string | undefined,
+  roomId: string,
+  user: User,
+  result: string,
+): Promise<Room | undefined> => {
   try {
     const response = await fetch(
       `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/createRoom`,
@@ -14,13 +30,13 @@ export const createNewRoom = async (text_id, roomId, user, result) => {
         body: JSON.stringify({
           text_id,
           userId: user.email,
-          roomId,
           text: result,
+          roomId,
         }),
       },
     );
 
-    const data = await response.json();
+    const data: Room = await response.json();
 
     return data;
   } catch (error) {
@@ -28,10 +44,13 @@ export const createNewRoom = async (text_id, roomId, user, result) => {
   }
 };
 
-export const deleteRoom = async (roomId, user) => {
+export const deleteRoom = async (
+  roomId: string | undefined,
+  user: User,
+): Promise<void> => {
   try {
     const response = await fetch(
-      `${CONFIG.BACKEND_SERVER_URL}/users/${user}/deleteRooms/${roomId}`,
+      `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/deleteRooms/${roomId}`,
       {
         method: "DELETE",
         headers: {
@@ -56,20 +75,22 @@ export const deleteRoom = async (roomId, user) => {
       theme: "light",
     });
   } catch (error) {
-    console.log(error);
-    toast.error(`요청이 실패했습니다: ${error.message}`, {
-      position: "top-right",
-      autoClose: 5000,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "light",
-    });
+    if (error instanceof Error) {
+      console.log(error);
+      toast.error(`요청이 실패했습니다: ${error.message}`, {
+        position: "top-right",
+        autoClose: 5000,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+        progress: undefined,
+        theme: "light",
+      });
+    }
   }
 };
 
-export async function fetchUserRooms(user) {
+export async function fetchUserRooms(user: User) {
   try {
     const response = await fetch(
       `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/getRooms`,
@@ -82,7 +103,10 @@ export async function fetchUserRooms(user) {
   }
 }
 
-export const uploadImageToServer = async (base64String, user) => {
+export const uploadImageToServer = async (
+  base64String: string,
+  user: User,
+): Promise<boolean | undefined> => {
   try {
     const response = await fetch(
       `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/upload`,
@@ -113,6 +137,10 @@ export const uploadImageToServer = async (base64String, user) => {
       throw new Error("Image upload failed");
     }
   } catch (error) {
-    console.log("Image upload error", error.message);
+    if (error instanceof Error) {
+      console.log("Image upload error", error.message);
+    }
+
+    return undefined;
   }
 };

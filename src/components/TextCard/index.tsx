@@ -15,7 +15,7 @@ const TextCard: React.FC<TextCardProps> = ({ item }) => {
   const navigate = useNavigate();
 
   const navigateToDetailPage = () => {
-    const path = item.roomId ? `/room/${item.roomId}` : `/mypage/${item._id}`;
+    const path = item.roomId ? `/room/${item._id}` : `/mypage/${item._id}`;
     navigate(path);
   };
 
