@@ -38,7 +38,8 @@ const Mypage = () => {
       );
 
       const texts = await response.json();
-      setTexts({ texts });
+
+      setTexts(texts);
     } catch (error) {
       console.log(error);
     }

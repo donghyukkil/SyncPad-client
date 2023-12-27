@@ -11,10 +11,6 @@ import { CONFIG } from "../../constants/config";
 
 import { fetchUserRooms } from "../../utils/helpers";
 
-interface Room {
-  roomId: string;
-}
-
 const SubNavBar: React.FC = () => {
   const { user, clearUser, rooms, setRooms, setRoomId, roomId } = useStore();
 
@@ -80,9 +76,15 @@ const SubNavBar: React.FC = () => {
       <div className="flex space-x-10 m-auto ml-20">
         <select
           onChange={e => {
-            const selectedRoomId = e.target.value;
-            setRoomId(selectedRoomId);
-            handleRoomClick(selectedRoomId);
+            const selectedRoom = rooms.filter(
+              room => room.roomId === e.target.value,
+            );
+
+            if (selectedRoom) {
+              console.log(selectedRoom);
+              setRoomId(selectedRoom[0].roomId);
+              handleRoomClick(selectedRoom[0]._id);
+            }
           }}
           value={roomId || ""}
           className="p-2 border rounded w-[15vw]"
@@ -90,7 +92,7 @@ const SubNavBar: React.FC = () => {
           <option key="default-option" value="" disabled>
             select a room
           </option>
-          {rooms?.map((room: Room, index: number) => (
+          {rooms?.map((room, index) => (
             <option key={index} value={room.roomId}>
               {room.roomId}
             </option>

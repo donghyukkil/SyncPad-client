@@ -34,18 +34,9 @@ interface TextEditorParams {
   roomId?: string;
 }
 
-interface Room {
-  roomId: string;
-}
-
-interface Text {
-  _id: string;
-}
-
 const TextEditor: React.FC = () => {
   const { text_id, roomId } = useParams<TextEditorParams>();
   const { texts, user, rooms } = useStore();
-
   const targetNodeStyle = useMemo(
     () => ({
       backgroundColor: "#ffffff",
@@ -58,15 +49,19 @@ const TextEditor: React.FC = () => {
 
   const result = useMemo(() => {
     if (roomId) {
-      return rooms.filter((room: Room) => room.roomId === roomId);
+      return rooms.filter(room => room._id === roomId);
     } else if (texts.data) {
-      return texts.data.filter((text: Text) => text._id === text_id);
+      return texts.data.filter(text => text._id === text_id);
     } else {
       return [];
     }
   }, [roomId, text_id, rooms, texts.data]);
 
-  let resultText = result?.length > 0 ? result[0].content.join("\n") : "";
+  let resultText = "";
+
+  if (result.length > 0 && Array.isArray(result[0].content)) {
+    resultText = result[0].content.join("\n");
+  }
 
   const [typingUser, setTypingUser] = useState(null);
 
@@ -217,7 +212,7 @@ const TextEditor: React.FC = () => {
 
     if (isConfirmed) {
       try {
-        const response = await fetch(
+        await fetch(
           `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/texts/${text_id}`,
           {
             method: "DELETE",
@@ -262,7 +257,7 @@ const TextEditor: React.FC = () => {
           theme: "light",
         });
 
-        setTimeout(() => navigate(`/room/${roomData.data.room.roomId}`), 3000);
+        setTimeout(() => navigate(`/room/${roomData?.data.room._id}`), 3000);
       } catch (error) {
         console.log("Room creation failed");
         toast.error("방 생성에 실패했습니다.");
@@ -276,13 +271,15 @@ const TextEditor: React.FC = () => {
     if (isConfirmed) {
       try {
         await deleteRoom(roomId, user);
+
+        setTimeout(() => navigate("/sharedRooms"), 3000);
       } catch (error) {
         console.log(error);
       }
     }
   };
 
-  const placeProfileImageNearNode = (targetNode: Node, imageUrl: string) => {
+  const placeProfileImageNearNode = (targetNode: Element, imageUrl: string) => {
     const existingImage = document.getElementById("profile-image");
 
     if (existingImage) {
@@ -306,7 +303,11 @@ const TextEditor: React.FC = () => {
   };
 
   useEffect(() => {
-    if (textareaRef.current && result.length > 0) {
+    if (
+      textareaRef.current &&
+      result.length > 0 &&
+      Array.isArray(result[0].content)
+    ) {
       textareaRef.current.innerHTML = convertPlainTextToHTML(
         result[0].content.join("\n"),
       );
@@ -321,7 +322,7 @@ const TextEditor: React.FC = () => {
         socket.current.on("currentText", ({ text }) => {
           if (textareaRef.current) {
             textareaRef.current.innerHTML = convertPlainTextToHTML(
-              text.toString(),
+              text.content.toString(),
             );
           }
         });

@@ -7,12 +7,19 @@ interface User {
 }
 
 interface Room {
-  id: string;
-  text_id: string;
-  userId: string;
-  text: string;
+  data: {
+    room: {
+      content: string[];
+      roomId: string;
+      textId: string;
+      userId: string;
+      __v: number;
+      _id: string;
+    };
+  };
+  message: string;
+  status: number;
 }
-
 export const createNewRoom = async (
   text_id: string | undefined,
   roomId: string,
@@ -36,11 +43,20 @@ export const createNewRoom = async (
       },
     );
 
+    if (!response.ok) {
+      throw new Error(`Error: ${response.status}`);
+    }
+
     const data: Room = await response.json();
 
     return data;
   } catch (error) {
-    console.log(error);
+    if (error instanceof Error) {
+      toast.error(`Room creation failed: ${error.message}`, {});
+    } else {
+      toast.error("Unknown error occurred during room creation");
+    }
+    return undefined;
   }
 };
 
@@ -59,10 +75,6 @@ export const deleteRoom = async (
         credentials: "include",
       },
     );
-
-    if (!response.ok) {
-      throw new Error(`Error: ${response.status}`);
-    }
 
     toast.success("room이 삭제되었습니다", {
       position: "top-right",
@@ -90,10 +102,10 @@ export const deleteRoom = async (
   }
 };
 
-export async function fetchUserRooms(user: User) {
+export async function fetchUserRooms(user: User | null) {
   try {
     const response = await fetch(
-      `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/getRooms`,
+      `${CONFIG.BACKEND_SERVER_URL}/users/${user?.email}/getRooms`,
     );
     const fetchedRooms = await response.json();
 
