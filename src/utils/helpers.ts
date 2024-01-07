@@ -20,11 +20,12 @@ interface Room {
   message: string;
   status: number;
 }
+
 export const createNewRoom = async (
   text_id: string | undefined,
   roomId: string,
   user: User,
-  result: string,
+  result: object,
 ): Promise<Room | undefined> => {
   try {
     const response = await fetch(
@@ -65,6 +66,10 @@ export const deleteRoom = async (
   user: User,
 ): Promise<void> => {
   try {
+    if (!user) {
+      throw new Error("로그인 해주세요");
+    }
+
     const response = await fetch(
       `${CONFIG.BACKEND_SERVER_URL}/users/${user.email}/deleteRooms/${roomId}`,
       {
@@ -75,6 +80,11 @@ export const deleteRoom = async (
         credentials: "include",
       },
     );
+
+    if (!response.ok) {
+      const data = await response.json();
+      throw new Error(`${data.message}`);
+    }
 
     toast.success("room이 삭제되었습니다", {
       position: "top-right",
@@ -88,7 +98,6 @@ export const deleteRoom = async (
     });
   } catch (error) {
     if (error instanceof Error) {
-      console.log(error);
       toast.error(`요청이 실패했습니다: ${error.message}`, {
         position: "top-right",
         autoClose: 5000,

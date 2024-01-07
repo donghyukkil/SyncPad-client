@@ -81,7 +81,6 @@ const SubNavBar: React.FC = () => {
             );
 
             if (selectedRoom) {
-              console.log(selectedRoom);
               setRoomId(selectedRoom[0].roomId);
               handleRoomClick(selectedRoom[0]._id);
             }

@@ -279,7 +279,7 @@ const TextEditor: React.FC = () => {
     }
   };
 
-  const placeProfileImageNearNode = (targetNode: Element, imageUrl: string) => {
+  const placeProfileImageNearNode = (targetNode: Node, imageUrl: string) => {
     const existingImage = document.getElementById("profile-image");
 
     if (existingImage) {
