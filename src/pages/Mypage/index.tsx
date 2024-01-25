@@ -3,7 +3,6 @@ import { useEffect } from "react";
 import { ToastContainer } from "react-toastify";
 
 import TextCard from "../../components/TextCard";
-import NavBar from "../../components/NavBar";
 import useStore from "../../useStore";
 import Button from "../../components/Button";
 import SubNavBar from "../../components/SubNavBar";
@@ -55,7 +54,6 @@ const Mypage = () => {
 
   return (
     <div className="flex">
-      <NavBar />
       <div className="w-screen h-screen flex flex-col">
         <SubNavBar />
         <ToastContainer

@@ -1,7 +1,6 @@
 import { useEffect, useCallback } from "react";
 
 import TextCard from "../../components/TextCard";
-import NavBar from "../../components/NavBar";
 import SubNavBar from "../../components/SubNavBar";
 import Button from "../../components/Button";
 
@@ -22,7 +21,6 @@ const SharedRooms = () => {
 
   return (
     <div className="flex">
-      <NavBar />
       <div className="w-screen h-screen flex flex-col">
         <SubNavBar />
         <div className="flex flex-col bg-zinc-100 w-3/4 h-3/4 m-auto py-5 justify-center rounded-md">

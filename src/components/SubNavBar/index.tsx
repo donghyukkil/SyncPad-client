@@ -3,6 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 import Button from "../Button";
 
+import menu from "../../assets/hamburger.png";
+
 import useSignInWithGoogle from "../../hooks/useSignInWithGoogle";
 
 import useStore from "../../useStore";
@@ -10,11 +12,17 @@ import useStore from "../../useStore";
 import { CONFIG } from "../../constants/config";
 
 import { fetchUserRooms } from "../../utils/helpers";
+import NavBar from "../NavBar";
 
 const SubNavBar: React.FC = () => {
   const { user, clearUser, rooms, setRooms, setRoomId, roomId } = useStore();
 
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
+  const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false);
+
+  const toggleHamburgeMenu = () => {
+    setIsHamburgerMenuOpen(!isHamburgerMenuOpen);
+  };
 
   const navigate = useNavigate();
 
@@ -72,68 +80,84 @@ const SubNavBar: React.FC = () => {
   }, [user]);
 
   return (
-    <div className="h-[8vh] bg-zinc-100 flex gap-x-[45vw]">
-      <div className="flex space-x-10 m-auto ml-20">
-        <select
-          onChange={e => {
-            const selectedRoom = rooms.filter(
-              room => room.roomId === e.target.value,
-            );
+    <>
+      <div className="flex justify-between bg-white min-h-[10vh]">
+        <img
+          className="h-[5vh] mx-10 my-auto"
+          src={menu}
+          alt="togglemenu"
+          onClick={() => toggleHamburgeMenu()}
+        />
+        <div className="my-auto flex w-1/2 justify-start">
+          <select
+            onChange={e => {
+              const selectedRoom = rooms.filter(
+                room => room.roomId === e.target.value,
+              );
 
-            if (selectedRoom) {
-              setRoomId(selectedRoom[0].roomId);
-              handleRoomClick(selectedRoom[0]._id);
-            }
-          }}
-          value={roomId || ""}
-          className="p-2 border rounded w-[15vw]"
-        >
-          <option key="default-option" value="" disabled>
-            select a room
-          </option>
-          {rooms?.map((room, index) => (
-            <option key={index} value={room.roomId}>
-              {room.roomId}
-            </option>
-          ))}
-        </select>
-      </div>
-      <div className="flex flex-col m-auto">
-        {user ? (
-          <div>
-            <Button>
-              <img
-                className="h-[5vh] w-[3vw] rounded-full"
-                src={user.photoURL}
-                alt="profile"
-                onClick={toggleMenu}
-              />
-            </Button>
-            {menuOpen && (
-              <div className="bg-white">
-                <Button
-                  style={
-                    "bg-white hover:border-0 hover:bg-white text-black rounded-md text-center text-lg font-semibold font-mono w-20 mt-2"
-                  }
-                  onClick={handleLogout}
-                >
-                  로그아웃
-                </Button>
-              </div>
-            )}
-          </div>
-        ) : (
-          <Button
-            style={
-              "bg-white hover:bg-white hover:border-0 text-black ml-3 rounded-lg font-semibold font-mono h-10 text-lg mt-1"
-            }
-            onClick={signInWithGoogle}
+              if (selectedRoom) {
+                setRoomId(selectedRoom[0].roomId);
+                handleRoomClick(selectedRoom[0]._id);
+              }
+            }}
+            value={roomId || ""}
+            className="border h-[5vh] w-[15vw]"
           >
-            로그인
-          </Button>
+            <option key="default-option" value="" disabled>
+              select a room
+            </option>
+            {rooms?.map((room, index) => (
+              <option key={index} value={room.roomId}>
+                {room.roomId}
+              </option>
+            ))}
+          </select>
+        </div>
+
+        {isHamburgerMenuOpen && (
+          <div className="absolute top-20 left-10 opacity-95">
+            <NavBar />
+          </div>
         )}
+
+        <div className="relative flex justify-end my-auto w-1/2 mx-10">
+          {user ? (
+            <div>
+              <Button>
+                <img
+                  className="h-[6vh] rounded-full"
+                  src={user.photoURL}
+                  alt="profile"
+                  onClick={toggleMenu}
+                />
+              </Button>
+              {menuOpen && (
+                <div className="absolute right-100">
+                  <Button
+                    style={
+                      "bg-white hover:border-0 hover:bg-white text-black rounded-md text-center text-lg font-semibold font-mono w-20 mt-2 bg-yellow-100"
+                    }
+                    onClick={handleLogout}
+                  >
+                    로그아웃
+                  </Button>
+                </div>
+              )}
+            </div>
+          ) : (
+            <Button
+              style={
+                "bg-white hover:bg-white hover:border-0 text-black ml-3 rounded-lg font-semibold font-mono h-10 text-lg mt-1"
+              }
+              onClick={signInWithGoogle}
+            >
+              로그인
+            </Button>
+          )}
+        </div>
       </div>
-    </div>
+      <div className="border-b border-zinc-500 w-full"></div>
+    </>
   );
 };
 

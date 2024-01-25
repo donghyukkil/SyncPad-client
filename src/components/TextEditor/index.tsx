@@ -2,13 +2,14 @@ import { useEffect, useRef, useState, useMemo } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 
 import { io, Socket } from "socket.io-client";
+import { toast } from "react-toastify";
 
-import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 import useStore from "../../useStore";
 
-import Button from "../Button";
+import Main from "./Main";
+import Footer from "./Footer";
 
 import { CONFIG } from "../../constants/config";
 
@@ -19,12 +20,6 @@ import {
 
 import { handleDownloadClick } from "../../utils/textAction";
 import { createNewRoom, deleteRoom } from "../../utils/helpers";
-
-import deleteIcon from "../../assets/deleteIcon.png";
-import downloadIcon from "../../assets/downloadIcon.png";
-import eraserIcon from "../../assets/eraserIcon.png";
-import roomIcon from "../../assets/roomIcon.png";
-import roomDelete from "../../assets/roomDelete.png";
 
 const TYPING_INTERVAL = 300;
 
@@ -380,155 +375,30 @@ const TextEditor: React.FC = () => {
   }, [roomId]);
 
   return (
-    <div className="flex">
-      <div className="flex flex-col mx-auto min-h-[30vh] min-w-[25%] max-h-[30vh] max-w-[50%]">
-        <ToastContainer
-          position="top-right"
-          autoClose={2000}
-          hideProgressBar={true}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-          style={{ top: "9vh" }}
+    <>
+      <div className="flex justify-start">
+        <Footer
+          backgroundColor={backgroundColor}
+          text_id={text_id}
+          textareaRef={textareaRef}
+          setBackgroundColor={setBackgroundColor}
+          handleCreateRoom={handleCreateRoom}
+          handleDeleteRoom={handleDeleteRoom}
+          handleDownloadClick={handleDownloadClick}
+          updateText={updateText}
+          roomId={roomId}
+          textValue={textValue}
+          deleteText={deleteText}
         />
-        <div className="bg-blue-900 w-full h-[7vh] text-center rounded-md  text-white text-[2.5vw] font-semibold font-mono">
-          Hello, legalPad!
-        </div>
-        <div
-          className="bg-yellow-200 border-gray-400 rounded-lg min-h-[55vh] max-h-[80%] min-w-[25vw] max-w-[100%] text-2xl"
-          ref={textareaRef}
-          onInput={handleInputChange}
-          contentEditable
-          style={{
-            lineHeight: "33px",
-            fontFamily: "Courier New",
-            color: "#000",
-            background: `linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px)`,
-            backgroundSize: "100% 33px",
-            backgroundColor: bgColor,
-            overflowY: "auto",
-          }}
+        <Main
+          textareaRef={textareaRef}
+          handleInputChange={handleInputChange}
+          bgColor={bgColor}
+          roomId={roomId}
+          typingUser={typingUser}
         />
-        {roomId && (
-          <div
-            className="rounded-md text-center text-lg font-semibold font-mono flex items-center justify-center"
-            style={{ height: "5px", marginTop: "25px" }}
-          >
-            {typingUser ? `${typingUser}가 입력 중입니다...` : ""}
-          </div>
-        )}
       </div>
-
-      <div className="flex flex-col w-2/5 m-auto mt-0">
-        <div className="flex flex-col justify-between h-[60vh]">
-          <div className="flex flex-col">
-            <label className="py-0 text-xl font" htmlFor="bgcolor">
-              Color Picker
-            </label>
-            <input
-              className="h-[5vh] w-[6vw]"
-              type="color"
-              id="bgcolor"
-              value={backgroundColor}
-              onChange={e => {
-                setBackgroundColor(e.target.value);
-
-                if (textareaRef.current) {
-                  textareaRef.current.style.backgroundColor = e.target.value;
-                }
-              }}
-            />
-          </div>
-          {text_id && (
-            <Button
-              style="bg-yellow-300 h-[11vh] hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
-              onClick={() => handleCreateRoom()}
-            >
-              <div className="flex items-center gap-[7vw]">
-                <img
-                  className="w-[3vw] h-[5vh]"
-                  src={roomIcon}
-                  alt="방 생성하기"
-                />
-                <span className="text-center text-lg font-semibold font-mono">
-                  방 생성
-                </span>
-              </div>
-            </Button>
-          )}
-          {roomId && (
-            <Button
-              style="bg-yellow-300 h-[11vh] hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
-              onClick={() => handleDeleteRoom()}
-            >
-              <div className="flex items-center gap-[7vw]">
-                <img
-                  className="w-[3vw] h-[5vh]"
-                  src={roomDelete}
-                  alt="방 삭제하기"
-                />
-                <span className="text-center text-lg font-semibold font-mono">
-                  방 삭제
-                </span>
-              </div>
-            </Button>
-          )}
-          <Button
-            style="bg-yellow-300 h-[11vh] hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
-            onClick={() => {
-              handleDownloadClick(textValue, textareaRef, backgroundColor);
-            }}
-          >
-            <div className="flex items-center gap-[7vw]">
-              <img
-                className="w-[3vw] h-[5vh]"
-                src={downloadIcon}
-                alt="다운로드 아이콘"
-              />
-              <span className="text-center text-lg font-semibold font-mono">
-                다운로드
-              </span>
-            </div>
-          </Button>
-          <Button
-            style="bg-yellow-300 h-[11vh] hover:border-0 bg-white hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
-            onClick={updateText}
-          >
-            <div className="flex items-center gap-[7vw]">
-              <img
-                className="w-[3vw] h-[5vh]"
-                src={eraserIcon}
-                alt="수정하기"
-              />
-              <span className="text-center text-lg font-semibold font-mono">
-                {text_id ? "수정하기" : "저장하기"}
-              </span>
-            </div>
-          </Button>
-          {text_id && (
-            <Button
-              style="bg-yellow-300 h-[11vh] hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono w-full"
-              onClick={deleteText}
-            >
-              <div className="flex items-center gap-[7vw]">
-                <img
-                  className="w-[3vw] h-[5vh]"
-                  src={deleteIcon}
-                  alt="삭제 아이콘"
-                />
-                <span className="text-center text-lg font-semibold font-mono">
-                  삭제하기
-                </span>
-              </div>
-            </Button>
-          )}
-        </div>
-      </div>
-    </div>
+    </>
   );
 };
 
