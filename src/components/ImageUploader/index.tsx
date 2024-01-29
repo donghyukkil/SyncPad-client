@@ -6,9 +6,9 @@ import useStore from "../../useStore";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import Button from "../Button";
+import Footer from "../TextEditor/Footer";
 
-import imgSrc from "../../assets/img.png";
+import imgSrc from "../../assets/image.png";
 
 import { uploadImageToServer } from "../../utils/helpers";
 
@@ -76,11 +76,15 @@ const ImageUploader = () => {
     });
   };
 
+  const triggerFileInput = () => {
+    fileInputRef.current?.click();
+  };
+
   return (
     <>
       {selectedImage ? (
-        <div className="w-3/4 h-full">
-          <div className="flex flex-col justify-evenly h-full">
+        <div className="my-20 mx-auto w-10/12 h-screen">
+          <div className="flex flex-col">
             <ToastContainer
               position="top-right"
               autoClose={2000}
@@ -94,44 +98,30 @@ const ImageUploader = () => {
               theme="light"
               style={{ top: "9vh" }}
             />
-            <div className="p-3 border bg-white border-gray-400 rounded-lg h-72 resize-none text-center text-2xl flex justify-center">
+            <div className="border bg-selectbox border-gray-400 rounded-lg resize-none min-h-[40vh] max-h-[40vh]">
               <img
                 src={`data:image/jpeg;base64,${selectedImage}`}
                 alt="Uploaded"
-                className="w-1/2 h-full m-auto"
+                className="w-full h-full"
               />
+              <Footer handleSaveImage={handleSaveImage} />
             </div>
-
-            <Button
-              onClick={handleSaveImage}
-              style={
-                "bg-yellow-300 h-[8vh] hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-center text-lg font-semibold font-mono"
-              }
-            >
-              저장
-            </Button>
           </div>
         </div>
       ) : (
-        <div className="w-3/4 h-full">
-          <div className="flex flex-col justify-evenly h-full">
-            <div className="p-3 border bg-white border-gray-400 rounded-lg h-72 resize-none text-center text-2xl flex justify-center">
-              <img src={imgSrc} className="w-1/3 h-1/2 m-auto" />
-            </div>
-            <input
-              type="file"
-              onChange={handleImageChange}
-              style={{ display: "none" }}
-              ref={fileInputRef}
-              id="fileInput"
-            />
-            <label
-              htmlFor="fileInput"
-              className="flex justify-center item-center bg-yellow-300 h-[8vh] hover:border-0 hover:bg-white text-black px-4 py-2 rounded-md text-2xl font-semibold font-mono"
-            >
-              <div>원하는 이미지에서 메모를 추출하세요</div>
-            </label>
-          </div>
+        <div className="mx-8 my-20 border bg-white border-gray-400 rounded-lg min-h-[40vh] resize-none text-center text-2xl flex justify-center">
+          <img
+            src={imgSrc}
+            className="w-1/3 h-1/2 m-auto"
+            onClick={triggerFileInput}
+          />
+          <input
+            type="file"
+            onChange={handleImageChange}
+            style={{ display: "none" }}
+            ref={fileInputRef}
+            id="fileInput"
+          />
         </div>
       )}
     </>

@@ -3,13 +3,14 @@ import { useNavigate } from "react-router-dom";
 
 import Button from "../Button";
 
-import menu from "../../assets/hamburger.png";
+import menu from "../../assets/menu.png";
 
 import useSignInWithGoogle from "../../hooks/useSignInWithGoogle";
 
 import useStore from "../../useStore";
 
 import { CONFIG } from "../../constants/config";
+import profile from "../../assets/user.png";
 
 import { fetchUserRooms } from "../../utils/helpers";
 import NavBar from "../NavBar";
@@ -82,40 +83,39 @@ const SubNavBar: React.FC = () => {
   return (
     <>
       <div className="flex justify-between bg-white min-h-[10vh]">
-        <img
-          className="h-[5vh] mx-10 my-auto"
-          src={menu}
-          alt="togglemenu"
-          onClick={() => toggleHamburgeMenu()}
-        />
-        <div className="my-auto flex w-1/2 justify-start">
-          <select
-            onChange={e => {
-              const selectedRoom = rooms.filter(
-                room => room.roomId === e.target.value,
-              );
-
-              if (selectedRoom) {
-                setRoomId(selectedRoom[0].roomId);
-                handleRoomClick(selectedRoom[0]._id);
-              }
-            }}
-            value={roomId || ""}
-            className="border h-[5vh] w-[15vw]"
-          >
-            <option key="default-option" value="" disabled>
-              select a room
-            </option>
-            {rooms?.map((room, index) => (
-              <option key={index} value={room.roomId}>
-                {room.roomId}
-              </option>
-            ))}
-          </select>
+        <div className="my-auto flex w-1/2">
+          <img
+            className="h-[5vh] mx-10 my-auto"
+            src={menu}
+            alt="togglemenu"
+            onClick={() => toggleHamburgeMenu()}
+          />
         </div>
+        <select
+          onChange={e => {
+            const selectedRoom = rooms.filter(
+              room => room.roomId === e.target.value,
+            );
 
+            if (selectedRoom) {
+              setRoomId(selectedRoom[0].roomId);
+              handleRoomClick(selectedRoom[0]._id);
+            }
+          }}
+          value={roomId || ""}
+          className="m-auto min-h-[5.5vh] min-w-[30vw] bg-selectbox rounded-md"
+        >
+          <option key="default-option" value="" disabled>
+            select a room
+          </option>
+          {rooms?.map((room, index) => (
+            <option key={index} value={room.roomId} className="bg-red-200">
+              {room.roomId}
+            </option>
+          ))}
+        </select>
         {isHamburgerMenuOpen && (
-          <div className="absolute top-20 left-10 opacity-95">
+          <div className="absolute top-24 left-6">
             <NavBar />
           </div>
         )}
@@ -132,10 +132,10 @@ const SubNavBar: React.FC = () => {
                 />
               </Button>
               {menuOpen && (
-                <div className="absolute right-100">
+                <div className="absolute right-100 bg-custom-white w-[20vw] h-[5vh] rounded-lg drop-shadow-xl">
                   <Button
                     style={
-                      "bg-white hover:border-0 hover:bg-white text-black rounded-md text-center text-lg font-semibold font-mono w-20 mt-2 bg-yellow-100"
+                      "hover:border-0 hover:bg-white text-black rounded-md text-center text-lg font-semibold font-mono w-20 mt-2"
                     }
                     onClick={handleLogout}
                   >
@@ -151,7 +151,11 @@ const SubNavBar: React.FC = () => {
               }
               onClick={signInWithGoogle}
             >
-              로그인
+              <img
+                src={profile}
+                alt="profile"
+                className="max-w-[10vw] max-h-[10vh] m-auto"
+              />
             </Button>
           )}
         </div>

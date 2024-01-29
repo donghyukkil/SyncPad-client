@@ -1,10 +1,14 @@
 import Button from "../Button";
 
+import downloadIcon from "../../assets/down-arrow.png";
+import saveIcon from "../../assets/check.png";
+import chatIcon from "../../assets/chat.png";
+import deleteIcon from "../../assets/delete.png";
+
 const Footer = ({
   backgroundColor,
   text_id,
   textareaRef,
-  setBackgroundColor,
   handleCreateRoom,
   handleDeleteRoom,
   handleDownloadClick,
@@ -12,17 +16,21 @@ const Footer = ({
   roomId,
   textValue,
   deleteText,
+  handleSaveImage,
 }) => {
   return (
     <>
-      <div className="m-auto bg-white rounded-md">
-        <div className="flex flex-col h-[50vh] w-[15vw]">
+      <div className="bg-custom-white rounded-lg drop-shadow-xl">
+        <div className="flex">
           {text_id && (
             <Button
               style="m-auto hover:bg-gray-100 rounded-md text-xl font-bold font-mono"
               onClick={() => handleCreateRoom()}
             >
-              같이 메모하기
+              <img
+                src={chatIcon}
+                className="max-w-[10vw] max-h-[10vh] m-auto"
+              />
             </Button>
           )}
           {roomId && (
@@ -30,45 +38,49 @@ const Footer = ({
               style="m-auto hover:bg-gray-100 rounded-md text-xl font-bold font-mono"
               onClick={() => handleDeleteRoom()}
             >
-              나가기
+              <img
+                src={deleteIcon}
+                className="max-w-[10vw] max-h-[10vh] m-auto"
+              />
             </Button>
           )}
+          {!handleSaveImage && (
+            <Button
+              style="m-auto hover:bg-gray-100 rounded-md font-mono font-bold"
+              onClick={() => {
+                handleDownloadClick(textValue, textareaRef, backgroundColor);
+              }}
+            >
+              <img
+                src={downloadIcon}
+                alt="download"
+                className="max-w-[10vw] max-h-[10vh] m-auto"
+              />
+            </Button>
+          )}
+
           <Button
-            style="m-auto hover:bg-gray-100 rounded-md text-xl font-bold font-mono"
+            style="m-auto hover:bg-gray-100 rounded-md font-mono font-bold"
             onClick={() => {
-              handleDownloadClick(textValue, textareaRef, backgroundColor);
+              handleSaveImage ? handleSaveImage() : updateText();
             }}
           >
-            다운로드
-          </Button>
-          <Button
-            style="m-auto hover:bg-gray-100 rounded-md text-xl font-bold font-mono"
-            onClick={updateText}
-          >
-            저장하기
-          </Button>
-
-          <div className="m-auto hover:bg-gray-100 rounded-md">
-            <input
-              className="w-[8vw] h-[8vh]"
-              type="color"
-              id="bgcolor"
-              value={backgroundColor}
-              onChange={e => {
-                setBackgroundColor(e.target.value);
-
-                if (textareaRef.current) {
-                  textareaRef.current.style.backgroundColor = e.target.value;
-                }
-              }}
+            <img
+              src={saveIcon}
+              alt="download"
+              className="max-w-[10vw] max-h-[10vh] m-auto"
             />
-          </div>
+          </Button>
+
           {text_id && (
             <Button
               style="m-auto hover:bg-gray-100 rounded-md text-xl font-bold font-mono"
               onClick={deleteText}
             >
-              삭제하기
+              <img
+                src={deleteIcon}
+                className="max-w-[10vw] max-h-[10vh] m-auto"
+              />
             </Button>
           )}
         </div>

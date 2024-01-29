@@ -41,17 +41,14 @@ const TextCard: React.FC<TextCardProps> = ({ item }) => {
 
   return (
     <div className="flex flex-col" onClick={navigateToDetailPage}>
-      <div className="bg-blue-900 w-full h-10 text-center text-white line leading-10 text-xs rounded-md font-semibold font-mono flex items-center justify-center">
+      <div className="bg-blue-900 w-full h-[3vh] text-center text-white line leading-10 text-xs rounded-md font-semibold font-mono flex items-center justify-center">
         Hello, legalPad!
       </div>
-      <div
-        className="bg-yellow-200 flex"
-        style={{ backgroundColor: backgroundColor }}
-      >
+      <div style={{ backgroundColor: backgroundColor }}>
         <div className="flex flex-col justify-around m-auto">
           <div
-            className="bg-white m-auto rounded-md overflow-hidden text-sm text-center w-3/5"
-            style={{ height: "100px" }}
+            className="m-auto rounded-md overflow-hidden text-sm text-center w-3/5"
+            style={{ height: "100px", backgroundColor: backgroundColor }}
           >
             <div>{renderContent(content)}</div>
           </div>

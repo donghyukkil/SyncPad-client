@@ -5,7 +5,9 @@ export default {
     extend: {
       colors: {
         "custom-yellow": "#faf7ef",
-        "custom-white": "#f5f5f5",
+        "custom-white": "#fcfcfc",
+        "bg-white": "#f9fafb",
+        selectbox: "#edf0f2",
       },
     },
   },

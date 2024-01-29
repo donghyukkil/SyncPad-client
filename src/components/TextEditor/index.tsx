@@ -10,6 +10,10 @@ import useStore from "../../useStore";
 
 import Main from "./Main";
 import Footer from "./Footer";
+import Button from "../Button";
+
+import plusButton from "../../assets/plus.png";
+import closeButton from "../../assets/close.png";
 
 import { CONFIG } from "../../constants/config";
 
@@ -64,9 +68,35 @@ const TextEditor: React.FC = () => {
 
   const [backgroundColor, setBackgroundColor] = useState("#f7e79e");
 
-  const bgColor = result?.[0]?.backgroundColor
+  const handleColor1Change = () => {
+    setBackgroundColor("#f7e79e");
+  };
+
+  const handleColor2Change = () => {
+    setBackgroundColor("#ffffff");
+  };
+
+  const handleColor3Change = () => {
+    setBackgroundColor("#dc1313");
+  };
+
+  const handleColor4Change = () => {
+    setBackgroundColor("#0bc20b");
+  };
+
+  const handleColor5Change = () => {
+    setBackgroundColor("#3351e6");
+  };
+
+  let bgColor = result?.[0]?.backgroundColor
     ? result[0].backgroundColor
     : backgroundColor;
+
+  const [showFooter, setShowFooter] = useState(false);
+
+  const toggleFooter = () => {
+    setShowFooter(!showFooter);
+  };
 
   const navigate = useNavigate();
 
@@ -374,31 +404,91 @@ const TextEditor: React.FC = () => {
     }
   }, [roomId]);
 
+  useEffect(() => {
+    bgColor = backgroundColor;
+  }, [backgroundColor]);
+
   return (
-    <>
-      <div className="flex justify-start">
-        <Footer
-          backgroundColor={backgroundColor}
-          text_id={text_id}
-          textareaRef={textareaRef}
-          setBackgroundColor={setBackgroundColor}
-          handleCreateRoom={handleCreateRoom}
-          handleDeleteRoom={handleDeleteRoom}
-          handleDownloadClick={handleDownloadClick}
-          updateText={updateText}
-          roomId={roomId}
-          textValue={textValue}
-          deleteText={deleteText}
-        />
-        <Main
-          textareaRef={textareaRef}
-          handleInputChange={handleInputChange}
-          bgColor={bgColor}
-          roomId={roomId}
-          typingUser={typingUser}
-        />
+    <div className="flex flex-col justify-evenly">
+      <div className="mx-10 my-4 bg-selectbox w-1/2 flex justify-around hover:bg-gray-100 rounded-md">
+        <Button
+          style={{ backgroundColor: "#f7e79e" }}
+          onClick={handleColor1Change}
+        >
+          <div className="w-8 h-8 bg-yellow-300 rounded-full"></div>
+        </Button>
+        <Button
+          style={{ backgroundColor: "#ffffff" }}
+          onClick={handleColor2Change}
+        >
+          <div className="w-8 h-8 bg-white rounded-full"></div>
+        </Button>
+        <Button
+          style={{ backgroundColor: "#dc1313" }}
+          onClick={handleColor3Change}
+        >
+          <div className="w-8 h-8 bg-red-500 rounded-full"></div>
+        </Button>
+        <Button
+          style={{ backgroundColor: "#0bc20b" }}
+          onClick={handleColor4Change}
+        >
+          <div className="w-8 h-8 bg-green-400 rounded-full"></div>
+        </Button>
+        <Button
+          style={{ backgroundColor: "#3351e6" }}
+          onClick={handleColor5Change}
+        >
+          <div className="w-8 h-8 bg-blue-400 rounded-full"></div>
+        </Button>
       </div>
-    </>
+      <Main
+        textareaRef={textareaRef}
+        handleInputChange={handleInputChange}
+        bgColor={bgColor}
+        roomId={roomId}
+        typingUser={typingUser}
+        backgroundColor={backgroundColor}
+      />
+
+      <div className="flex flex-col">
+        {!showFooter && (
+          <>
+            <Button onClick={toggleFooter}>
+              <img
+                src={plusButton}
+                alt="Show Footer"
+                className="max-w-[10vw] max-h-[10vh] m-auto"
+              />
+            </Button>
+          </>
+        )}
+        {showFooter && (
+          <>
+            <Button>
+              <img
+                src={closeButton}
+                alt="closeButton"
+                className="max-w-[10vw] max-h-[10vh] m-auto"
+                onClick={prev => setShowFooter(!prev)}
+              />
+            </Button>
+            <Footer
+              backgroundColor={backgroundColor}
+              text_id={text_id}
+              textareaRef={textareaRef}
+              handleCreateRoom={handleCreateRoom}
+              handleDeleteRoom={handleDeleteRoom}
+              handleDownloadClick={handleDownloadClick}
+              updateText={updateText}
+              roomId={roomId}
+              textValue={textValue}
+              deleteText={deleteText}
+            />
+          </>
+        )}
+      </div>
+    </div>
   );
 };
 

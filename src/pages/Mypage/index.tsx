@@ -69,8 +69,8 @@ const Mypage = () => {
           theme="light"
           style={{ top: "9vh" }}
         />
-        <div className="flex flex-col bg-zinc-100 w-3/4 h-3/4 m-auto py-5 justify-center rounded-md">
-          <main className="flex-grow grid grid-cols-3 grid-rows-0.5 gap-6 p-6 m-5">
+        <div className="flex flex-col bg-zinc-100 w-11/12 h-3/4 m-auto rounded-md">
+          <main className="flex-grow grid grid-cols-2 grid-rows-0.5 gap-5">
             {texts.data !== undefined
               ? texts.data.map((text, index) => (
                   <TextCard key={index} item={text} />
