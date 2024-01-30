@@ -24,7 +24,7 @@ const Footer = ({
         <div className="flex">
           {text_id && (
             <Button
-              style="m-auto hover:bg-gray-100 rounded-md text-xl font-bold font-mono"
+              style="m-auto hover:bg-gray-100 rounded-md"
               onClick={() => handleCreateRoom()}
             >
               <img
@@ -35,7 +35,7 @@ const Footer = ({
           )}
           {roomId && (
             <Button
-              style="m-auto hover:bg-gray-100 rounded-md text-xl font-bold font-mono"
+              style="m-auto hover:bg-gray-100 rounded-md"
               onClick={() => handleDeleteRoom()}
             >
               <img
@@ -46,7 +46,7 @@ const Footer = ({
           )}
           {!handleSaveImage && (
             <Button
-              style="m-auto hover:bg-gray-100 rounded-md font-mono font-bold"
+              style="m-auto hover:bg-gray-100 rounded-md"
               onClick={() => {
                 handleDownloadClick(textValue, textareaRef, backgroundColor);
               }}
@@ -60,7 +60,7 @@ const Footer = ({
           )}
 
           <Button
-            style="m-auto hover:bg-gray-100 rounded-md font-mono font-bold"
+            style="m-auto hover:bg-gray-100 rounded-md"
             onClick={() => {
               handleSaveImage ? handleSaveImage() : updateText();
             }}
@@ -74,7 +74,7 @@ const Footer = ({
 
           {text_id && (
             <Button
-              style="m-auto hover:bg-gray-100 rounded-md text-xl font-bold font-mono"
+              style="m-auto hover:bg-gray-100 rounded-md"
               onClick={deleteText}
             >
               <img

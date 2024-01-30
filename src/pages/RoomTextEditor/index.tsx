@@ -3,10 +3,10 @@ import TextEditor from "../../components/TextEditor";
 
 const RoomTextEditor = () => {
   return (
-    <>
+    <div className="sm:w-[60vw] lg:w-[30vw] m-auto">
       <SubNavBar />
       <TextEditor />
-    </>
+    </div>
   );
 };
 

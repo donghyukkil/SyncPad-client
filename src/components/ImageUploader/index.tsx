@@ -109,7 +109,7 @@ const ImageUploader = () => {
           </div>
         </div>
       ) : (
-        <div className="mx-8 my-20 border bg-white border-gray-400 rounded-lg min-h-[40vh] resize-none text-center text-2xl flex justify-center">
+        <div className="mx-8 my-20 border bg-selectbox border-gray-400 rounded-lg min-h-[40vh] resize-none text-center text-2xl flex justify-cente cursor-pointer">
           <img
             src={imgSrc}
             className="w-1/3 h-1/2 m-auto"

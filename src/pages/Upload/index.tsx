@@ -6,7 +6,7 @@ import SubNavBar from "../../components/SubNavBar";
 
 const Upload = () => {
   return (
-    <>
+    <div className="sm:w-[60vw] lg:w-[30vw] m-auto">
       <SubNavBar />
       <ToastContainer
         position="top-right"
@@ -22,7 +22,7 @@ const Upload = () => {
         style={{ top: "9vh" }}
       />
       <ImageUploader />
-    </>
+    </div>
   );
 };
 

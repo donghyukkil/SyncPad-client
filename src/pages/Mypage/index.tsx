@@ -53,7 +53,7 @@ const Mypage = () => {
   };
 
   return (
-    <div className="flex">
+    <div className="flex sm:w-[60vw] lg:w-[30vw] m-auto">
       <div className="w-screen h-screen flex flex-col">
         <SubNavBar />
         <ToastContainer
@@ -69,7 +69,7 @@ const Mypage = () => {
           theme="light"
           style={{ top: "9vh" }}
         />
-        <div className="flex flex-col bg-zinc-100 w-11/12 h-3/4 m-auto rounded-md">
+        <div className="flex flex-col w-11/12 h-3/4 m-auto rounded-md">
           <main className="flex-grow grid grid-cols-2 grid-rows-0.5 gap-5">
             {texts.data !== undefined
               ? texts.data.map((text, index) => (

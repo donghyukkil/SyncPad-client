@@ -34,7 +34,7 @@ const Main = ({
         </div>
 
         <div
-          className="bg-yellow-200 min-h-[50vh] max-h-[50vh] rounded-b-lg"
+          className="bg-yellow-200 min-h-[50vh] max-h-[50vh] rounded-b-lg shadow-xl"
           ref={textareaRef}
           onInput={handleInputChange}
           contentEditable

@@ -10,7 +10,7 @@ const NavBar = () => {
   };
 
   return (
-    <nav className="flex flex-col bg-custom-white w-[70vw] h-[50vh] rounded-lg drop-shadow-xl">
+    <nav className="flex flex-col bg-custom-white w-[70vw] h-[50vh] rounded-lg drop-shadow-xl sm:w-[25vw]">
       <div
         className="m-auto h-1/5 w-11/12 hover:bg-selectbox rounded-lg"
         onClick={() => navigateTo("/create")}

@@ -40,7 +40,10 @@ const TextCard: React.FC<TextCardProps> = ({ item }) => {
   const content = item.content || item.roomId;
 
   return (
-    <div className="flex flex-col" onClick={navigateToDetailPage}>
+    <div
+      className="flex flex-col cursor-pointer"
+      onClick={navigateToDetailPage}
+    >
       <div className="bg-blue-900 w-full h-[3vh] text-center text-white line leading-10 text-xs rounded-md font-semibold font-mono flex items-center justify-center">
         Hello, legalPad!
       </div>
