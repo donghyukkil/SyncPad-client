@@ -28,7 +28,7 @@ const Footer = ({
             <img
               src={closeButton}
               alt="closeButton"
-              className="max-w-[10vw] max-h-[10vh] m-auto"
+              className="max-w-[10vw] max-h-[10vh] m-auto sm:w-[3vw]"
               onClick={prev => setShowFooter(!prev)}
             />
           </Button>
@@ -36,17 +36,31 @@ const Footer = ({
             style="m-auto hover:bg-gray-100 rounded-md"
             onClick={() => handleCreateRoom()}
           >
-            <img src={chatIcon} className="max-w-[10vw] max-h-[10vh] m-auto" />
+            <img
+              src={chatIcon}
+              className="max-w-[10vw] max-h-[10vh] m-auto sm:w-[3vw]"
+            />
           </Button>
         </>
       )}
       {roomId && (
         <>
+          <Button>
+            <img
+              src={closeButton}
+              alt="closeButton"
+              className="max-w-[10vw] max-h-[10vh] m-auto sm:w-[3vw]"
+              onClick={prev => setShowFooter(!prev)}
+            />
+          </Button>
           <Button
             style="m-auto hover:bg-gray-100 rounded-md"
             onClick={() => handleCreateRoom()}
           >
-            <img src={chatIcon} className="max-w-[10vw] max-h-[10vh] m-auto" />
+            <img
+              src={chatIcon}
+              className="max-w-[10vw] max-h-[10vh] m-auto sm:w-[3vw]"
+            />
           </Button>
           <Button
             style="m-auto hover:bg-gray-100 rounded-md"
@@ -54,24 +68,26 @@ const Footer = ({
           >
             <img
               src={deleteIcon}
-              className="max-w-[10vw] max-h-[10vh] m-auto"
+              className="max-w-[10vw] max-h-[10vh] m-auto sm:w-[3vw]"
             />
           </Button>
         </>
       )}
       {!handleSaveImage && (
-        <Button
-          style="m-auto hover:bg-gray-100 rounded-md"
-          onClick={() => {
-            handleDownloadClick(textValue, textareaRef, backgroundColor);
-          }}
-        >
-          <img
-            src={downloadIcon}
-            alt="download"
-            className="max-w-[10vw] max-h-[10vh] m-auto"
-          />
-        </Button>
+        <>
+          <Button
+            style="m-auto hover:bg-gray-100 rounded-md"
+            onClick={() => {
+              handleDownloadClick(textValue, textareaRef, backgroundColor);
+            }}
+          >
+            <img
+              src={downloadIcon}
+              alt="download"
+              className="max-w-[10vw] max-h-[10vh] m-auto sm:w-[3vw]"
+            />
+          </Button>
+        </>
       )}
 
       <Button
@@ -83,7 +99,7 @@ const Footer = ({
         <img
           src={saveIcon}
           alt="download"
-          className="max-w-[10vw] max-h-[10vh] m-auto"
+          className="max-w-[10vw] max-h-[10vh] m-auto sm:w-[3vw]"
         />
       </Button>
 
@@ -92,7 +108,10 @@ const Footer = ({
           style="m-auto hover:bg-gray-100 rounded-md"
           onClick={deleteText}
         >
-          <img src={deleteIcon} className="max-w-[10vw] max-h-[10vh] m-auto" />
+          <img
+            src={deleteIcon}
+            className="max-w-[10vw] max-h-[10vh] m-auto sm:w-[3vw]"
+          />
         </Button>
       )}
     </div>

@@ -42,7 +42,7 @@ const Main = ({
             lineHeight: "33px",
             fontFamily: "Courier New",
             color: "#000",
-            background: `linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px), linear-gradient(90deg, transparent 20%, red 20%, red 21%, transparent 21%)`,
+            background: `linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px), linear-gradient(90deg, transparent 20%, red 20.2%, red 20.5%, transparent 20%)`,
             backgroundSize: "100% 33px, 100% 100%",
             backgroundColor: bgColor,
             overflowY: "auto",

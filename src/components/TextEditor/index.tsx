@@ -65,10 +65,10 @@ const TextEditor: React.FC = () => {
 
   const [textValue, setTextValue] = useState(resultText);
 
-  const [backgroundColor, setBackgroundColor] = useState("#f7e79e");
+  const [backgroundColor, setBackgroundColor] = useState("#ffffff");
 
   const handleColor1Change = () => {
-    setBackgroundColor("#f7e79e");
+    setBackgroundColor("#fff9c4");
   };
 
   const handleColor2Change = () => {
@@ -76,15 +76,15 @@ const TextEditor: React.FC = () => {
   };
 
   const handleColor3Change = () => {
-    setBackgroundColor("#dc1313");
+    setBackgroundColor("#fddde6");
   };
 
   const handleColor4Change = () => {
-    setBackgroundColor("#0bc20b");
+    setBackgroundColor("#7ed77b");
   };
 
   const handleColor5Change = () => {
-    setBackgroundColor("#3351e6");
+    setBackgroundColor("#a4c1f4");
   };
 
   let bgColor = result?.[0]?.backgroundColor
@@ -408,37 +408,42 @@ const TextEditor: React.FC = () => {
   }, [backgroundColor]);
 
   return (
-    <div className="flex flex-col justify-evenly">
-      <div className="mx-10 my-4 bg-selectbox w-1/2 flex justify-around hover:bg-gray-100 rounded-md">
+    <div className="flex flex-col">
+      <div className="mx-10 my-4  flex justify-around rounded-md">
         <Button
-          style={{ backgroundColor: "#f7e79e" }}
+          style={{ backgroundColor: "#fef6e4" }}
           onClick={handleColor1Change}
         >
-          <div className="w-8 h-8 bg-yellow-300 rounded-full"></div>
+          <div className="w-[5vh] h-[5vh] bg-yellow-300 rounded-full"></div>
         </Button>
         <Button
-          style={{ backgroundColor: "#ffffff" }}
+          style={{
+            backgroundColor: "#ffffff",
+          }}
           onClick={handleColor2Change}
         >
-          <div className="w-8 h-8 bg-white rounded-full"></div>
+          <div className="w-[5vh] h-[5vh] bg-white rounded-full shadow-md shadow-slate-400"></div>
         </Button>
         <Button
-          style={{ backgroundColor: "#dc1313" }}
+          style={{ backgroundColor: "#f7c0c0" }}
           onClick={handleColor3Change}
         >
-          <div className="w-8 h-8 bg-red-500 rounded-full"></div>
+          <div className="w-[5vh] h-[5vh] bg-red-500 rounded-full"></div>
         </Button>
         <Button
           style={{ backgroundColor: "#0bc20b" }}
           onClick={handleColor4Change}
         >
-          <div className="w-8 h-8 bg-green-400 rounded-full"></div>
+          <div
+            className="w-[5vh] h-[5vh] rounded-full"
+            style={{ backgroundColor: "#0bc20b" }}
+          ></div>
         </Button>
         <Button
-          style={{ backgroundColor: "#3351e6" }}
+          style={{ backgroundColor: "#c0d0f7" }}
           onClick={handleColor5Change}
         >
-          <div className="w-8 h-8 bg-blue-400 rounded-full"></div>
+          <div className="w-[5vh] h-[5vh] bg-blue-400 rounded-full"></div>
         </Button>
       </div>
       <Main
@@ -450,14 +455,14 @@ const TextEditor: React.FC = () => {
         backgroundColor={backgroundColor}
       />
 
-      <div className="">
+      <div className="mx-10">
         {!showFooter && (
           <>
             <Button onClick={toggleFooter}>
               <img
                 src={plusButton}
                 alt="Show Footer"
-                className="max-w-[10vw] max-h-[10vh] m-auto"
+                className="max-w-[10vw] max-h-[10vh] m-auto sm:w-[3vw]"
               />
             </Button>
           </>

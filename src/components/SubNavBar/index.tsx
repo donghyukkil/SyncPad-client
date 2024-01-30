@@ -102,7 +102,7 @@ const SubNavBar: React.FC = () => {
       <div className="flex justify-between bg-white min-h-[10vh]">
         <div className="my-auto flex w-1/2 cursor-pointer">
           <img
-            className="h-[5vh] mx-10 my-auto"
+            className="h-[4.5vh] mx-10 my-auto"
             src={menu}
             alt="togglemenu"
             onClick={() => toggleHamburgeMenu()}
@@ -127,7 +127,7 @@ const SubNavBar: React.FC = () => {
             <div>
               <Button>
                 <img
-                  className="h-[6vh] rounded-full mt-2"
+                  className="h-[5vh] rounded-full mt-2"
                   src={user.photoURL}
                   alt="profile"
                   onClick={toggleMenu}
