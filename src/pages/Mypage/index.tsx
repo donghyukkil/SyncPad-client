@@ -53,71 +53,69 @@ const Mypage = () => {
   };
 
   return (
-    <div className="flex sm:w-[60vw] lg:w-[30vw] m-auto">
-      <div className="w-screen h-screen flex flex-col">
-        <SubNavBar />
-        <ToastContainer
-          position="top-right"
-          autoClose={2000}
-          hideProgressBar={true}
-          newestOnTop={false}
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-          theme="light"
-          style={{ top: "9vh" }}
-        />
-        <div className="flex flex-col w-11/12 h-3/4 m-auto rounded-md">
-          <main className="flex-grow grid grid-cols-2 grid-rows-0.5 gap-5">
-            {texts.data !== undefined
-              ? texts.data.map((text, index) => (
-                  <TextCard key={index} item={text} />
-                ))
-              : null}
-          </main>
-          <nav className="flex justify-center">
-            <ul className="list-style-none flex">
-              <li>
+    <div className="w-screen h-screen flex flex-col sm:w-[60vw] lg:w-[30vw] m-auto">
+      <SubNavBar />
+      <ToastContainer
+        position="top-right"
+        autoClose={2000}
+        hideProgressBar={true}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="light"
+        style={{ top: "9vh" }}
+      />
+      <div className="flex flex-col w-11/12 h-3/4 m-auto rounded-md">
+        <main className="flex-grow grid grid-cols-2 grid-rows-0.5 gap-5">
+          {texts.data !== undefined
+            ? texts.data.map((text, index) => (
+                <TextCard key={index} item={text} />
+              ))
+            : null}
+        </main>
+        <nav className="flex justify-center">
+          <ul className="list-style-none flex">
+            <li>
+              <Button
+                style={
+                  "relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400"
+                }
+                onClick={() => changePage(currentPage - 1)}
+                disabled={currentPage === 1}
+              >
+                Previous
+              </Button>
+            </li>
+            {[...Array(texts.totalPages).keys()].map(pageNumber => (
+              <li key={pageNumber}>
                 <Button
-                  style={
-                    "relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400"
-                  }
-                  onClick={() => changePage(currentPage - 1)}
-                  disabled={currentPage === 1}
+                  style={`relative block rounded bg-transparent px-3 py-1.5 text-sm transition-all duration-300 dark:text-neutral-400 ${
+                    pageNumber + 1 === currentPage
+                      ? "text-neutral-700 shadow-lg"
+                      : "text-neutral-500"
+                  }`}
+                  onClick={() => changePage(pageNumber + 1)}
                 >
-                  Previous
+                  {pageNumber + 1}
                 </Button>
               </li>
-              {[...Array(texts.totalPages).keys()].map(pageNumber => (
-                <li key={pageNumber}>
-                  <Button
-                    style={`relative block rounded bg-transparent px-3 py-1.5 text-sm transition-all duration-300 dark:text-neutral-400 ${
-                      pageNumber + 1 === currentPage
-                        ? "text-neutral-700 shadow-lg"
-                        : "text-neutral-500"
-                    }`}
-                    onClick={() => changePage(pageNumber + 1)}
-                  >
-                    {pageNumber + 1}
-                  </Button>
-                </li>
-              ))}
-              <li>
-                <Button
-                  style={
-                    "relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400"
-                  }
-                  onClick={() => changePage(currentPage + 1)}
-                  disabled={currentPage === texts.totalPages}
-                >
-                  Next
-                </Button>
-              </li>
-            </ul>
-          </nav>
-        </div>
+            ))}
+            <li>
+              <Button
+                style={
+                  "relative block rounded bg-transparent px-3 py-1.5 text-sm text-neutral-500 transition-all duration-300 dark:text-neutral-400"
+                }
+                onClick={() => changePage(currentPage + 1)}
+                disabled={currentPage === texts.totalPages}
+              >
+                Next
+              </Button>
+            </li>
+          </ul>
+        </nav>
       </div>
     </div>
   );

@@ -13,7 +13,6 @@ import Footer from "./Footer";
 import Button from "../Button";
 
 import plusButton from "../../assets/plus.png";
-import closeButton from "../../assets/close.png";
 
 import { CONFIG } from "../../constants/config";
 
@@ -451,7 +450,7 @@ const TextEditor: React.FC = () => {
         backgroundColor={backgroundColor}
       />
 
-      <div className="flex flex-col">
+      <div className="">
         {!showFooter && (
           <>
             <Button onClick={toggleFooter}>
@@ -464,28 +463,19 @@ const TextEditor: React.FC = () => {
           </>
         )}
         {showFooter && (
-          <>
-            <Button>
-              <img
-                src={closeButton}
-                alt="closeButton"
-                className="max-w-[10vw] max-h-[10vh] m-auto"
-                onClick={prev => setShowFooter(!prev)}
-              />
-            </Button>
-            <Footer
-              backgroundColor={backgroundColor}
-              text_id={text_id}
-              textareaRef={textareaRef}
-              handleCreateRoom={handleCreateRoom}
-              handleDeleteRoom={handleDeleteRoom}
-              handleDownloadClick={handleDownloadClick}
-              updateText={updateText}
-              roomId={roomId}
-              textValue={textValue}
-              deleteText={deleteText}
-            />
-          </>
+          <Footer
+            backgroundColor={backgroundColor}
+            text_id={text_id}
+            textareaRef={textareaRef}
+            handleCreateRoom={handleCreateRoom}
+            handleDeleteRoom={handleDeleteRoom}
+            handleDownloadClick={handleDownloadClick}
+            updateText={updateText}
+            roomId={roomId}
+            textValue={textValue}
+            deleteText={deleteText}
+            setShowFooter={setShowFooter}
+          />
         )}
       </div>
     </div>
