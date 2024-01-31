@@ -344,7 +344,7 @@ const TextEditor: React.FC = () => {
         socket.current.emit("joinRoom", roomId, user, textValue);
 
         socket.current.on("currentText", ({ text }) => {
-          if (textareaRef.current) {
+          if (textareaRef.current && text && text.content) {
             textareaRef.current.innerHTML = convertPlainTextToHTML(
               text.content.toString(),
             );
