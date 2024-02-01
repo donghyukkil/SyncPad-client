@@ -117,6 +117,7 @@ const TextEditor: React.FC = () => {
     const childNodes = Array.from(targetDiv.childNodes);
 
     let cursorNodeIndex = -1;
+
     childNodes.forEach((node, index) => {
       if (node.contains(cursorNode)) {
         cursorNodeIndex = index;
