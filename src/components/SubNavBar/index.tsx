@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 import Button from "../Button";
-import Select from "react-select";
 
 import menu from "../../assets/menu.png";
 
@@ -17,7 +16,7 @@ import { fetchUserRooms } from "../../utils/helpers";
 import NavBar from "../NavBar";
 
 const SubNavBar: React.FC = () => {
-  const { user, clearUser, rooms, setRooms, setRoomId, roomId } = useStore();
+  const { user, clearUser, setRooms } = useStore();
 
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false);
@@ -32,14 +31,6 @@ const SubNavBar: React.FC = () => {
 
   const toggleMenu = () => {
     setMenuOpen(!menuOpen);
-  };
-
-  const handleRoomClick = (roomId: string) => {
-    if (roomId === "room1") {
-      navigate("/chat");
-    } else {
-      navigate(`/room/${roomId}`);
-    }
   };
 
   const handleLogout = async () => {
@@ -63,22 +54,6 @@ const SubNavBar: React.FC = () => {
       navigate("/");
     } catch (error) {
       console.log(error);
-    }
-  };
-
-  const selectOptions = rooms.map(room => ({
-    value: room.roomId,
-    label: room.roomId,
-  }));
-
-  const handleSelectChange = selectedOption => {
-    const selectedRoom = rooms.filter(
-      room => room.roomId === selectedOption.value,
-    );
-
-    if (selectedRoom.length > 0) {
-      setRoomId(selectedRoom[0].roomId);
-      handleRoomClick(selectedRoom[0]._id);
     }
   };
 
@@ -108,13 +83,6 @@ const SubNavBar: React.FC = () => {
             onClick={() => toggleHamburgeMenu()}
           />
         </div>
-
-        <Select
-          options={selectOptions}
-          onChange={handleSelectChange}
-          value={selectOptions.find(option => option.value === roomId)}
-          className="m-auto w-[60vw] sm:w-[20vw]"
-        />
 
         {isHamburgerMenuOpen && (
           <div className="absolute top-24 left-6 sm:left-[35vw]">
