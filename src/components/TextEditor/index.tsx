@@ -67,24 +67,8 @@ const TextEditor: React.FC = () => {
 
   const [backgroundColor, setBackgroundColor] = useState("#ffffff");
 
-  const handleColor1Change = () => {
-    setBackgroundColor("#fff9c4");
-  };
-
-  const handleColor2Change = () => {
-    setBackgroundColor("#ffffff");
-  };
-
-  const handleColor3Change = () => {
-    setBackgroundColor("#fddde6");
-  };
-
-  const handleColor4Change = () => {
-    setBackgroundColor("#7ed77b");
-  };
-
-  const handleColor5Change = () => {
-    setBackgroundColor("#a4c1f4");
+  const handleColorChange = (color: string) => {
+    return () => setBackgroundColor(color);
   };
 
   let bgColor = result?.[0]?.backgroundColor
@@ -99,7 +83,7 @@ const TextEditor: React.FC = () => {
 
   const navigate = useNavigate();
 
-  const textareaRef = useRef<HTMLDivElement>(null);
+  const textareaRef = useRef<HTMLDivElement | null>(null);
   const socket = useRef<Socket | null>();
   const typingTimerRef = useRef<NodeJS.Timeout | number | null>(null);
 
@@ -402,6 +386,8 @@ const TextEditor: React.FC = () => {
         }
       };
     }
+
+    return () => {};
   }, [roomId]);
 
   useEffect(() => {
@@ -411,39 +397,22 @@ const TextEditor: React.FC = () => {
   return (
     <div className="flex flex-col">
       <div className="mx-10 my-4  flex justify-around rounded-md">
-        <Button
-          style={{ backgroundColor: "#fef6e4" }}
-          onClick={handleColor1Change}
-        >
+        <Button onClick={handleColorChange("#fff9c4")}>
           <div className="w-[5vh] h-[5vh] bg-yellow-300 rounded-full"></div>
         </Button>
-        <Button
-          style={{
-            backgroundColor: "#ffffff",
-          }}
-          onClick={handleColor2Change}
-        >
+        <Button onClick={handleColorChange("#ffffff")}>
           <div className="w-[5vh] h-[5vh] bg-white rounded-full shadow-md shadow-slate-400"></div>
         </Button>
-        <Button
-          style={{ backgroundColor: "#f7c0c0" }}
-          onClick={handleColor3Change}
-        >
+        <Button onClick={handleColorChange("#fddde6")}>
           <div className="w-[5vh] h-[5vh] bg-red-500 rounded-full"></div>
         </Button>
-        <Button
-          style={{ backgroundColor: "#0bc20b" }}
-          onClick={handleColor4Change}
-        >
+        <Button onClick={handleColorChange("#7ed77b")}>
           <div
             className="w-[5vh] h-[5vh] rounded-full"
             style={{ backgroundColor: "#0bc20b" }}
           ></div>
         </Button>
-        <Button
-          style={{ backgroundColor: "#c0d0f7" }}
-          onClick={handleColor5Change}
-        >
+        <Button onClick={handleColorChange("#a4c1f4")}>
           <div className="w-[5vh] h-[5vh] bg-blue-400 rounded-full"></div>
         </Button>
       </div>
@@ -451,8 +420,8 @@ const TextEditor: React.FC = () => {
         textareaRef={textareaRef}
         handleInputChange={handleInputChange}
         bgColor={bgColor}
-        roomId={roomId}
-        typingUser={typingUser}
+        roomId={roomId || ""}
+        typingUser={typingUser || ""}
         backgroundColor={backgroundColor}
       />
 
@@ -477,7 +446,7 @@ const TextEditor: React.FC = () => {
             handleDeleteRoom={handleDeleteRoom}
             handleDownloadClick={handleDownloadClick}
             updateText={updateText}
-            roomId={roomId}
+            roomId={roomId || ""}
             textValue={textValue}
             deleteText={deleteText}
             setShowFooter={setShowFooter}
