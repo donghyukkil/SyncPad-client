@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import { Route, Routes, BrowserRouter } from "react-router-dom";
+import RouteChangeTracker from "./components/RouteChangeTracker/index.jsx";
 
 import Upload from "./pages/Upload/index.jsx";
 import Create from "./pages/Create/index.jsx";
@@ -20,6 +21,7 @@ const root = ReactDOM.createRoot(
 root.render(
   <React.StrictMode>
     <BrowserRouter>
+      <RouteChangeTracker />
       <Routes>
         <Route path="/" element={<Create />} />
         <Route path="/upload" element={<Upload />} />

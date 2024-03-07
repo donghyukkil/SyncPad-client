@@ -1,3 +1,4 @@
 export const CONFIG = {
   BACKEND_SERVER_URL: import.meta.env.VITE_BACKEND_SERVER_URL,
+  REACT_APP_GA_TRACKING_ID: import.meta.env.VITE_REACT_APP_GA_TRACKING_ID,
 };
