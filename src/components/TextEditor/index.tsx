@@ -3,7 +3,6 @@ import { useNavigate, useParams } from "react-router-dom";
 
 import { io, Socket } from "socket.io-client";
 import { toast } from "react-toastify";
-
 import "react-toastify/dist/ReactToastify.css";
 
 import useStore from "../../useStore";
@@ -372,6 +371,65 @@ const TextEditor: React.FC = () => {
             }
           },
         );
+
+        socket.current.on("styleChanged", ({ styleType, value }) => {
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(value, "text/html");
+          const styledTextContent = doc.body.textContent || "";
+
+          document.querySelectorAll("*").forEach(el => {
+            Array.from(el.childNodes).forEach(child => {
+              if (
+                child.nodeType === Node.TEXT_NODE &&
+                child.textContent &&
+                child.textContent.includes(styledTextContent)
+              ) {
+                const fullText = child.textContent;
+                const startIndex = fullText.indexOf(styledTextContent);
+                const endIndex = startIndex + styledTextContent.length;
+
+                const beforeText = fullText.substring(0, startIndex);
+                const afterText = fullText.substring(endIndex);
+
+                const newElement = document.createElement("span");
+                newElement.innerHTML = styledTextContent;
+
+                switch (styleType) {
+                  case "bold":
+                    newElement.style.fontWeight = "bold";
+                    break;
+                  case "italic":
+                    newElement.style.fontStyle = "italic";
+                    break;
+                  case "underline":
+                    newElement.style.textDecoration = "underline";
+                    break;
+                  case "color":
+                    newElement.style.color = "red";
+                    break;
+                  case "highlight":
+                    newElement.style.backgroundColor = "yellow";
+                    break;
+                  default:
+                    break;
+                }
+
+                const beforeTextNode = document.createTextNode(beforeText);
+                const afterTextNode = document.createTextNode(afterText);
+
+                el.insertBefore(beforeTextNode, child);
+                el.insertBefore(newElement, child);
+                el.insertBefore(afterTextNode, child);
+
+                el.removeChild(child);
+              }
+            });
+          });
+        });
+
+        return () => {
+          socket.current?.off("styleChanged");
+        };
       }
 
       return () => {
@@ -416,14 +474,26 @@ const TextEditor: React.FC = () => {
           <div className="w-[5vh] h-[5vh] bg-blue-400 rounded-full"></div>
         </Button>
       </div>
-      <Main
-        textareaRef={textareaRef}
-        handleInputChange={handleInputChange}
-        bgColor={bgColor}
-        roomId={roomId || ""}
-        typingUser={typingUser || ""}
-        backgroundColor={backgroundColor}
-      />
+      {socket.current ? (
+        <Main
+          textareaRef={textareaRef}
+          handleInputChange={handleInputChange}
+          bgColor={bgColor}
+          roomId={roomId || ""}
+          typingUser={typingUser || ""}
+          backgroundColor={backgroundColor}
+          socket={socket.current}
+        />
+      ) : (
+        <Main
+          textareaRef={textareaRef}
+          handleInputChange={handleInputChange}
+          bgColor={bgColor}
+          roomId={roomId || ""}
+          typingUser={typingUser || ""}
+          backgroundColor={backgroundColor}
+        />
+      )}
 
       <div className="mx-10">
         {!showFooter && (

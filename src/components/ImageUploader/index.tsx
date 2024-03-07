@@ -18,7 +18,7 @@ const ImageUploader = () => {
   const navigate = useNavigate();
 
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [_, setUploadedImage] = useState<string | null>(null);
 
   const fileInputRef = useRef<HTMLInputElement>(null);
 
@@ -104,7 +104,19 @@ const ImageUploader = () => {
                 alt="Uploaded"
                 className="w-full h-full"
               />
-              <Footer handleSaveImage={handleSaveImage} />
+              <Footer
+                handleSaveImage={handleSaveImage}
+                backgroundColor=""
+                textareaRef={{ current: null }}
+                handleCreateRoom={() => {}}
+                handleDeleteRoom={() => {}}
+                handleDownloadClick={() => {}}
+                updateText={() => {}}
+                roomId=""
+                textValue=""
+                deleteText={() => {}}
+                setShowFooter={() => {}}
+              />
             </div>
           </div>
         </div>

@@ -6,7 +6,26 @@ import chatIcon from "../../assets/chat.png";
 import deleteIcon from "../../assets/delete.png";
 import closeButton from "../../assets/close.png";
 
-const Footer = ({
+interface FooterProps {
+  backgroundColor: string;
+  text_id?: string;
+  textareaRef: React.RefObject<HTMLDivElement>;
+  handleCreateRoom: () => void;
+  handleDeleteRoom: () => void;
+  handleDownloadClick: (
+    textValue: string,
+    textareaRef: React.RefObject<HTMLDivElement>,
+    backgroundColor: string,
+  ) => void;
+  updateText: () => void;
+  roomId: string;
+  textValue: string;
+  deleteText: () => void;
+  handleSaveImage?: () => void;
+  setShowFooter: (show: boolean) => void;
+}
+
+const Footer: React.FC<FooterProps> = ({
   backgroundColor,
   text_id,
   textareaRef,
@@ -21,7 +40,10 @@ const Footer = ({
   setShowFooter,
 }) => {
   return (
-    <div className="rounded-lg drop-shadow-xl flex justify-evenly">
+    <div
+      className="rounded-lg drop-shadow-xl flex justify-evenly"
+      style={{ backgroundColor }}
+    >
       {text_id && (
         <>
           <Button>
@@ -29,7 +51,7 @@ const Footer = ({
               src={closeButton}
               alt="closeButton"
               className="max-w-[10vw] max-h-[10vh] m-auto sm:w-[3vw]"
-              onClick={prev => setShowFooter(!prev)}
+              onClick={() => setShowFooter(false)}
             />
           </Button>
           <Button
@@ -73,6 +95,7 @@ const Footer = ({
           </Button>
         </>
       )}
+
       {!handleSaveImage && (
         <>
           <Button
