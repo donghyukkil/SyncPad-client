@@ -9,19 +9,17 @@ import useStore from "../../useStore";
 
 import Main from "./Main";
 import Footer from "./Footer";
-import Button from "../Button";
-
-import plusButton from "../../assets/plus.png";
-
-import { CONFIG } from "../../constants/config";
 
 import {
   convertHTMLToPlainText,
   convertPlainTextToHTML,
 } from "../../utils/selectionUtils";
-
 import { handleDownloadClick } from "../../utils/textAction";
 import { createNewRoom, deleteRoom } from "../../utils/helpers";
+
+import defaultUser from "../../assets/user.png";
+
+import { CONFIG } from "../../constants/config";
 
 const TYPING_INTERVAL = 300;
 
@@ -61,30 +59,18 @@ const TextEditor: React.FC = () => {
   }
 
   const [typingUser, setTypingUser] = useState(null);
-
   const [textValue, setTextValue] = useState(resultText);
-
   const [backgroundColor, setBackgroundColor] = useState("#ffffff");
-
-  const handleColorChange = (color: string) => {
-    return () => setBackgroundColor(color);
-  };
-
-  let bgColor = result?.[0]?.backgroundColor
-    ? result[0].backgroundColor
-    : backgroundColor;
-
-  const [showFooter, setShowFooter] = useState(false);
-
-  const toggleFooter = () => {
-    setShowFooter(!showFooter);
-  };
+  const [_, setCursorNodeIndex] = useState<number | null>(null);
 
   const navigate = useNavigate();
-
   const textareaRef = useRef<HTMLDivElement | null>(null);
   const socket = useRef<Socket | null>();
   const typingTimerRef = useRef<NodeJS.Timeout | number | null>(null);
+
+  const handleColorChange = (color: string) => {
+    setBackgroundColor(color);
+  };
 
   const handleInputChange = (event: React.FormEvent<HTMLDivElement>) => {
     const selection = window.getSelection();
@@ -95,7 +81,6 @@ const TextEditor: React.FC = () => {
 
     const range = selection.getRangeAt(0);
     const cursorNode = range.startContainer;
-
     const targetDiv = event.target as HTMLDivElement;
     const childNodes = Array.from(targetDiv.childNodes);
 
@@ -104,10 +89,12 @@ const TextEditor: React.FC = () => {
     childNodes.forEach((node, index) => {
       if (node.contains(cursorNode)) {
         cursorNodeIndex = index;
+        setCursorNodeIndex(cursorNodeIndex);
       }
     });
 
     const newValue = convertHTMLToPlainText(event.currentTarget.innerHTML);
+
     setTextValue(newValue);
 
     if (!!socket.current) {
@@ -200,6 +187,7 @@ const TextEditor: React.FC = () => {
       }
     } catch (error) {
       console.log(error);
+      toast.error("오류가 발생했습니다. 다시 시도해주세요.");
     }
   };
 
@@ -244,6 +232,7 @@ const TextEditor: React.FC = () => {
         setTimeout(() => navigate("/mypage"), 3000);
       } catch (error) {
         console.log(error);
+        toast.error("오류가 발생했습니다. 다시 시도해주세요.");
       }
     }
   };
@@ -283,6 +272,7 @@ const TextEditor: React.FC = () => {
         setTimeout(() => navigate("/sharedRooms"), 3000);
       } catch (error) {
         console.log(error);
+        toast.error("오류가 발생했습니다. 다시 시도해주세요.");
       }
     }
   };
@@ -298,7 +288,7 @@ const TextEditor: React.FC = () => {
       const rect = targetNode.getBoundingClientRect();
       const imageElement = document.createElement("img");
       imageElement.id = "profile-image";
-      imageElement.src = imageUrl;
+      imageElement.src = imageUrl || defaultUser;
       imageElement.alt = "프로필 이미지";
       imageElement.style.position = "absolute";
       imageElement.style.left = `${rect.left + window.scrollX - 40}px`;
@@ -350,10 +340,6 @@ const TextEditor: React.FC = () => {
                   Object.assign(targetNode.style, targetNodeStyle);
 
                   targetNode.classList.add("profile-icon");
-                  targetNode.scrollIntoView({
-                    behavior: "smooth",
-                    block: "center",
-                  });
 
                   placeProfileImageNearNode(targetNode, photoURL);
                 }
@@ -426,103 +412,62 @@ const TextEditor: React.FC = () => {
             });
           });
         });
-
-        return () => {
-          socket.current?.off("styleChanged");
-        };
       }
 
       return () => {
         if (socket.current) {
+          socket.current.off("currentText");
+          socket.current.off("textChanged");
+          socket.current.off("styleChanged");
           socket.current.disconnect();
-        }
-
-        const existingImage = document.getElementById("profile-image");
-
-        if (existingImage) {
-          existingImage.remove();
         }
       };
     }
 
-    return () => {};
-  }, [roomId]);
+    return () => {
+      const profileImage = document.getElementById("profile-image");
 
-  useEffect(() => {
-    bgColor = backgroundColor;
+      if (profileImage) {
+        profileImage.remove();
+      }
+    };
   }, [backgroundColor]);
 
   return (
-    <div className="flex flex-col">
-      <div className="mx-10 my-4  flex justify-around rounded-md">
-        <Button onClick={handleColorChange("#fff9c4")}>
-          <div className="w-[5vh] h-[5vh] bg-yellow-300 rounded-full"></div>
-        </Button>
-        <Button onClick={handleColorChange("#ffffff")}>
-          <div className="w-[5vh] h-[5vh] bg-white rounded-full shadow-md shadow-slate-400"></div>
-        </Button>
-        <Button onClick={handleColorChange("#fddde6")}>
-          <div className="w-[5vh] h-[5vh] bg-red-500 rounded-full"></div>
-        </Button>
-        <Button onClick={handleColorChange("#7ed77b")}>
-          <div
-            className="w-[5vh] h-[5vh] rounded-full"
-            style={{ backgroundColor: "#0bc20b" }}
-          ></div>
-        </Button>
-        <Button onClick={handleColorChange("#a4c1f4")}>
-          <div className="w-[5vh] h-[5vh] bg-blue-400 rounded-full"></div>
-        </Button>
-      </div>
+    <div className="flex flex-col mx-5">
       {socket.current ? (
         <Main
           textareaRef={textareaRef}
           handleInputChange={handleInputChange}
-          bgColor={bgColor}
           roomId={roomId || ""}
           typingUser={typingUser || ""}
           backgroundColor={backgroundColor}
           socket={socket.current}
+          handleColorChange={handleColorChange}
         />
       ) : (
         <Main
           textareaRef={textareaRef}
           handleInputChange={handleInputChange}
-          bgColor={bgColor}
           roomId={roomId || ""}
           typingUser={typingUser || ""}
           backgroundColor={backgroundColor}
+          handleColorChange={handleColorChange}
         />
       )}
 
-      <div className="mx-10">
-        {!showFooter && (
-          <>
-            <Button onClick={toggleFooter}>
-              <img
-                src={plusButton}
-                alt="Show Footer"
-                className="max-w-[10vw] max-h-[10vh] m-auto sm:w-[3vw]"
-              />
-            </Button>
-          </>
-        )}
-        {showFooter && (
-          <Footer
-            backgroundColor={backgroundColor}
-            text_id={text_id}
-            textareaRef={textareaRef}
-            handleCreateRoom={handleCreateRoom}
-            handleDeleteRoom={handleDeleteRoom}
-            handleDownloadClick={handleDownloadClick}
-            updateText={updateText}
-            roomId={roomId || ""}
-            textValue={textValue}
-            deleteText={deleteText}
-            setShowFooter={setShowFooter}
-          />
-        )}
-      </div>
+      <Footer
+        backgroundColor={backgroundColor}
+        text_id={text_id}
+        textareaRef={textareaRef}
+        handleCreateRoom={handleCreateRoom}
+        handleDeleteRoom={handleDeleteRoom}
+        handleDownloadClick={handleDownloadClick}
+        updateText={updateText}
+        roomId={roomId || ""}
+        textValue={textValue}
+        deleteText={deleteText}
+      />
     </div>
   );
 };

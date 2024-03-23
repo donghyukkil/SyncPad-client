@@ -20,7 +20,7 @@ const SharedRooms = () => {
   }, [memoizedFetchRooms]);
 
   return (
-    <div className="w-screen h-screen flex flex-col sm:w-[60vw] lg:w-[30vw] m-auto">
+    <div className="w-screen h-screen flex flex-col sm:w-[60vw] lg:w-[60vw] m-auto">
       <SubNavBar />
       <div className="flex flex-col mx-auto my-12 h-screen justify-center rounded-md">
         <main className="flex-grow grid grid-cols-2 grid-rows-0.5 gap-6 m-5">

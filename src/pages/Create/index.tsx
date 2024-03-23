@@ -3,7 +3,7 @@ import TextEditor from "../../components/TextEditor";
 
 const Create = () => {
   return (
-    <div className="h-full sm:w-[60vw] lg:w-[30vw] m-auto">
+    <div className="h-full sm:w-[60vw] lg:w-[60vw] m-auto">
       <SubNavBar />
       <TextEditor />
     </div>

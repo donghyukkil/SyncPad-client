@@ -6,7 +6,7 @@ import SubNavBar from "../../components/SubNavBar";
 
 const Upload = () => {
   return (
-    <div className="sm:w-[60vw] lg:w-[30vw] m-auto">
+    <div className="h-full sm:w-[60vw] lg:w-[60vw] m-auto">
       <SubNavBar />
       <ToastContainer
         position="top-right"

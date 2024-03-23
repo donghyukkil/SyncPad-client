@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useEffect, useRef } from "react";
 
 import Button from "../Button";
 
@@ -9,23 +8,22 @@ import useSignInWithGoogle from "../../hooks/useSignInWithGoogle";
 
 import useStore from "../../useStore";
 
-import { CONFIG } from "../../constants/config";
 import profile from "../../assets/user.png";
 
 import { fetchUserRooms } from "../../utils/helpers";
 import NavBar from "../NavBar";
 
 const SubNavBar: React.FC = () => {
-  const { user, clearUser, setRooms } = useStore();
+  const { user, setRooms } = useStore();
 
   const [menuOpen, setMenuOpen] = useState<boolean>(false);
   const [isHamburgerMenuOpen, setIsHamburgerMenuOpen] = useState(false);
 
+  const navRef = useRef<HTMLDivElement | null>(null);
+
   const toggleHamburgeMenu = () => {
     setIsHamburgerMenuOpen(!isHamburgerMenuOpen);
   };
-
-  const navigate = useNavigate();
 
   const signInWithGoogle = useSignInWithGoogle();
 
@@ -33,64 +31,58 @@ const SubNavBar: React.FC = () => {
     setMenuOpen(!menuOpen);
   };
 
-  const handleLogout = async () => {
-    try {
-      const response = await fetch(
-        `${CONFIG.BACKEND_SERVER_URL}/users/logout`,
-        {
-          method: "POST",
-          credentials: "include",
-        },
-      );
-
-      if (response.ok) {
-        console.log("로그아웃 성공");
-      } else {
-        console.error("로그아웃 실패");
-      }
-
-      clearUser();
-
-      navigate("/");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
   useEffect(() => {
     const fetchRooms = async () => {
-      try {
-        const roomsData = await fetchUserRooms(user);
-        setRooms(roomsData);
-      } catch (error) {
-        console.error("fetchUserRooms failed:", error);
+      if (user) {
+        try {
+          const roomsData = await fetchUserRooms(user);
+          setRooms(roomsData);
+        } catch (error) {
+          console.error("fetchUserRooms failed:", error);
+        }
+      }
+    };
+    fetchRooms();
+
+    const handleClickOutside = (event: MouseEvent) => {
+      if (navRef.current && !navRef.current.contains(event.target as Node)) {
+        setIsHamburgerMenuOpen(false);
       }
     };
 
-    if (user) {
-      fetchRooms();
+    if (isHamburgerMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
     }
-  }, [user]);
+
+    return () => {
+      if (isHamburgerMenuOpen) {
+        document.removeEventListener("mousedown", handleClickOutside);
+      }
+    };
+  }, [user, isHamburgerMenuOpen]);
 
   return (
     <>
       <div className="flex justify-between bg-white min-h-[10vh]">
         <div className="my-auto flex w-1/2 cursor-pointer">
           <img
-            className="h-[4.5vh] mx-10 my-auto"
+            className="h-[4.5vh] mx-5 my-auto"
             src={menu}
             alt="togglemenu"
             onClick={() => toggleHamburgeMenu()}
           />
         </div>
 
-        {isHamburgerMenuOpen && (
-          <div className="absolute top-24 left-6 sm:left-[35vw]">
-            <NavBar />
-          </div>
-        )}
+        <div
+          ref={navRef}
+          className={`absolute top-24 left-0 sm:left-[2vw] transform ${
+            isHamburgerMenuOpen ? "translate-x-0" : "-translate-x-full"
+          } transition-transform duration-1000 ease-in-out`}
+        >
+          {isHamburgerMenuOpen && <NavBar />}
+        </div>
 
-        <div className="relative flex justify-end my-auto w-1/2 mx-10">
+        <div className="relative flex justify-end my-auto w-1/2 mx-7">
           {user ? (
             <div>
               <Button>
@@ -101,29 +93,13 @@ const SubNavBar: React.FC = () => {
                   onClick={toggleMenu}
                 />
               </Button>
-              {menuOpen && (
-                <div className="absolute right-100 bg-custom-white w-[20vw] h-[5vh] rounded-lg drop-shadow-xl sm:w-[6.5vw]">
-                  <Button
-                    style={
-                      "hover:border-0 hover:bg-white text-black rounded-md text-center text-lg font-semibold font-mono w-20 mt-2"
-                    }
-                    onClick={handleLogout}
-                  >
-                    로그아웃
-                  </Button>
-                </div>
-              )}
             </div>
           ) : (
             <Button
               style={"bg-white hover:bg-white hover:border-0 rounded-lg"}
               onClick={signInWithGoogle}
             >
-              <img
-                src={profile}
-                alt="profile"
-                className="sm:max-w-[7vw] sm:max-h-[7vh] max-w-[10vw] max-h-[10vh]"
-              />
+              <img src={profile} alt="profile" className="h-[5vh]" />
             </Button>
           )}
         </div>

@@ -5,21 +5,23 @@ import { Socket } from "socket.io-client";
 interface MainProps {
   textareaRef: RefObject<HTMLDivElement>;
   handleInputChange: (event: React.FormEvent<HTMLDivElement>) => void;
-  bgColor: string;
   roomId: string;
   typingUser: string;
   backgroundColor: string;
   socket?: Socket;
+  cursorNodeIndex?: number;
+  handleColorChange: (color: string) => void;
 }
 
 const Main: React.FC<MainProps> = ({
   textareaRef,
   handleInputChange,
-  bgColor,
   roomId,
   typingUser,
   backgroundColor,
   socket,
+  cursorNodeIndex,
+  handleColorChange,
 }) => {
   const [showContextMenu, setShowContextMenu] = useState(false);
   const [contextMenuPosition, setContextMenuPosition] = useState({
@@ -27,6 +29,8 @@ const Main: React.FC<MainProps> = ({
     y: 0,
   });
   const [selectedRange, setSelectedRange] = useState<Range | null>(null);
+  const [content, _] = useState("");
+  const placeholder = "글을 작성 후 범위를 선택하세요...";
 
   useEffect(() => {
     if (textareaRef.current) {
@@ -37,6 +41,7 @@ const Main: React.FC<MainProps> = ({
   useEffect(() => {
     const handleTextSelection = () => {
       const selection = window.getSelection();
+
       if (
         selection &&
         selection.type === "Range" &&
@@ -69,13 +74,35 @@ const Main: React.FC<MainProps> = ({
     return () => {};
   }, [textareaRef]);
 
+  useEffect(() => {
+    if (!content && textareaRef.current) {
+      textareaRef.current.innerHTML = `<span class="placeholder">${placeholder}</span>`;
+    }
+  }, [content, textareaRef, placeholder]);
+
+  const handleFocus = () => {
+    if (
+      textareaRef.current &&
+      textareaRef.current.textContent === placeholder
+    ) {
+      textareaRef.current.innerHTML = "";
+    }
+  };
+
+  const handleBlur = () => {
+    if (!textareaRef.current?.textContent) {
+      textareaRef.current!.innerHTML = `<span class="placeholder">${placeholder}</span>`;
+    }
+  };
+
   type StyleType =
     | "bold"
     | "italic"
     | "underline"
     | "color"
     | "size"
-    | "highlight";
+    | "highlight"
+    | "backgroundColor";
 
   const applyStyle = (styleType: StyleType, value: string = "") => {
     if (!selectedRange) {
@@ -103,18 +130,24 @@ const Main: React.FC<MainProps> = ({
         case "underline":
           span.style.textDecoration = "underline";
           break;
-        case "color":
-          span.style.color = value;
-          break;
         case "highlight":
           span.style.backgroundColor = "yellow";
           break;
+        case "backgroundColor":
+          span.style.backgroundColor = value;
+          break;
+
         default:
           break;
       }
       const styledHTML = span.outerHTML;
 
-      socket?.emit("styleChange", { roomId, styleType, value: styledHTML });
+      socket?.emit("styleChange", {
+        roomId,
+        styleType,
+        value: styledHTML,
+        cursorIndex: cursorNodeIndex,
+      });
       setShowContextMenu(false);
 
       return span;
@@ -193,11 +226,19 @@ const Main: React.FC<MainProps> = ({
     } else {
       console.error("Common ancestor is not an element.");
     }
+
+    handleColorChange("#FFFFFF");
+  };
+
+  const handleColorSelectChange = (
+    event: React.ChangeEvent<HTMLSelectElement>,
+  ) => {
+    handleColorChange(event.target.value);
   };
 
   return (
     <>
-      <div className="flex flex-col mx-10 mb-4">
+      <div className="flex flex-col my-6">
         <ToastContainer
           position="top-right"
           autoClose={2000}
@@ -211,35 +252,35 @@ const Main: React.FC<MainProps> = ({
           theme="light"
         />
         <div className="flex justify-center bg-blue-900 min-h-[7vh] rounded-t-lg">
-          <div className="text-white text-lg m-auto">Hello, legalpad</div>
+          <div className="text-white text-lg m-auto">S y n c P a d</div>
         </div>
 
         <div
-          className="bg-yellow-200 min-h-[50vh] max-h-[50vh] rounded-b-lg shadow-xl focus:border-2 focus:border-blue-500 focus:outline-none"
+          className="bg-yellow-200 min-h-[60vh] max-h-[60vh] rounded-b-lg shadow-xl focus:border-2 focus:border-blue-500 focus:outline-none"
           ref={textareaRef}
           onInput={handleInputChange}
+          onFocus={handleFocus}
+          onBlur={handleBlur}
           contentEditable
           style={{
             lineHeight: "33px",
             padding: "11px",
             fontFamily: "Courier New",
             color: "#000",
-            background: `linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px), linear-gradient(90deg, transparent 20%, red 20.2%, red 20.5%, transparent 20%)`,
+            background: `linear-gradient(0deg, rgba(0,0,0,0.2) 1px, transparent 1px)`,
             backgroundSize: "100% 33px, 100% 100%",
-            backgroundColor: bgColor,
+            backgroundColor: backgroundColor,
             overflowY: "auto",
             border: "none",
           }}
         />
 
-        {roomId && (
-          <div
-            className="rounded-md text-center text-lg font-semibold font-mono flex items-center justify-center"
-            style={{ height: "5px", marginTop: "25px" }}
-          >
-            {typingUser ? `${typingUser}가 입력 중입니다...` : ""}
-          </div>
-        )}
+        <div
+          className="rounded-md text-center text-lg font-semibold font-mono flex items-center justify-center"
+          style={{ height: "5px", marginTop: "25px" }}
+        >
+          {typingUser ? `${typingUser}가 입력 중입니다...` : ""}
+        </div>
 
         {showContextMenu && (
           <ul
@@ -277,12 +318,7 @@ const Main: React.FC<MainProps> = ({
             >
               Underline
             </li>
-            <li
-              onClick={() => applyStyle("color", "red")}
-              style={{ padding: "5px", cursor: "pointer" }}
-            >
-              Color Red
-            </li>
+
             <li
               onClick={() => applyStyle("highlight")}
               style={{ padding: "5px", cursor: "pointer" }}
@@ -294,6 +330,27 @@ const Main: React.FC<MainProps> = ({
               style={{ padding: "5px", cursor: "pointer" }}
             >
               reset
+            </li>
+            <li style={{ padding: "5px", cursor: "pointer" }}>
+              <select
+                value={backgroundColor}
+                onChange={handleColorSelectChange}
+                className="color-select focus:outline-none"
+                style={{
+                  listStyle: "none",
+                  margin: 0,
+                  backgroundColor: "rgba(249, 249, 249, 0.9)",
+                  border: "1px solid #ccc",
+                  borderRadius: "5px",
+                  zIndex: 100,
+                }}
+              >
+                <option value="#FFFFFF">White</option>
+                <option value="#F8BBD0">Pink</option>
+                <option value="#C8E6C9">Green</option>
+                <option value="#BBDEFB">Blue</option>
+                <option value="#FFCDD2">Red</option>
+              </select>
             </li>
           </ul>
         )}

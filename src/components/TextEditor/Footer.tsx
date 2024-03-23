@@ -4,7 +4,6 @@ import downloadIcon from "../../assets/down-arrow.png";
 import saveIcon from "../../assets/check.png";
 import chatIcon from "../../assets/chat.png";
 import deleteIcon from "../../assets/delete.png";
-import closeButton from "../../assets/close.png";
 
 interface FooterProps {
   backgroundColor: string;
@@ -22,7 +21,6 @@ interface FooterProps {
   textValue: string;
   deleteText: () => void;
   handleSaveImage?: () => void;
-  setShowFooter: (show: boolean) => void;
 }
 
 const Footer: React.FC<FooterProps> = ({
@@ -37,61 +35,32 @@ const Footer: React.FC<FooterProps> = ({
   textValue,
   deleteText,
   handleSaveImage,
-  setShowFooter,
 }) => {
   return (
-    <div
-      className="rounded-lg drop-shadow-xl flex justify-evenly"
-      style={{ backgroundColor }}
-    >
+    <div className="flex justify-around">
       {text_id && (
         <>
-          <Button>
-            <img
-              src={closeButton}
-              alt="closeButton"
-              className="max-w-[10vw] max-h-[10vh] m-auto sm:w-[3vw]"
-              onClick={() => setShowFooter(false)}
-            />
-          </Button>
           <Button
             style="m-auto hover:bg-gray-100 rounded-md"
             onClick={() => handleCreateRoom()}
           >
-            <img
-              src={chatIcon}
-              className="max-w-[10vw] max-h-[10vh] m-auto sm:w-[3vw]"
-            />
+            <img src={chatIcon} className="h-[4.5vh] m-auto" />
           </Button>
         </>
       )}
       {roomId && (
         <>
-          <Button>
-            <img
-              src={closeButton}
-              alt="closeButton"
-              className="max-w-[10vw] max-h-[10vh] m-auto sm:w-[3vw]"
-              onClick={prev => setShowFooter(!prev)}
-            />
-          </Button>
           <Button
             style="m-auto hover:bg-gray-100 rounded-md"
             onClick={() => handleCreateRoom()}
           >
-            <img
-              src={chatIcon}
-              className="max-w-[10vw] max-h-[10vh] m-auto sm:w-[3vw]"
-            />
+            <img src={chatIcon} className="h-[4.5vh] m-auto" />
           </Button>
           <Button
             style="m-auto hover:bg-gray-100 rounded-md"
             onClick={() => handleDeleteRoom()}
           >
-            <img
-              src={deleteIcon}
-              className="max-w-[10vw] max-h-[10vh] m-auto sm:w-[3vw]"
-            />
+            <img src={deleteIcon} className="h-[4.5vh] m-auto" />
           </Button>
         </>
       )}
@@ -107,7 +76,7 @@ const Footer: React.FC<FooterProps> = ({
             <img
               src={downloadIcon}
               alt="download"
-              className="max-w-[10vw] max-h-[10vh] m-auto sm:w-[3vw]"
+              className="h-[4.5vh] m-auto"
             />
           </Button>
         </>
@@ -119,11 +88,7 @@ const Footer: React.FC<FooterProps> = ({
           handleSaveImage ? handleSaveImage() : updateText();
         }}
       >
-        <img
-          src={saveIcon}
-          alt="download"
-          className="max-w-[10vw] max-h-[10vh] m-auto sm:w-[3vw]"
-        />
+        <img src={saveIcon} alt="download" className="h-[4.5vh] m-auto" />
       </Button>
 
       {text_id && (
@@ -131,10 +96,7 @@ const Footer: React.FC<FooterProps> = ({
           style="m-auto hover:bg-gray-100 rounded-md"
           onClick={deleteText}
         >
-          <img
-            src={deleteIcon}
-            className="max-w-[10vw] max-h-[10vh] m-auto sm:w-[3vw]"
-          />
+          <img src={deleteIcon} className="h-[4.5vh] m-auto" />
         </Button>
       )}
     </div>

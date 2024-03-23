@@ -12,14 +12,17 @@ const RouteChangeTracker = () => {
     if (!window.location.href.includes("localhost")) {
       ReactGA.initialize(CONFIG.REACT_APP_GA_TRACKING_ID);
     }
+
     setInitialized(true);
   }, []);
+
   useEffect(() => {
     if (initialized) {
       ReactGA.set({ page: location.pathname });
       ReactGA.send("pageview");
     }
   }, [initialized, location]);
+
   return null;
 };
 

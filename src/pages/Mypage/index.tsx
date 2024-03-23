@@ -53,7 +53,7 @@ const Mypage = () => {
   };
 
   return (
-    <div className="w-screen h-screen flex flex-col sm:w-[60vw] lg:w-[30vw] m-auto">
+    <div className="w-screen h-screen flex flex-col sm:w-[60vw] lg:w-[60vw] m-auto">
       <SubNavBar />
       <ToastContainer
         position="top-right"
