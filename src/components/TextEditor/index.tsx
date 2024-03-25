@@ -9,16 +9,13 @@ import useStore from "../../useStore";
 
 import Main from "./Main";
 import Footer from "./Footer";
-
 import {
   convertHTMLToPlainText,
   convertPlainTextToHTML,
 } from "../../utils/selectionUtils";
 import { handleDownloadClick } from "../../utils/textAction";
 import { createNewRoom, deleteRoom } from "../../utils/helpers";
-
 import defaultUser from "../../assets/user.png";
-
 import { CONFIG } from "../../constants/config";
 
 const TYPING_INTERVAL = 300;
@@ -34,7 +31,7 @@ const TextEditor: React.FC = () => {
   const { texts, user, rooms } = useStore();
   const targetNodeStyle = useMemo(
     () => ({
-      backgroundColor: "#ffffff",
+      backgroundColor: "#FFF59D",
       opacity: 0.7,
       transition:
         "background-color 500ms ease-in-out, opacity 500ms ease-in-out",
@@ -58,10 +55,15 @@ const TextEditor: React.FC = () => {
     resultText = result[0].content.join("\n");
   }
 
-  const [typingUser, setTypingUser] = useState(null);
+  const [typingUser, setTypingUser] = useState<string | null>(null);
+
   const [textValue, setTextValue] = useState(resultText);
   const [backgroundColor, setBackgroundColor] = useState("#ffffff");
   const [_, setCursorNodeIndex] = useState<number | null>(null);
+  const [isTyping, setIsTyping] = useState(false);
+  const [typingTimeoutId, setTypingTimeoutId] = useState<NodeJS.Timeout | null>(
+    null,
+  );
 
   const navigate = useNavigate();
   const textareaRef = useRef<HTMLDivElement | null>(null);
@@ -73,7 +75,34 @@ const TextEditor: React.FC = () => {
   };
 
   const handleInputChange = (event: React.FormEvent<HTMLDivElement>) => {
+    setIsTyping(true);
+
+    if (typingTimeoutId) clearTimeout(typingTimeoutId);
+    const newTimeoutId = setTimeout(() => {
+      setIsTyping(false);
+    }, TYPING_INTERVAL);
+
+    setTypingTimeoutId(newTimeoutId);
+
+    if (!user) {
+      setTypingUser("guest");
+    } else {
+      setTypingUser(user.name || user.email.split("@")[0]);
+    }
+
     const selection = window.getSelection();
+
+    if (selection && selection.rangeCount > 0) {
+      const range = selection.getRangeAt(0);
+      const cursorNode = range.startContainer;
+
+      if (!socket.current) {
+        placeProfileImageNearNode(
+          cursorNode.parentNode as Node,
+          user?.photoURL,
+        );
+      }
+    }
 
     if (!selection || !selection.rangeCount) {
       return;
@@ -81,6 +110,7 @@ const TextEditor: React.FC = () => {
 
     const range = selection.getRangeAt(0);
     const cursorNode = range.startContainer;
+
     const targetDiv = event.target as HTMLDivElement;
     const childNodes = Array.from(targetDiv.childNodes);
 
@@ -278,6 +308,15 @@ const TextEditor: React.FC = () => {
   };
 
   const placeProfileImageNearNode = (targetNode: Node, imageUrl: string) => {
+    const isContentEditableArea =
+      targetNode instanceof HTMLElement &&
+      (targetNode.getAttribute("contentEditable") === "true" ||
+        targetNode.id === "editable-content");
+
+    if (isContentEditableArea) {
+      return;
+    }
+
     const existingImage = document.getElementById("profile-image");
 
     if (existingImage) {
@@ -297,6 +336,18 @@ const TextEditor: React.FC = () => {
       imageElement.style.height = "30px";
 
       document.body.appendChild(imageElement);
+
+      setTimeout(() => {
+        const existingImage = document.getElementById("profile-image");
+        if (existingImage) {
+          existingImage.remove();
+        }
+
+        if (targetNode instanceof HTMLElement) {
+          targetNode.style.backgroundColor = "";
+          targetNode.style.opacity = "";
+        }
+      }, 2000);
     }
   };
 
